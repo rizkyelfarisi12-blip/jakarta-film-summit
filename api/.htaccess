@@ -1,0 +1,8 @@
+# Route every request under /api/ to index.php, except real files
+# (so /api/register, /api/participants, /api/checkin, /api/status,
+# /api/settings all reach the router in index.php)
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]

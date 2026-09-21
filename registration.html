@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jakarta Film Summit 2026 — Registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/registration.css">
+</head>
+<body>
+  <div class="shell">
+    <div class="hero">
+      <div class="icon">🎬</div>
+      <h1 class="display">Jakarta Film Summit 2026</h1>
+      <p>Register to get your digital entry ticket.</p>
+    </div>
+
+    <!-- Loading -->
+    <div id="loadingState" class="panel" style="text-align:center; color: var(--text-dim);">Loading…</div>
+
+    <!-- Registration closed -->
+    <div id="closedState" class="closed-panel hidden">
+      <div class="closed-icon" id="closedIcon">👥</div>
+      <h2>Registration Closed</h2>
+      <p id="closedMessage"></p>
+      <div id="closedQuotaMeta" class="closed-meta hidden"></div>
+      <div id="closedDeadlineMeta" class="closed-meta hidden"></div>
+    </div>
+
+    <!-- Form -->
+    <form id="regForm" class="panel hidden">
+      <div class="banner error" id="duplicateBanner">
+        <strong>This email is already registered.</strong>
+        Your QR ticket was already generated — see below, no need to register again.
+      </div>
+
+      <div class="field">
+        <label>👤 Full Name</label>
+        <input type="text" id="f_nama" placeholder="Name as shown on your ID" />
+        <div class="errmsg" id="e_nama">Full name is required</div>
+      </div>
+
+      <div class="field">
+        <label>✉️ Email</label>
+        <input type="email" id="f_email" placeholder="name@email.com" />
+        <div class="errmsg" id="e_email">Invalid email</div>
+        <div class="hint">Your QR ticket will be linked to this email</div>
+      </div>
+
+      <div class="field">
+        <label>📞 Phone Number</label>
+        <input type="tel" id="f_telp" placeholder="+1 234 567 8900" />
+        <div class="errmsg" id="e_telp">Phone number is required</div>
+      </div>
+
+      <div class="field">
+        <label>🌍 Country</label>
+        <input type="text" id="f_negara" list="countryList" placeholder="Search country…" autocomplete="off" />
+        <datalist id="countryList"></datalist>
+        <div class="errmsg" id="e_negara">Please select a country from the list</div>
+      </div>
+
+      <div class="field">
+        <label>💼 Industry Role</label>
+        <select id="f_peran">
+          <option value="">Select your role…</option>
+        </select>
+        <div class="errmsg" id="e_peran">Please select your industry role</div>
+      </div>
+
+      <div class="field">
+        <label>🏷️ Position / Title</label>
+        <input type="text" id="f_jabatan" placeholder="e.g. Creative Director, CEO, Student" />
+        <div class="errmsg" id="e_jabatan">Position is required</div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Register Now →</button>
+    </form>
+
+    <!-- Success / ticket -->
+    <div id="ticketWrap" class="hidden">
+      <div id="successHead" class="success-head hidden">
+        <div class="check">✓</div>
+        <h2>Registration Successful</h2>
+        <p>Save or screenshot the QR ticket below for the event day.</p>
+      </div>
+
+      <div class="ticket">
+        <div class="ticket-top mono">🎟️ ENTRY TICKET</div>
+        <div class="ticket-name" id="t_nama"></div>
+        <div class="ticket-id mono" id="t_id"></div>
+
+        <div class="qr-wrap"><img id="t_qr" alt="QR ticket" /></div>
+
+        <div class="perf"></div>
+
+        <div class="ticket-meta">
+          <div class="row"><span>Email</span><strong id="t_email"></strong></div>
+          <div class="row"><span>Phone</span><strong id="t_telp"></strong></div>
+          <div class="row"><span>Country</span><strong id="t_negara"></strong></div>
+          <div class="row"><span>Role</span><strong id="t_peran"></strong></div>
+          <div class="row"><span>Position</span><strong id="t_jabatan"></strong></div>
+          <div class="row"><span>Status</span><strong id="t_status"></strong></div>
+        </div>
+
+        <div class="ticket-actions">
+          <button class="btn btn-primary" id="downloadBtn">⬇ Download QR</button>
+          <button class="btn btn-ghost" id="againBtn">↻ Register Again</button>
+        </div>
+      </div>
+      <p class="note" id="downloadNote">Show this QR to the staff when checking in at the venue.</p>
+    </div>
+  </div>
+
+<script src="assets/js/registration.js"></script>
+</body>
+</html>
