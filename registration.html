@@ -179,6 +179,16 @@
   .grid.cols-1{ grid-template-columns:1fr; }
   .field{ display:flex; flex-direction:column; gap:8px; }
   .field.full{ grid-column:1 / -1; }
+
+  .sub-field{
+    grid-column:1 / -1;
+    max-height:0; opacity:0; margin-top:-26px; pointer-events:none;
+    overflow:hidden;
+    transition:max-height .28s ease, opacity .22s ease, margin-top .28s ease;
+  }
+  .sub-field.show{
+    max-height:110px; opacity:1; margin-top:0; pointer-events:auto;
+  }
   label{ font-size:.86rem; font-weight:600; color:var(--ink); display:flex; gap:5px; align-items:center; }
   label .req{ width:5px; height:5px; border-radius:50%; background:var(--rust); display:inline-block; }
   label .opt{ font-weight:400; color:var(--ink-soft); font-size:.78rem; }
@@ -390,6 +400,10 @@
                   <label class="chip"><input type="radio" name="segment" value="Others">Others</label>
                 </div>
               </div>
+              <div class="field full sub-field" id="segmentOtherWrap">
+                <label for="segmentOther">Sebutkan segment Anda <span class="req"></span></label>
+                <input type="text" id="segmentOther" name="segmentOther" placeholder="Tuliskan peran pekerjaan Anda">
+              </div>
 
               <div class="field full">
                 <label for="industry">Industry</label>
@@ -402,6 +416,10 @@
                   <option>Bisnis</option>
                   <option>Lainnya</option>
                 </select>
+              </div>
+              <div class="field full sub-field" id="industryOtherWrap">
+                <label for="industryOther">Sebutkan industri Anda <span class="req"></span></label>
+                <input type="text" id="industryOther" name="industryOther" placeholder="Tuliskan industri Anda">
               </div>
             </div>
           </section>
@@ -534,7 +552,32 @@
       } else {
         chip.classList.toggle('is-selected', input.checked);
       }
+      if(group.dataset.group === 'segment'){
+        toggleOtherField(document.getElementById('segmentOtherWrap'), document.getElementById('segmentOther'), input.value === 'Others');
+      }
+      requestProgressUpdate();
     });
+  });
+
+  // "Others" / "Lainnya" reveal fields
+  function toggleOtherField(wrap, input, show){
+    wrap.classList.toggle('show', show);
+    if(show){
+      input.setAttribute('required', 'required');
+      setTimeout(function(){ input.focus(); }, 220);
+    } else {
+      input.removeAttribute('required');
+      input.value = '';
+    }
+    requestProgressUpdate();
+  }
+  var industrySelect = document.getElementById('industry');
+  industrySelect.addEventListener('change', function(){
+    toggleOtherField(
+      document.getElementById('industryOtherWrap'),
+      document.getElementById('industryOther'),
+      industrySelect.value === 'Lainnya'
+    );
   });
 
   // step nav active state via IntersectionObserver
