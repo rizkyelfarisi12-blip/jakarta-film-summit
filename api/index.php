@@ -16,7 +16,7 @@
  *   POST /api/settings                   (staff only)
  */
 
-require __DIR__ . '/config.php';
+// require __DIR__ . '/config.php';
 
 apply_cors();
 
