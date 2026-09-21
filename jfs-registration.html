@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jakarta Film Summit — Formulir Pendaftaran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E1E19;
+    --ink-soft:#4a4a42;
+    --paper:#F4F4F1;
+    --panel:#FFFFFF;
+    --line:#C2CCCC;
+    --line-strong:#9CA8A8;
+    --rust:#BF4419;
+    --rust-deep:#8f3110;
+    --mauve:#C67188;
+    --gold:#E4C697;
+    --red:#CC3315;
+    --grad:linear-gradient(120deg,#C67188 0%,#E4C697 52%,#CC3315 100%);
+    --grad-tight:linear-gradient(120deg,#CC3315,#BF4419);
+    --shadow:0 18px 40px -22px rgba(30,30,25,.35);
+    --font-display:'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-body:'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){ --ink:#1E1E19; --paper:#F4F4F1; --panel:#FFFFFF; }
+  }
+  :root[data-theme="dark"]{ --ink:#1E1E19; --paper:#F4F4F1; --panel:#FFFFFF; }
+
+  html{scroll-behavior:smooth; scroll-padding-top:calc(76px + env(safe-area-inset-top,0px));}
+  html,body{height:auto;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%;display:block}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  a{color:var(--rust)}
+
+  /* ---------- progress bar ---------- */
+  #progress{
+    position:fixed; top:env(safe-area-inset-top,0px); left:0; right:0; height:3px;
+    background:rgba(30,30,25,.08); z-index:60;
+  }
+  #progress > span{
+    display:block; height:100%; width:0%;
+    background:var(--grad); transition:width .15s linear;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:88px 0 76px;
+    background:var(--grad);
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(30,30,25,.12), rgba(30,30,25,.55) 92%);
+    z-index:0;
+  }
+  .sprockets{
+    position:absolute; left:0; right:0; height:22px; z-index:2;
+    background-image:radial-gradient(circle, rgba(244,244,241,.9) 4.2px, transparent 4.6px);
+    background-size:26px 22px; background-position:13px center; background-repeat:repeat-x;
+    opacity:.85;
+  }
+  .sprockets.top{top:0}
+  .sprockets.bottom{bottom:0}
+  .hero .wrap{position:relative; z-index:1}
+  .hero-kicker{
+    display:flex; align-items:center; gap:12px; margin-bottom:22px; color:#F4F4F1;
+  }
+  .clap{width:40px;height:34px;flex:0 0 auto}
+  .hero-kicker span{font-family:var(--font-body); font-weight:600; letter-spacing:.02em; color:#F4F4F1; opacity:.92}
+  h1.headline{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-style:italic;
+    letter-spacing:-.01em;
+    font-size:clamp(2.4rem,6vw,4.4rem);
+    line-height:1.03;
+    margin:0 0 20px;
+    color:#F8F7F3;
+    max-width:15ch;
+    text-shadow:0 2px 30px rgba(0,0,0,.18);
+  }
+  .hero p.lead{
+    font-size:clamp(1.02rem,1.6vw,1.2rem);
+    max-width:46ch;
+    color:#F4F0E8;
+    margin:0 0 6px;
+  }
+  .hero p.sub{
+    font-size:.92rem;
+    color:#F4F0E8;
+    opacity:.82;
+    margin:0;
+  }
+
+  /* ---------- step rail ---------- */
+  .step-nav{
+    position:sticky; top:env(safe-area-inset-top,0px);
+    z-index:40; background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .step-nav .wrap{
+    display:flex; gap:6px; overflow-x:auto; padding-top:14px; padding-bottom:14px;
+    scrollbar-width:none;
+  }
+  .step-nav .wrap::-webkit-scrollbar{display:none}
+  .step-link{
+    display:flex; align-items:center; gap:9px; flex:0 0 auto;
+    padding:7px 14px 7px 8px; border-radius:999px; text-decoration:none;
+    border:1px solid var(--line); background:var(--panel); color:var(--ink-soft);
+    font-size:.86rem; font-weight:500; white-space:nowrap;
+    transition:background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .step-link .num{
+    width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display); font-style:italic; font-weight:600; font-size:.82rem;
+    background:var(--line); color:var(--ink); flex:0 0 auto;
+    transition:background .18s ease, color .18s ease;
+  }
+  .step-link.active{ border-color:transparent; background:var(--ink); color:#F4F4F1; }
+  .step-link.active .num{ background:var(--grad); color:#fff; }
+
+  /* ---------- layout / filmstrip frame ---------- */
+  .stage{ padding:56px 0 100px; }
+  .frame{
+    display:grid;
+    grid-template-columns:26px 1fr 26px;
+    align-items:stretch;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .reel-edge{
+    background:var(--ink);
+    background-image:radial-gradient(circle, var(--paper) 5.2px, transparent 5.6px);
+    background-size:26px 26px; background-position:center 8px;
+  }
+  form{ padding:8px clamp(20px,4vw,64px) 12px; }
+
+  section.block{
+    padding:46px 0; border-bottom:1px solid var(--line);
+  }
+  section.block:last-of-type{ border-bottom:none; }
+  .block-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:30px; }
+  .block-num{
+    font-family:var(--font-display); font-style:italic; font-weight:800;
+    font-size:2.1rem; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    line-height:1; flex:0 0 auto;
+  }
+  .block-head h2{
+    font-family:var(--font-display); font-weight:600; font-size:1.5rem;
+    margin:0; color:var(--ink);
+  }
+  .block-head p{ margin:4px 0 0; font-size:.92rem; color:var(--ink-soft); }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:26px 28px; }
+  .grid.cols-1{ grid-template-columns:1fr; }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .field.full{ grid-column:1 / -1; }
+  label{ font-size:.86rem; font-weight:600; color:var(--ink); display:flex; gap:5px; align-items:center; }
+  label .req{ width:5px; height:5px; border-radius:50%; background:var(--rust); display:inline-block; }
+  label .opt{ font-weight:400; color:var(--ink-soft); font-size:.78rem; }
+
+  input[type="text"], input[type="email"], input[type="tel"], textarea, select{
+    font-family:var(--font-body); font-size:1rem; color:var(--ink);
+    background:transparent; border:none; border-bottom:1.5px solid var(--line-strong);
+    padding:9px 2px; outline:none; appearance:none; -webkit-appearance:none;
+    border-radius:0;
+  }
+  select{ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9'><path d='M1 1l6 6 6-6' stroke='%231E1E19' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>"); background-repeat:no-repeat; background-position:right 4px center; padding-right:20px;}
+  textarea{ resize:vertical; min-height:64px; font-family:var(--font-body); }
+  input::placeholder, textarea::placeholder{ color:#9a9a90; }
+  input:focus, textarea:focus, select:focus{ border-bottom-color:var(--rust); }
+  input:invalid:not(:placeholder-shown){ border-bottom-color:var(--red); }
+
+  .hint{ font-size:.78rem; color:var(--ink-soft); margin-top:-2px; }
+
+  /* chip groups */
+  .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    border:1.4px solid var(--line-strong); border-radius:999px;
+    padding:9px 16px; font-size:.88rem; font-weight:500; color:var(--ink);
+    background:var(--panel); cursor:pointer; user-select:none;
+    transition:background .16s ease, color .16s ease, border-color .16s ease, transform .12s ease;
+  }
+  .chip:hover{ border-color:var(--rust); }
+  .chip.is-selected{
+    background:var(--grad); color:#fff; border-color:transparent;
+  }
+  .chip:active{ transform:scale(.97); }
+  .chip input{ position:absolute; opacity:0; pointer-events:none; width:0; height:0; }
+
+  /* consent rows */
+  .consent{
+    display:flex; gap:14px; align-items:flex-start; padding:16px 0;
+    border-top:1px solid var(--line);
+  }
+  .consent:first-of-type{ border-top:none; }
+  .consent input[type="checkbox"]{
+    appearance:none; -webkit-appearance:none; width:20px; height:20px; flex:0 0 auto;
+    border:1.6px solid var(--line-strong); border-radius:5px; margin-top:2px;
+    display:grid; place-content:center; cursor:pointer; background:var(--panel);
+    transition:border-color .16s ease, background .16s ease;
+  }
+  .consent input[type="checkbox"]::before{
+    content:""; width:10px; height:10px; transform:scale(0);
+    transition:transform .12s ease; background:#fff;
+    clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0,45% 62%);
+  }
+  .consent input[type="checkbox"]:checked{ background:var(--grad-tight); border-color:transparent; }
+  .consent input[type="checkbox"]:checked::before{ transform:scale(1); }
+  .consent label{ font-weight:400; font-size:.92rem; line-height:1.45; color:var(--ink-soft); }
+  .consent label b{ color:var(--ink); font-weight:600; }
+
+  /* submit */
+  .submit-row{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:18px;
+    padding-top:38px;
+  }
+  .submit-row p{ font-size:.82rem; color:var(--ink-soft); max-width:34ch; margin:0; }
+  button.cta{
+    font-family:var(--font-body); font-weight:700; font-size:1rem; color:#fff;
+    background:var(--grad-tight); border:none; border-radius:999px;
+    padding:15px 34px; cursor:pointer; letter-spacing:.01em;
+    box-shadow:0 14px 26px -12px rgba(191,68,25,.55);
+    transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  }
+  button.cta:hover{ transform:translateY(-2px); filter:brightness(1.04); }
+  button.cta:active{ transform:translateY(0); }
+
+  .error-banner{
+    display:none; align-items:center; gap:10px; margin:0 0 26px;
+    background:rgba(204,51,21,.08); border:1px solid rgba(204,51,21,.35);
+    color:var(--rust-deep); padding:12px 16px; border-radius:8px; font-size:.88rem;
+  }
+  .error-banner.show{ display:flex; }
+
+  /* success ticket */
+  .ticket{
+    display:none; padding:64px clamp(20px,5vw,72px) 70px; text-align:center;
+  }
+  .ticket.show{ display:block; }
+  .ticket .stub{
+    display:inline-flex; flex-direction:column; align-items:center; gap:16px;
+    border:1.6px dashed var(--line-strong); border-radius:14px;
+    padding:40px clamp(24px,6vw,60px); background:linear-gradient(180deg,#fff,#fbfaf7);
+  }
+  .ticket .badge{
+    font-family:var(--font-display); font-style:italic; font-weight:600;
+    font-size:.95rem; letter-spacing:.02em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text;
+  }
+  .ticket h2{ font-family:var(--font-display); font-size:2rem; margin:2px 0 4px; }
+  .ticket p{ color:var(--ink-soft); max-width:40ch; margin:0 auto; }
+  .ticket .code{
+    font-family:var(--font-body); font-weight:700; letter-spacing:.06em;
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 16px; margin-top:6px; color:var(--ink);
+  }
+  .ticket button.again{
+    margin-top:22px; background:none; border:none; text-decoration:underline;
+    color:var(--rust); font-weight:600; cursor:pointer; font-size:.9rem; font-family:var(--font-body);
+  }
+
+  footer{ text-align:center; padding:34px 0 48px; color:var(--ink-soft); font-size:.82rem; }
+
+  @media (max-width:720px){
+    .frame{ grid-template-columns:14px 1fr 14px; border-radius:4px; }
+    .reel-edge{ background-size:14px 14px; background-position:center 6px; }
+    .grid{ grid-template-columns:1fr; }
+    h1.headline{ max-width:100%; }
+    .hero{ padding:70px 0 56px; }
+    .stage{ padding:36px 0 72px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"><span id="progressBar"></span></div>
+
+<header class="hero">
+  <div class="sprockets top" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-kicker">
+      <svg class="clap" viewBox="0 0 48 40" aria-hidden="true">
+        <rect x="2" y="14" width="44" height="24" rx="2" fill="#1E1E19"/>
+        <path d="M2 14 L46 14 L42 2 L6 6 Z" fill="#F4F4F1"/>
+        <path d="M6 6 L12 14 M18 5 L24 14 M30 4 L36 14 M42 2 L44 8" stroke="#1E1E19" stroke-width="2.4"/>
+      </svg>
+      <span>Jakarta Film Summit 2026</span>
+    </div>
+    <h1 class="headline">Daftarkan diri Anda ke layar utama industri film.</h1>
+    <p class="lead">Satu formulir untuk bergabung bersama produser, investor, distributor, dan penggerak film di Jakarta Film Summit.</p>
+    <p class="sub">Empat bagian singkat &middot; sekitar 5 menit untuk diselesaikan</p>
+  </div>
+  <div class="sprockets bottom" aria-hidden="true"></div>
+</header>
+
+<nav class="step-nav">
+  <div class="wrap">
+    <a class="step-link" data-target="s1"><span class="num">1</span>Informasi Diri</a>
+    <a class="step-link" data-target="s2"><span class="num">2</span>Perusahaan &amp; Pekerjaan</a>
+    <a class="step-link" data-target="s3"><span class="num">3</span>Keterlibatan di Film</a>
+    <a class="step-link" data-target="s4"><span class="num">4</span>Persetujuan</a>
+  </div>
+</nav>
+
+<main class="stage">
+  <div class="wrap">
+    <div class="frame">
+      <div class="reel-edge" aria-hidden="true"></div>
+
+      <div>
+        <form id="jfsForm" novalidate>
+
+          <div class="error-banner" id="errorBanner">Beberapa bagian wajib diisi terlebih dahulu — periksa kembali kolom yang ditandai.</div>
+
+          <section class="block" id="s1">
+            <div class="block-head">
+              <span class="block-num">01</span>
+              <div>
+                <h2>Informasi Diri</h2>
+                <p>Data kontak utama untuk konfirmasi pendaftaran Anda.</p>
+              </div>
+            </div>
+            <div class="grid">
+              <div class="field full">
+                <label for="fullname">Nama Lengkap <span class="req"></span></label>
+                <input type="text" id="fullname" name="fullname" placeholder="cth. Amara Wibowo" required>
+              </div>
+              <div class="field">
+                <label for="email">Business Email <span class="req"></span></label>
+                <input type="email" id="email" name="email" placeholder="nama@perusahaan.com" required>
+              </div>
+              <div class="field">
+                <label for="phone">Nomor Telepon / WhatsApp <span class="req"></span></label>
+                <input type="tel" id="phone" name="phone" placeholder="+62 8xx xxxx xxxx" required>
+              </div>
+            </div>
+          </section>
+
+          <section class="block" id="s2">
+            <div class="block-head">
+              <span class="block-num">02</span>
+              <div>
+                <h2>Perusahaan &amp; Pekerjaan</h2>
+                <p>Ceritakan di mana dan sebagai apa Anda berkarya.</p>
+              </div>
+            </div>
+            <div class="grid">
+              <div class="field">
+                <label for="company">Nama Perusahaan / Organisasi <span class="req"></span></label>
+                <input type="text" id="company" name="company" placeholder="cth. Langit Pictures" required>
+              </div>
+              <div class="field">
+                <label for="jobtitle">Jabatan / Posisi <span class="req"></span></label>
+                <input type="text" id="jobtitle" name="jobtitle" placeholder="cth. Executive Producer" required>
+              </div>
+
+              <div class="field full">
+                <label>Segment / Peran Pekerjaan <span class="req"></span></label>
+                <div class="chips" data-group="segment" data-mode="single">
+                  <label class="chip"><input type="radio" name="segment" value="Produser/EP/Sutradara/Scriptwriter/Distributor/Exhibitor">Produser / Sutradara / Scriptwriter / Distributor</label>
+                  <label class="chip"><input type="radio" name="segment" value="Investor/Financier">Investor / Financier</label>
+                  <label class="chip"><input type="radio" name="segment" value="Film Commission">Film Commission</label>
+                  <label class="chip"><input type="radio" name="segment" value="Student/Academics">Student / Academics</label>
+                  <label class="chip"><input type="radio" name="segment" value="Government">Government</label>
+                  <label class="chip"><input type="radio" name="segment" value="Others">Others</label>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label for="industry">Industry</label>
+                <select id="industry" name="industry">
+                  <option value="" selected disabled>Pilih industri Anda</option>
+                  <option>Pelaku Seni (Artis, Penari, dll.)</option>
+                  <option>Perfilman</option>
+                  <option>Keuangan</option>
+                  <option>Musik</option>
+                  <option>Bisnis</option>
+                  <option>Lainnya</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="block" id="s3">
+            <div class="block-head">
+              <span class="block-num">03</span>
+              <div>
+                <h2>Keterlibatan di Dunia Film</h2>
+                <p>Pengalaman dan tujuan Anda membantu kami menyusun sesi yang relevan.</p>
+              </div>
+            </div>
+            <div class="grid cols-1">
+              <div class="field full">
+                <label>Pengalaman di dunia perfilman <span class="req"></span></label>
+                <div class="chips" data-group="experience" data-mode="single">
+                  <label class="chip"><input type="radio" name="experience" value="0-2 Tahun">0–2 Tahun</label>
+                  <label class="chip"><input type="radio" name="experience" value="2-4 Tahun">2–4 Tahun</label>
+                  <label class="chip"><input type="radio" name="experience" value="4-8 Tahun">4–8 Tahun</label>
+                  <label class="chip"><input type="radio" name="experience" value="8+ Tahun">8 Tahun ke atas</label>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Tujuan menghadiri Jakarta Film Summit <span class="opt">(boleh lebih dari satu)</span></label>
+                <div class="chips" data-group="goals" data-mode="multi">
+                  <label class="chip"><input type="checkbox" name="goals" value="Networking">Networking / Memperluas Jaringan</label>
+                  <label class="chip"><input type="checkbox" name="goals" value="Panel/Workshop">Mengikuti Sesi Panel / Workshop</label>
+                  <label class="chip"><input type="checkbox" name="goals" value="Memasarkan Proyek">Memasarkan Proyek</label>
+                  <label class="chip"><input type="checkbox" name="goals" value="Mencari Proyek">Mencari Proyek Film untuk Didanai / Didistribusikan</label>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label for="access">Kebutuhan Aksesibilitas Khusus <span class="opt">(opsional)</span></label>
+                <textarea id="access" name="access" placeholder="cth. Juru Bahasa Isyarat, akses kursi roda"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="block" id="s4">
+            <div class="block-head">
+              <span class="block-num">04</span>
+              <div>
+                <h2>Persetujuan &amp; Komunikasi</h2>
+                <p>Terakhir, beri tahu kami bagaimana boleh menghubungi Anda.</p>
+              </div>
+            </div>
+
+            <div class="consent">
+              <input type="checkbox" id="marketing" name="marketing">
+              <label for="marketing"><b>Update &amp; promosi.</b> Saya ingin menerima kabar acara, program, dan penawaran dari Jakarta Film Summit melalui email.</label>
+            </div>
+            <div class="consent">
+              <input type="checkbox" id="thirdparty" name="thirdparty">
+              <label for="thirdparty"><b>Berbagi dengan mitra.</b> Saya menyetujui data saya dibagikan kepada mitra dan sponsor penyelenggara untuk keperluan acara.</label>
+            </div>
+            <div class="consent">
+              <input type="checkbox" id="terms" name="terms" required>
+              <label for="terms"><b>Syarat &amp; Ketentuan.</b> Saya telah membaca dan menyetujui <a href="#">Syarat &amp; Ketentuan</a> pendaftaran. <span class="req" style="display:inline-block;vertical-align:middle"></span></label>
+            </div>
+
+            <div class="submit-row">
+              <p>Setelah dikirim, tim kami akan mengirimkan konfirmasi dan detail akses ke email bisnis Anda.</p>
+              <button type="submit" class="cta">Kirim Pendaftaran</button>
+            </div>
+          </section>
+
+        </form>
+
+        <div class="ticket" id="ticket">
+          <div class="stub">
+            <span class="badge">Jakarta Film Summit 2026</span>
+            <h2>Pendaftaran diterima</h2>
+            <p>Terima kasih — konfirmasi dan detail akses akan dikirim ke email bisnis yang Anda daftarkan.</p>
+            <span class="code" id="ticketCode">JFS-000000</span>
+            <div>
+              <button type="button" class="again" id="againBtn">Isi formulir lain</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="reel-edge" aria-hidden="true"></div>
+    </div>
+  </div>
+</main>
+
+<footer>Jakarta Film Summit &middot; Formulir Pendaftaran</footer>
+
+<script>
+  // progress bar — measured against the full scrollable range, recalculated
+  // on scroll, resize, font/layout load, and whenever content height changes.
+  var bar = document.getElementById('progressBar');
+  var ticking = false;
+  function computeProgress(){
+    var doc = document.documentElement;
+    var scrollTop = window.pageYOffset || doc.scrollTop || document.body.scrollTop || 0;
+    var scrollHeight = Math.max(doc.scrollHeight, document.body.scrollHeight) - doc.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    pct = Math.min(100, Math.max(0, pct));
+    bar.style.width = pct + '%';
+  }
+  function requestProgressUpdate(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){ computeProgress(); ticking = false; });
+  }
+  window.addEventListener('scroll', requestProgressUpdate, {passive:true});
+  window.addEventListener('resize', requestProgressUpdate);
+  window.addEventListener('load', requestProgressUpdate);
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(requestProgressUpdate);
+  }
+  if(window.ResizeObserver){
+    new ResizeObserver(requestProgressUpdate).observe(document.body);
+  }
+  computeProgress();
+
+  // chip groups (single = radio look, multi = checkbox look)
+  document.querySelectorAll('.chips').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var chip = e.target.closest('.chip');
+      if(!chip) return;
+      var input = chip.querySelector('input');
+      if(input.type === 'radio'){
+        group.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('is-selected'); });
+        chip.classList.add('is-selected');
+      } else {
+        chip.classList.toggle('is-selected', input.checked);
+      }
+    });
+  });
+
+  // step nav active state via IntersectionObserver
+  var links = Array.prototype.slice.call(document.querySelectorAll('.step-link'));
+  var sections = links.map(function(l){ return document.getElementById(l.dataset.target); });
+  links.forEach(function(l){
+    l.addEventListener('click', function(e){
+      e.preventDefault();
+      var target = document.getElementById(l.dataset.target);
+      var navH = document.querySelector('.step-nav').offsetHeight + 12;
+      window.scrollTo({top: target.getBoundingClientRect().top + window.scrollY - navH, behavior:'smooth'});
+    });
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var idx = sections.indexOf(entry.target);
+      if(entry.isIntersecting && idx > -1){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        links[idx].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(function(s){ if(s) io.observe(s); });
+
+  // submit handling
+  var form = document.getElementById('jfsForm');
+  var errorBanner = document.getElementById('errorBanner');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var valid = form.checkValidity();
+    var segmentPicked = form.querySelector('input[name="segment"]:checked');
+    var experiencePicked = form.querySelector('input[name="experience"]:checked');
+    if(!valid || !segmentPicked || !experiencePicked){
+      form.reportValidity();
+      errorBanner.classList.add('show');
+      errorBanner.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    errorBanner.classList.remove('show');
+    var code = 'JFS-' + Math.floor(100000 + Math.random()*899999);
+    document.getElementById('ticketCode').textContent = code;
+    form.style.display = 'none';
+    document.querySelector('.step-nav').style.display = 'none';
+    var ticket = document.getElementById('ticket');
+    ticket.classList.add('show');
+    ticket.scrollIntoView({behavior:'smooth', block:'start'});
+    requestProgressUpdate();
+  });
+  document.getElementById('againBtn').addEventListener('click', function(){
+    form.reset();
+    document.querySelectorAll('.chip.is-selected').forEach(function(c){ c.classList.remove('is-selected'); });
+    document.getElementById('ticket').classList.remove('show');
+    form.style.display = '';
+    document.querySelector('.step-nav').style.display = '';
+    window.scrollTo({top:0, behavior:'smooth'});
+    requestProgressUpdate();
+  });
+</script>
+</body>
+</html>

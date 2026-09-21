@@ -1,29 +1,35 @@
 /* ============================================================
  * CONFIG — point this to your real backend.
  * Expected endpoints (see jfs-api-reference.md):
- *   GET  /api/participants                 -> [participant...]
- *   GET  /api/participants/search?q=...    -> [participant...]
- *   POST /api/checkin  {qrToken}               -> { participant }  (staff session required)
- *   GET  /api/settings                     -> { quota, deadline }
- *   POST /api/settings {quota, deadline}   -> { quota, deadline }
- *   GET  /api/checkin-log                  -> [{id, nama, time, staff}...]
+ *   POST /api/login    {email,password}        -> { id, nama, email } (sets session cookie)
+ *   POST /api/logout                            -> { ok }
+ *   GET  /api/me                                -> { id, nama, email } or 401
+ *   GET  /api/participants                      -> [participant...]   (staff session required)
+ *   POST /api/checkin  {qrToken}                -> { participant }    (staff session required)
+ *   GET  /api/settings                          -> { quota, deadline }
+ *   POST /api/settings {quota, deadline}        -> { quota, deadline }
  * ============================================================ */
 const API_BASE = "/api";
 const POLL_MS = 5000;
 
 function el(id) { return document.getElementById(id); }
 function timeShort(iso) { if (!iso) return ""; return new Date(iso).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }); }
-function timeFull(iso) { if (!iso) return "—"; return new Date(iso).toLocaleString("id-ID", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }); }
+function timeFull(iso) { if (!iso) return "—"; return new Date(iso).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
 
 let staffName = "";
 let participants = [];
 let checkinLog = [];
 let settings = { quota: null, deadline: null };
-let currentMode = "scan";
-let currentFilter = "all";
+let currentMode = "scan";           // check-in sub-tab: scan | search
+let pesertaStatusFilter = "all";    // peserta view: all | in | out
+let pesertaCountryFilter = "all";
 let pollTimer = null;
+let donutChart = null;
+let timelineChart = null;
 
-// ---------- Login (real email + password, session-cookie based) ----------
+// =================================================================
+// Login (email + password, session-cookie based)
+// =================================================================
 el("loginBtn").addEventListener("click", doLogin);
 el("staffPasswordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
 
@@ -92,17 +98,21 @@ el("logoutBtn").addEventListener("click", async () => {
   } catch (e) { /* not logged in yet — show login screen as normal */ }
 })();
 
-// ---------- Nav ----------
+// =================================================================
+// Sidebar navigation (4 views)
+// =================================================================
 document.querySelectorAll(".nav-item").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".nav-item").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    ["scan", "monitor", "settings"].forEach((v) => el("view-" + v).classList.add("hidden"));
+    ["scan", "dashboard", "peserta", "settings"].forEach((v) => el("view-" + v).classList.add("hidden"));
     el("view-" + btn.dataset.view).classList.remove("hidden");
   });
 });
 
-// ---------- Data polling ----------
+// =================================================================
+// Shared data polling — one fetch feeds all four views
+// =================================================================
 function startPolling() {
   fetchData();
   pollTimer = setInterval(fetchData, POLL_MS);
@@ -133,13 +143,15 @@ function handleSessionExpired() {
 }
 
 function renderAll() {
-  const total = participants.length;
-  el("scanTotalLabel").textContent = `${total} peserta terdaftar`;
-  renderMonitor();
+  el("scanTotalLabel").textContent = `${participants.length} peserta terdaftar`;
   renderSettings();
+  renderDashboard();
+  renderPeserta();
 }
 
-// ---------- Check-in / scan ----------
+// =================================================================
+// View: Check-in (scan QR / search manual)
+// =================================================================
 document.querySelectorAll(".tab").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
@@ -164,7 +176,7 @@ function lookupToken(token) {
   if (found) renderTicket(found); else el("notFoundCard").classList.remove("hidden");
 }
 
-el("searchInput").addEventListener("input", (e) => {
+el("checkinSearchInput").addEventListener("input", (e) => {
   const q = e.target.value.trim().toLowerCase();
   el("resultTicket").classList.add("hidden");
   const matches = q ? participants.filter((p) =>
@@ -241,68 +253,183 @@ function renderLog() {
   `).join("");
 }
 
-// ---------- Monitoring ----------
-document.querySelectorAll(".filter-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.dataset.filter;
-    renderMonitor();
-  });
-});
-el("monitorSearch").addEventListener("input", renderMonitor);
-el("refreshBtn").addEventListener("click", fetchData);
-el("exportCsvBtn").addEventListener("click", exportCsv);
+// =================================================================
+// View: Dashboard (charts)
+// =================================================================
+el("dashboardRefreshBtn").addEventListener("click", fetchData);
 
-function renderMonitor() {
+function renderDashboard() {
   const total = participants.length;
   const hadir = participants.filter((p) => p.kehadiran).length;
-  const belum = total - hadir;
+  const miss = total - hadir;
   const rate = total ? Math.round((hadir / total) * 100) : 0;
 
-  el("statTotal").textContent = total;
-  el("statHadir").textContent = hadir;
-  el("statBelum").textContent = belum;
-  el("statRate").textContent = rate + "%";
-  el("monitorSync").textContent = "Sync " + timeShort(new Date().toISOString()) + " · update otomatis tiap 5 detik";
+  el("dashboardSyncLabel").textContent = "Sync " + timeShort(new Date().toISOString());
+  el("valTotal").textContent = total;
+  el("valHadir").textContent = hadir;
+  el("valMiss").textContent = miss;
+  el("subHadir").textContent = total ? `${rate}% dari total terdaftar` : "Belum ada data";
+  el("subMiss").textContent = total ? `${100 - rate}% belum melakukan absen` : "Belum ada data";
 
-  const q = el("monitorSearch").value.trim().toLowerCase();
-  const filtered = participants
-    .filter((p) => (currentFilter === "in" ? p.kehadiran : currentFilter === "out" ? !p.kehadiran : true))
-    .filter((p) => !q || p.nama.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) ||
-      (p.negara || "").toLowerCase().includes(q) || (p.peran || "").toLowerCase().includes(q) || p.id.toLowerCase().includes(q))
+  renderDonut(total, hadir, miss, rate);
+  renderTimeline(participants);
+  renderNegaraBreakdown(participants);
+}
+
+function renderDonut(total, hadir, miss, rate) {
+  const wrap = el("donutWrap");
+  if (total === 0) {
+    wrap.innerHTML = `<div class="empty-chart">Belum ada data peserta</div>`;
+    if (donutChart) { donutChart.destroy(); donutChart = null; }
+    return;
+  }
+  wrap.innerHTML = `
+    <div class="donut-wrap">
+      <div class="donut-chart">
+        <canvas id="donutCanvas"></canvas>
+        <div class="donut-center"><div class="rate">${rate}%</div><div class="rl">hadir</div></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="sw" style="background:#59B292"></span>Sudah Absen<span class="num">${hadir}</span></div>
+        <div class="legend-item"><span class="sw" style="background:#FF6A14"></span>Tidak Hadir<span class="num">${miss}</span></div>
+        <div class="legend-item"><span class="sw" style="background:#FFC94D"></span>Total<span class="num">${total}</span></div>
+      </div>
+    </div>`;
+  const ctx = document.getElementById("donutCanvas");
+  if (donutChart) donutChart.destroy();
+  donutChart = new Chart(ctx, {
+    type: "doughnut",
+    data: { datasets: [{ data: [hadir, miss], backgroundColor: ["#59B292", "#FF6A14"], borderWidth: 0 }] },
+    options: { cutout: "72%", plugins: { legend: { display: false }, tooltip: { enabled: true } } },
+  });
+}
+
+function renderTimeline(list) {
+  const buckets = {};
+  list.forEach((p) => {
+    if (!p.kehadiran || !p.waktu_checkin) return;
+    const d = new Date(p.waktu_checkin);
+    const key = String(d.getHours()).padStart(2, "0") + ":00";
+    buckets[key] = (buckets[key] || 0) + 1;
+  });
+  const labels = Object.keys(buckets).sort();
+  const wrap = el("timelineWrap");
+  if (labels.length === 0) {
+    wrap.innerHTML = `<div class="empty-chart">Belum ada peserta yang absen</div>`;
+    if (timelineChart) { timelineChart.destroy(); timelineChart = null; }
+    return;
+  }
+  if (!document.getElementById("timelineChart")) {
+    wrap.innerHTML = `<canvas id="timelineChart"></canvas>`;
+  }
+  const ctx = document.getElementById("timelineChart");
+  if (timelineChart) timelineChart.destroy();
+  timelineChart = new Chart(ctx, {
+    type: "bar",
+    data: { labels, datasets: [{ data: labels.map((k) => buckets[k]), backgroundColor: "#FFC94D", borderRadius: 5, maxBarThickness: 36 }] },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: "#7A7168", font: { size: 11.5 } } },
+        y: { beginAtZero: true, ticks: { precision: 0, color: "#7A7168", font: { size: 11.5 } }, grid: { color: "#E6D9BC" } },
+      },
+    },
+  });
+}
+
+function renderNegaraBreakdown(list) {
+  const map = {};
+  list.forEach((p) => {
+    const key = p.negara || "Tidak diketahui";
+    if (!map[key]) map[key] = { negara: key, total: 0, hadir: 0 };
+    map[key].total += 1;
+    if (p.kehadiran) map[key].hadir += 1;
+  });
+  const rows = Object.values(map).sort((a, b) => b.total - a.total);
+  const wrap = el("instWrap");
+  if (rows.length === 0) {
+    wrap.innerHTML = `<div class="empty-chart">Belum ada data peserta</div>`;
+    return;
+  }
+  wrap.innerHTML = `
+    <table class="inst-table">
+      <thead><tr><th>Negara</th><th>Terdaftar</th><th>Sudah Absen</th><th style="width:100px;">Proporsi</th></tr></thead>
+      <tbody>
+        ${rows.map((r) => `
+          <tr>
+            <td style="font-weight:500;">${r.negara}</td>
+            <td>${r.total}</td>
+            <td>${r.hadir}</td>
+            <td><div class="inst-bar-wrap"><div class="inst-bar" style="width:${r.total ? (r.hadir / r.total) * 100 : 0}%"></div></div></td>
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+}
+
+// =================================================================
+// View: Peserta (filterable list + PDF export)
+// =================================================================
+document.querySelectorAll("#view-peserta .filter-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#view-peserta .filter-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    pesertaStatusFilter = btn.dataset.status;
+    renderPeserta();
+  });
+});
+el("countryFilter").addEventListener("change", (e) => { pesertaCountryFilter = e.target.value; renderPeserta(); });
+el("pesertaSearchInput").addEventListener("input", renderPeserta);
+el("pesertaRefreshBtn").addEventListener("click", fetchData);
+el("exportPdfBtn").addEventListener("click", () => window.print());
+
+function populateCountryFilter() {
+  const select = el("countryFilter");
+  const current = select.value;
+  const countries = Array.from(new Set(participants.map((p) => p.negara || "Tidak diketahui"))).sort();
+  select.innerHTML = `<option value="all">Semua Negara</option>` + countries.map((c) => `<option value="${c}">${c}</option>`).join("");
+  select.value = countries.includes(current) ? current : "all";
+}
+
+function getFilteredPeserta() {
+  const q = el("pesertaSearchInput").value.trim().toLowerCase();
+  return participants
+    .filter((p) => (pesertaStatusFilter === "in" ? p.kehadiran : pesertaStatusFilter === "out" ? !p.kehadiran : true))
+    .filter((p) => (pesertaCountryFilter === "all" ? true : (p.negara || "Tidak diketahui") === pesertaCountryFilter))
+    .filter((p) => !q ||
+      p.nama.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) ||
+      p.id.toLowerCase().includes(q) || (p.negara || "").toLowerCase().includes(q))
     .sort((a, b) => a.nama.localeCompare(b.nama));
+}
 
-  el("monitorEmpty").classList.toggle("hidden", filtered.length !== 0);
-  el("monitorTableBody").innerHTML = filtered.map((p) => `
+function renderPeserta() {
+  populateCountryFilter();
+  const filtered = getFilteredPeserta();
+  el("pesertaMetaLabel").textContent = `Menampilkan ${filtered.length} dari ${participants.length} peserta`;
+  el("pesertaEmptyState").classList.toggle("hidden", filtered.length !== 0);
+
+  el("pesertaTableBody").innerHTML = filtered.map((p, i) => `
     <tr>
+      <td class="sub">${i + 1}</td>
       <td><div class="name-cell">${p.nama}</div><div class="sub">${p.email}</div></td>
+      <td class="sub">${p.telp || "—"}</td>
       <td>${p.negara || "—"}</td>
       <td>${p.peran || "—"}</td>
       <td class="mono sub">${p.id}</td>
       <td><span class="badge ${p.kehadiran ? "in" : "out"}">${p.kehadiran ? "Hadir" : "Belum Hadir"}</span></td>
       <td>${p.waktu_checkin ? timeFull(p.waktu_checkin) : "—"}</td>
-      <td class="sub">${p.checkin_oleh || "—"}</td>
     </tr>`).join("");
+
+  el("printDate").textContent = "Dicetak " + new Date().toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" });
+  el("printStats").innerHTML = `
+    <div>Total ditampilkan: ${filtered.length} dari ${participants.length} peserta</div>
+    <div>Sudah absen: ${filtered.filter((p) => p.kehadiran).length}</div>`;
 }
 
-function exportCsv() {
-  const headers = ["ID", "Nama", "Email", "Telepon", "Negara", "Peran", "Jabatan", "Kehadiran", "Waktu Check-in", "Check-in Oleh"];
-  const rows = participants.map((p) => [
-    p.id, p.nama, p.email, p.telp || "", p.negara || "", p.peran || "", p.jabatan || "",
-    p.kehadiran ? "Hadir" : "Belum", p.waktu_checkin ? timeFull(p.waktu_checkin) : "", p.checkin_oleh || "",
-  ]);
-  const csv = [headers, ...rows].map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = `jfs-peserta-${new Date().toISOString().slice(0, 10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// ---------- Settings ----------
+// =================================================================
+// View: Settings (quota / deadline)
+// =================================================================
 el("saveSettingsBtn").addEventListener("click", saveSettings);
+el("deadlineInput").addEventListener("input", (e) => { e.target.dataset.touched = "1"; });
 
 function renderSettings() {
   el("quotaInput").value = settings.quota != null ? settings.quota : el("quotaInput").value;
@@ -325,7 +452,6 @@ function renderSettings() {
   if (quota == null && !deadline) html += `<p class="settings-hint" style="margin-top:8px;">Belum ada kuota atau batas tanggal yang diset — pendaftaran terbuka tanpa batas.</p>`;
   el("statusPillWrap").innerHTML = html;
 }
-el("deadlineInput").addEventListener("input", (e) => { e.target.dataset.touched = "1"; });
 
 async function saveSettings() {
   const btn = el("saveSettingsBtn");
