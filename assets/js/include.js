@@ -1,37 +1,107 @@
 /* =======================================================
-   Jakarta Film Summit — component loader
-   Memuat /components/navbar.html dan /components/footer.html
-   ke dalam placeholder <div id="navbarPlaceholder"></div> dan
-   <div id="footerPlaceholder"></div> di setiap halaman.
-
-   Catatan: fetch() ke file lokal butuh dijalankan lewat server
-   (mis. `php -S localhost:8000`), bukan dibuka langsung via
-   file:// di browser — kalau tidak, akan kena error CORS.
+   Jakarta Film Summit — Component Loader
    ======================================================= */
 
 async function loadInclude(selector, url, afterInsert) {
-  var el = document.querySelector(selector);
-  if (!el) return;
+  const element = document.querySelector(selector);
+
+  if (!element) {
+    console.warn(`Placeholder "${selector}" tidak ditemukan.`);
+    return;
+  }
+
   try {
-    var res = await fetch(url);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    el.innerHTML = await res.text();
-    if (afterInsert) afterInsert();
-  } catch (e) {
-    console.warn('Gagal memuat ' + url + ' — jalankan lewat server lokal, bukan file://', e);
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const html = await response.text();
+
+    element.innerHTML = html;
+
+    if (typeof afterInsert === 'function') {
+      afterInsert();
+    }
+
+  } catch (error) {
+    console.error(`Gagal memuat ${url}:`, error);
   }
 }
 
-// Tandai link navbar yang cocok dengan halaman yang sedang dibuka.
+
+/* =======================================================
+   Active navigation
+   ======================================================= */
+
 function markActiveNav() {
-  var current = (location.pathname.split('/').pop() || 'index.html');
-  document.querySelectorAll('.nav-links a[href]').forEach(function (link) {
-    var href = link.getAttribute('href').split('/').pop();
-    link.classList.toggle('active', href === current);
+
+  const currentPage =
+    window.location.pathname
+      .split('/')
+      .pop()
+      .toLowerCase() || 'home.html';
+
+  const links = document.querySelectorAll(
+    '#navbarPlaceholder .nav-links a'
+  );
+
+  links.forEach(link => {
+
+    const href =
+      link.getAttribute('href')
+        .split('/')
+        .pop()
+        .split('?')[0]
+        .split('#')[0]
+        .toLowerCase();
+
+    link.classList.toggle(
+      'active',
+      href === currentPage
+    );
+
   });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  loadInclude('#navbarPlaceholder', '../components/navbar.html', markActiveNav);
-  loadInclude('#footerPlaceholder', '../components/footer.html');
+
+/* =======================================================
+   Load Navbar
+   ======================================================= */
+
+async function loadNavbar() {
+
+  await loadInclude(
+    '#navbarPlaceholder',
+    'components/navbar.html',
+    markActiveNav
+  );
+
+}
+
+
+/* =======================================================
+   Load Footer
+   ======================================================= */
+
+async function loadFooter() {
+
+  await loadInclude(
+    '#footerPlaceholder',
+    'components/footer.html'
+  );
+
+}
+
+
+/* =======================================================
+   Initialize
+   ======================================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  loadNavbar();
+  loadFooter();
+
 });
