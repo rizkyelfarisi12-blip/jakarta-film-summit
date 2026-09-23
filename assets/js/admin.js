@@ -22,7 +22,7 @@ let checkinLog = [];
 let settings = { quota: null, deadline: null };
 let currentMode = "scan";           // check-in sub-tab: scan | search
 let pesertaStatusFilter = "all";    // peserta view: all | in | out
-let pesertaCountryFilter = "all";
+let pesertaSegmentFilter = "all";
 let pollTimer = null;
 let donutChart = null;
 let timelineChart = null;
@@ -180,12 +180,12 @@ el("checkinSearchInput").addEventListener("input", (e) => {
   const q = e.target.value.trim().toLowerCase();
   el("resultTicket").classList.add("hidden");
   const matches = q ? participants.filter((p) =>
-    p.nama.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)
+    p.fullname.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)
   ) : [];
   el("searchEmptyNote").classList.toggle("hidden", !(q && matches.length === 0));
   el("searchMatches").innerHTML = matches.map((p) => `
     <div class="matchrow" data-id="${p.id}">
-      <div><div class="name">${p.nama}</div><div class="meta">${p.email} · ${p.id}</div></div>
+      <div><div class="name">${p.fullname}</div><div class="meta">${p.email} · ${p.id}</div></div>
       <div class="status-badge ${p.kehadiran ? "done" : "valid"}">${p.kehadiran ? "✓ Sudah check-in" : "⏱ Belum check-in"}</div>
     </div>`).join("");
   el("searchMatches").querySelectorAll(".matchrow").forEach((row) => {
@@ -200,15 +200,17 @@ function renderTicket(p) {
   el("resultTicket").classList.remove("hidden");
   el("resultTicket").innerHTML = `
     <div class="ticket-head">
-      <div><div class="ticket-id mono">${p.id}</div><div class="ticket-name">${p.nama}</div></div>
+      <div><div class="ticket-id mono">${p.id}</div><div class="ticket-name">${p.fullname}</div></div>
       <div class="status-badge ${p.kehadiran ? "done" : "valid"}">${p.kehadiran ? "✓ Sudah Check-in" : "⏱ Belum Check-in"}</div>
     </div>
     <div class="perf"></div>
     <div class="ticket-details">
       <div class="detail-row">✉️ <strong>${p.email}</strong></div>
-      <div class="detail-row">🌍 <strong>${p.negara}</strong></div>
-      <div class="detail-row">💼 <strong>${p.peran}</strong></div>
-      <div class="detail-row">🏷️ <strong>${p.jabatan}</strong></div>
+      <div class="detail-row">📞 <strong>${p.phone}</strong></div>
+      <div class="detail-row">🌍 <strong>${p.country}</strong></div>
+      <div class="detail-row">🏢 <strong>${p.company}</strong></div>
+      <div class="detail-row">🏷️ <strong>${p.jobtitle}</strong></div>
+      <div class="detail-row">🎬 <strong>${segmentLabel(p)}</strong></div>
     </div>
     <div class="ticket-footer">
       ${p.kehadiran
@@ -340,8 +342,8 @@ function renderTimeline(list) {
 function renderNegaraBreakdown(list) {
   const map = {};
   list.forEach((p) => {
-    const key = p.negara || "Tidak diketahui";
-    if (!map[key]) map[key] = { negara: key, total: 0, hadir: 0 };
+    const key = segmentLabel(p) || "Tidak diketahui";
+    if (!map[key]) map[key] = { segment: key, total: 0, hadir: 0 };
     map[key].total += 1;
     if (p.kehadiran) map[key].hadir += 1;
   });
@@ -353,11 +355,11 @@ function renderNegaraBreakdown(list) {
   }
   wrap.innerHTML = `
     <table class="inst-table">
-      <thead><tr><th>Negara</th><th>Terdaftar</th><th>Sudah Absen</th><th style="width:100px;">Proporsi</th></tr></thead>
+      <thead><tr><th>Segment</th><th>Terdaftar</th><th>Sudah Absen</th><th style="width:100px;">Proporsi</th></tr></thead>
       <tbody>
         ${rows.map((r) => `
           <tr>
-            <td style="font-weight:500;">${r.negara}</td>
+            <td style="font-weight:500;">${r.segment}</td>
             <td>${r.total}</td>
             <td>${r.hadir}</td>
             <td><div class="inst-bar-wrap"><div class="inst-bar" style="width:${r.total ? (r.hadir / r.total) * 100 : 0}%"></div></div></td>
@@ -377,32 +379,33 @@ document.querySelectorAll("#view-peserta .filter-btn").forEach((btn) => {
     renderPeserta();
   });
 });
-el("countryFilter").addEventListener("change", (e) => { pesertaCountryFilter = e.target.value; renderPeserta(); });
+el("segmentFilter").addEventListener("change", (e) => { pesertaSegmentFilter = e.target.value; renderPeserta(); });
 el("pesertaSearchInput").addEventListener("input", renderPeserta);
 el("pesertaRefreshBtn").addEventListener("click", fetchData);
 el("exportPdfBtn").addEventListener("click", () => window.print());
 
-function populateCountryFilter() {
-  const select = el("countryFilter");
+function populateSegmentFilter() {
+  const select = el("segmentFilter");
   const current = select.value;
-  const countries = Array.from(new Set(participants.map((p) => p.negara || "Tidak diketahui"))).sort();
-  select.innerHTML = `<option value="all">Semua Negara</option>` + countries.map((c) => `<option value="${c}">${c}</option>`).join("");
-  select.value = countries.includes(current) ? current : "all";
+  const segments = Array.from(new Set(participants.map((p) => segmentLabel(p) || "Tidak diketahui"))).sort();
+  select.innerHTML = `<option value="all">Semua Segment</option>` + segments.map((c) => `<option value="${c}">${c}</option>`).join("");
+  select.value = segments.includes(current) ? current : "all";
 }
 
 function getFilteredPeserta() {
   const q = el("pesertaSearchInput").value.trim().toLowerCase();
   return participants
     .filter((p) => (pesertaStatusFilter === "in" ? p.kehadiran : pesertaStatusFilter === "out" ? !p.kehadiran : true))
-    .filter((p) => (pesertaCountryFilter === "all" ? true : (p.negara || "Tidak diketahui") === pesertaCountryFilter))
+    .filter((p) => (pesertaSegmentFilter === "all" ? true : (segmentLabel(p) || "Tidak diketahui") === pesertaSegmentFilter))
     .filter((p) => !q ||
-      p.nama.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) ||
-      p.id.toLowerCase().includes(q) || (p.negara || "").toLowerCase().includes(q))
-    .sort((a, b) => a.nama.localeCompare(b.nama));
+      p.fullname.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) ||
+      p.id.toLowerCase().includes(q) || (p.company || "").toLowerCase().includes(q) ||
+      (p.country || "").toLowerCase().includes(q))
+    .sort((a, b) => a.fullname.localeCompare(b.fullname));
 }
 
 function renderPeserta() {
-  populateCountryFilter();
+  populateSegmentFilter();
   const filtered = getFilteredPeserta();
   el("pesertaMetaLabel").textContent = `Menampilkan ${filtered.length} dari ${participants.length} peserta`;
   el("pesertaEmptyState").classList.toggle("hidden", filtered.length !== 0);
@@ -410,10 +413,12 @@ function renderPeserta() {
   el("pesertaTableBody").innerHTML = filtered.map((p, i) => `
     <tr>
       <td class="sub">${i + 1}</td>
-      <td><div class="name-cell">${p.nama}</div><div class="sub">${p.email}</div></td>
-      <td class="sub">${p.telp || "—"}</td>
-      <td>${p.negara || "—"}</td>
-      <td>${p.peran || "—"}</td>
+      <td><div class="name-cell">${p.fullname}</div><div class="sub">${p.email}</div></td>
+      <td class="sub">${p.phone || "—"}</td>
+      <td>${p.country || "—"}</td>
+      <td>${p.company || "—"}</td>
+      <td>${p.jobtitle || "—"}</td>
+      <td>${segmentLabel(p) || "—"}</td>
       <td class="mono sub">${p.id}</td>
       <td><span class="badge ${p.kehadiran ? "in" : "out"}">${p.kehadiran ? "Hadir" : "Belum Hadir"}</span></td>
       <td>${p.waktu_checkin ? timeFull(p.waktu_checkin) : "—"}</td>

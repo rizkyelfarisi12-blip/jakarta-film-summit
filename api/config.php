@@ -108,17 +108,26 @@ function generate_qr_token(): string {
 /** Map a `peserta` DB row (snake_case) to the JSON shape the frontend expects. */
 function map_participant(array $row): array {
     return [
-        'id'            => $row['id'],
-        'nama'          => $row['nama_lengkap'],
-        'email'         => $row['email'],
-        'telp'          => $row['no_telp'],
-        'negara'        => $row['negara'],
-        'peran'         => $row['peran'],
-        'jabatan'       => $row['jabatan'],
-        'qrToken'       => $row['qr_token'],
-        'kehadiran'     => (bool)$row['kehadiran'],
-        'waktu_checkin' => $row['waktu_checkin'],
-        'checkin_oleh'  => $row['checkin_oleh'],
+        'id'                 => $row['id'],
+        'fullname'           => $row['fullname'],
+        'email'              => $row['email'],
+        'phone'              => $row['phone'],
+        'country'            => $row['country'],
+        'company'            => $row['company'],
+        'jobtitle'           => $row['jobtitle'],
+        'segment'            => $row['segment'],
+        'segmentOther'       => $row['segment_other'],
+        'industry'           => $row['industry'],
+        'industryOther'      => $row['industry_other'],
+        'experience'         => $row['experience'],
+        'goals'              => $row['goals'] ? explode(',', $row['goals']) : [],
+        'access'             => $row['access_needs'],
+        'marketing'          => (bool)$row['marketing_consent'],
+        'thirdparty'         => (bool)$row['thirdparty_consent'],
+        'qrToken'            => $row['qr_token'],
+        'kehadiran'          => (bool)$row['kehadiran'],
+        'waktu_checkin'      => $row['waktu_checkin'],
+        'checkin_oleh'       => $row['checkin_oleh'],
     ];
 }
 

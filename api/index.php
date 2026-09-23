@@ -16,7 +16,7 @@
  *   POST /api/settings                   (staff only)
  */
 
-// require __DIR__ . '/config.php';
+require __DIR__ . '/config.php';
 
 apply_cors();
 
@@ -121,18 +121,38 @@ function handle_me(): void {
 
 function handle_register(PDO $pdo): void {
     $body = read_json_body();
-    $nama    = trim($body['nama'] ?? '');
-    $email   = trim($body['email'] ?? '');
-    $telp    = trim($body['telp'] ?? '');
-    $negara  = trim($body['negara'] ?? '');
-    $peran   = trim($body['peran'] ?? '');
-    $jabatan = trim($body['jabatan'] ?? '');
+    $fullname  = trim($body['fullname'] ?? '');
+    $email     = trim($body['email'] ?? '');
+    $phone     = trim($body['phone'] ?? '');
+    $country   = trim($body['country'] ?? '');
+    $company   = trim($body['company'] ?? '');
+    $jobtitle  = trim($body['jobtitle'] ?? '');
+    $segment   = trim($body['segment'] ?? '');
+    $segmentOther  = trim($body['segmentOther'] ?? '');
+    $industry      = trim($body['industry'] ?? '');
+    $industryOther = trim($body['industryOther'] ?? '');
+    $experience    = trim($body['experience'] ?? '');
+    $goals     = is_array($body['goals'] ?? null) ? $body['goals'] : [];
+    $access    = trim($body['access'] ?? '');
+    $marketing  = !empty($body['marketing']);
+    $thirdparty = !empty($body['thirdparty']);
+    $terms      = !empty($body['terms']);
 
-    if (!$nama || !$email || !$telp || !$negara || !$peran || !$jabatan) {
-        json_error('All fields are required.', 422);
+    // Required fields — mirrors the `required` attributes in registration.html
+    if (!$fullname || !$email || !$phone || !$country || !$company || !$jobtitle || !$segment || !$experience) {
+        json_error('All required fields must be filled.', 422);
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         json_error('Invalid email format.', 422);
+    }
+    if ($segment === 'Others' && !$segmentOther) {
+        json_error('Please specify your segment.', 422);
+    }
+    if ($industry === 'Lainnya' && !$industryOther) {
+        json_error('Please specify your industry.', 422);
+    }
+    if (!$terms) {
+        json_error('You must accept the Terms & Conditions.', 422);
     }
 
     // Re-check status server-side — never trust the client's earlier /status check.
@@ -155,10 +175,18 @@ function handle_register(PDO $pdo): void {
         $qrToken = generate_qr_token();
 
         $insert = $pdo->prepare(
-            "INSERT INTO peserta (id, nama_lengkap, email, no_telp, negara, peran, jabatan, qr_token, kehadiran)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE)"
+            "INSERT INTO peserta
+                (id, fullname, email, phone, country, company, jobtitle, segment, segment_other,
+                 industry, industry_other, experience, goals, access_needs,
+                 marketing_consent, thirdparty_consent, terms_accepted, qr_token, kehadiran)
+             VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE)"
         );
-        $insert->execute([$id, $nama, $email, $telp, $negara, $peran, $jabatan, $qrToken]);
+        $insert->execute([
+            $id, $fullname, $email, $phone, $country, $company, $jobtitle, $segment, $segmentOther ?: null,
+            $industry ?: null, $industryOther ?: null, $experience, implode(',', $goals), $access ?: null,
+            $marketing ? 1 : 0, $thirdparty ? 1 : 0, $terms ? 1 : 0, $qrToken,
+        ]);
         $pdo->commit();
     } catch (Throwable $e) {
         $pdo->rollBack();

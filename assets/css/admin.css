@@ -104,7 +104,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-s
 .filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-dim); border-radius: 8px; padding: 9px 14px; font-size: 12.5px; cursor: pointer; white-space: nowrap; font-family: inherit; }
 .filter-btn.active { border-color: var(--accent); color: var(--text); background: var(--surface-2); }
-select#countryFilter { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 9px 14px; font-size: 12.5px; font-family: inherit; cursor: pointer; }
+select#segmentFilter { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 9px 14px; font-size: 12.5px; font-family: inherit; cursor: pointer; }
 
 .meta-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-dim); margin-bottom: 10px; }
 .meta-row button { background: none; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; font-family: inherit; }
