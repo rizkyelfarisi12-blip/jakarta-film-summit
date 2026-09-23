@@ -20,28 +20,50 @@
 
 <header class="hero">
   <div class="sprockets top" aria-hidden="true"></div>
+
   <div class="wrap">
     <div class="hero-kicker">
+
       <svg class="clap" viewBox="0 0 48 40" aria-hidden="true">
         <rect x="2" y="14" width="44" height="24" rx="2" fill="#1E1E19"/>
         <path d="M2 14 L46 14 L42 2 L6 6 Z" fill="#F4F4F1"/>
         <path d="M6 6 L12 14 M18 5 L24 14 M30 4 L36 14 M42 2 L44 8" stroke="#1E1E19" stroke-width="2.4"/>
       </svg>
+
       <span>Jakarta Film Summit 2026</span>
     </div>
+
     <h1 class="headline" data-i18n="hero.headline">Daftarkan diri Anda ke layar utama industri film.</h1>
     <p class="lead" data-i18n="hero.lead">Satu formulir untuk bergabung bersama produser, investor, distributor, dan penggerak film di Jakarta Film Summit.</p>
     <p class="sub" data-i18n="hero.sub">Empat bagian singkat &middot; sekitar 5 menit untuk diselesaikan</p>
   </div>
+
   <div class="sprockets bottom" aria-hidden="true"></div>
 </header>
 
 <nav class="step-nav" id="stepNav">
   <div class="wrap">
-    <a class="step-link" data-target="s1"><span class="num">1</span><span data-i18n="stepnav.s1">Informasi Diri</span></a>
-    <a class="step-link" data-target="s2"><span class="num">2</span><span data-i18n="stepnav.s2">Perusahaan &amp; Pekerjaan</span></a>
-    <a class="step-link" data-target="s3"><span class="num">3</span><span data-i18n="stepnav.s3">Keterlibatan di Film</span></a>
-    <a class="step-link" data-target="s4"><span class="num">4</span><span data-i18n="stepnav.s4">Persetujuan</span></a>
+
+    <a class="step-link" data-target="s1">
+      <span class="num">1</span>
+      <span data-i18n="stepnav.s1">Informasi Diri</span>
+    </a>
+
+    <a class="step-link" data-target="s2">
+      <span class="num">2</span>
+      <span data-i18n="stepnav.s2">Perusahaan &amp; Pekerjaan</span>
+    </a>
+
+    <a class="step-link" data-target="s3">
+      <span class="num">3</span>
+      <span data-i18n="stepnav.s3">Keterlibatan di Film</span>
+    </a>
+
+    <a class="step-link" data-target="s4">
+      <span class="num">4</span>
+      <span data-i18n="stepnav.s4">Persetujuan</span>
+    </a>
+
   </div>
 </nav>
 
@@ -49,7 +71,9 @@
 <main class="stage" id="closedStage" style="display:none;">
   <div class="wrap">
     <div class="frame">
+
       <div class="reel-edge" aria-hidden="true"></div>
+
       <div class="ticket show" style="display:block;">
         <div class="stub">
           <span class="badge">Jakarta Film Summit 2026</span>
@@ -58,8 +82,10 @@
           <div class="hint" id="closedMeta" style="margin-top:8px;"></div>
         </div>
       </div>
+
       <div class="reel-edge" aria-hidden="true"></div>
-    </div>
+
+    </div>    
   </div>
 </main>
 
@@ -75,6 +101,7 @@
           <div class="error-banner" id="serverErrorBanner" data-i18n="error.server">Terjadi kesalahan saat mengirim pendaftaran. Coba lagi.</div>
 
           <section class="block" id="s1">
+
             <div class="block-head">
               <span class="block-num">01</span>
               <div>
@@ -82,28 +109,48 @@
                 <p data-i18n="s1.desc">Data kontak utama untuk konfirmasi pendaftaran Anda.</p>
               </div>
             </div>
+
             <div class="grid">
+
               <div class="field full">
-                <label for="fullname"><span data-i18n="field.fullname.label">Nama Lengkap</span> <span class="req"></span></label>
+                <label for="fullname">
+                  <span data-i18n="field.fullname.label">Nama Lengkap</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="text" id="fullname" name="fullname" data-i18n-placeholder="field.fullname.placeholder" placeholder="cth. Amara Wibowo" required>
               </div>
+
               <div class="field">
-                <label for="email"><span data-i18n="field.email.label">Business Email</span> <span class="req"></span></label>
+                <label for="email">
+                  <span data-i18n="field.email.label">Business Email</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="email" id="email" name="email" data-i18n-placeholder="field.email.placeholder" placeholder="nama@perusahaan.com" required>
               </div>
+
               <div class="field">
-                <label for="phone"><span data-i18n="field.phone.label">Nomor Telepon / WhatsApp</span> <span class="req"></span></label>
+                <label for="phone">
+                  <span data-i18n="field.phone.label">Nomor Telepon / WhatsApp</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="tel" id="phone" name="phone" data-i18n-placeholder="field.phone.placeholder" placeholder="+62 8xx xxxx xxxx" required>
               </div>
+
               <div class="field full">
-                <label for="country"><span data-i18n="field.country.label">Negara Asal</span> <span class="req"></span></label>
+                <label for="country">
+                  <span data-i18n="field.country.label">Negara Asal</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="text" id="country" name="country" list="countryList" autocomplete="off" data-i18n-placeholder="field.country.placeholder" placeholder="Cari negara…" required>
                 <datalist id="countryList"></datalist>
               </div>
+
             </div>
+
           </section>
 
           <section class="block" id="s2">
+
             <div class="block-head">
               <span class="block-num">02</span>
               <div>
@@ -111,34 +158,66 @@
                 <p data-i18n="s2.desc">Ceritakan di mana dan sebagai apa Anda berkarya.</p>
               </div>
             </div>
+
             <div class="grid">
+
               <div class="field">
-                <label for="company"><span data-i18n="field.company.label">Nama Perusahaan / Organisasi</span> <span class="req"></span></label>
+                <label for="company">
+                  <span data-i18n="field.company.label">Nama Perusahaan / Organisasi</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="text" id="company" name="company" data-i18n-placeholder="field.company.placeholder" placeholder="cth. Langit Pictures" required>
               </div>
+
               <div class="field">
-                <label for="jobtitle"><span data-i18n="field.jobtitle.label">Jabatan / Posisi</span> <span class="req"></span></label>
+                <label for="jobtitle">
+                  <span data-i18n="field.jobtitle.label">Jabatan / Posisi</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="text" id="jobtitle" name="jobtitle" data-i18n-placeholder="field.jobtitle.placeholder" placeholder="cth. Executive Producer" required>
               </div>
 
               <div class="field full">
                 <label><span data-i18n="field.segment.label">Segment / Peran Pekerjaan</span> <span class="req"></span></label>
                 <div class="chips" data-group="segment" data-mode="single">
-                  <label class="chip"><input type="radio" name="segment" value="Produser/EP/Sutradara/Scriptwriter/Distributor/Exhibitor"><span data-i18n="segment.opt1">Produser / Sutradara / Scriptwriter / Distributor</span></label>
-                  <label class="chip"><input type="radio" name="segment" value="Investor/Financier"><span data-i18n="segment.opt2">Investor / Financier</span></label>
-                  <label class="chip"><input type="radio" name="segment" value="Film Commission"><span data-i18n="segment.opt3">Film Commission</span></label>
-                  <label class="chip"><input type="radio" name="segment" value="Student/Academics"><span data-i18n="segment.opt4">Student / Academics</span></label>
-                  <label class="chip"><input type="radio" name="segment" value="Government"><span data-i18n="segment.opt5">Government</span></label>
-                  <label class="chip"><input type="radio" name="segment" value="Others"><span data-i18n="segment.opt6">Others</span></label>
+                  <label class="chip">
+                    <input type="radio" name="segment" value="Produser/EP/Sutradara/Scriptwriter/Distributor/Exhibitor">
+                    <span data-i18n="segment.opt1">Produser / Sutradara / Scriptwriter / Distributor</span>
+                  </label>
+                  <label class="chip">
+                    <input type="radio" name="segment" value="Investor/Financier">
+                    <span data-i18n="segment.opt2">Investor / Financier</span>
+                  </label>
+                  <label class="chip">
+                    <input type="radio" name="segment" value="Film Commission">
+                    <span data-i18n="segment.opt3">Film Commission</span>
+                  </label>
+                  <label class="chip">
+                    <input type="radio" name="segment" value="Student/Academics">
+                    <span data-i18n="segment.opt4">Student / Academics</span>
+                  </label>
+                  <label class="chip">
+                    <input type="radio" name="segment" value="Government">
+                    <span data-i18n="segment.opt5">Government</span>
+                  </label>
+                  <label class="chip">
+                    <input type="radio" name="segment" value="Others">
+                    <span data-i18n="segment.opt6">Others</span>
+                  </label>
                 </div>
               </div>
+
               <div class="field full sub-field" id="segmentOtherWrap">
-                <label for="segmentOther"><span data-i18n="field.segmentOther.label">Sebutkan segment Anda</span> <span class="req"></span></label>
+                <label for="segmentOther">
+                  <span data-i18n="field.segmentOther.label">Sebutkan segment Anda</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="text" id="segmentOther" name="segmentOther" data-i18n-placeholder="field.segmentOther.placeholder" placeholder="Tuliskan peran pekerjaan Anda">
               </div>
 
               <div class="field full">
                 <label for="industry" data-i18n="field.industry.label">Industry</label>
+
                 <select id="industry" name="industry">
                   <option value="" selected disabled data-i18n="industry.placeholder">Pilih industri Anda</option>
                   <option data-i18n="industry.opt1">Pelaku Seni (Artis, Penari, dll.)</option>
@@ -148,15 +227,22 @@
                   <option data-i18n="industry.opt5">Bisnis</option>
                   <option data-i18n="industry.opt6">Lainnya</option>
                 </select>
+
               </div>
+
               <div class="field full sub-field" id="industryOtherWrap">
-                <label for="industryOther"><span data-i18n="field.industryOther.label">Sebutkan industri Anda</span> <span class="req"></span></label>
+                <label for="industryOther">
+                  <span data-i18n="field.industryOther.label">Sebutkan industri Anda</span> 
+                  <span class="req"></span>
+                </label>
                 <input type="text" id="industryOther" name="industryOther" data-i18n-placeholder="field.industryOther.placeholder" placeholder="Tuliskan industri Anda">
               </div>
+
             </div>
           </section>
 
           <section class="block" id="s3">
+
             <div class="block-head">
               <span class="block-num">03</span>
               <div>
@@ -164,35 +250,86 @@
                 <p data-i18n="s3.desc">Pengalaman dan tujuan Anda membantu kami menyusun sesi yang relevan.</p>
               </div>
             </div>
+
             <div class="grid cols-1">
               <div class="field full">
-                <label><span data-i18n="field.experience.label">Pengalaman di dunia perfilman</span> <span class="req"></span></label>
+
+                <label>
+                  <span data-i18n="field.experience.label">Pengalaman di dunia perfilman</span> 
+                  <span class="req"></span>
+                </label>
+
                 <div class="chips" data-group="experience" data-mode="single">
-                  <label class="chip"><input type="radio" name="experience" value="0-2 Tahun"><span data-i18n="experience.opt1">0–2 Tahun</span></label>
-                  <label class="chip"><input type="radio" name="experience" value="2-4 Tahun"><span data-i18n="experience.opt2">2–4 Tahun</span></label>
-                  <label class="chip"><input type="radio" name="experience" value="4-8 Tahun"><span data-i18n="experience.opt3">4–8 Tahun</span></label>
-                  <label class="chip"><input type="radio" name="experience" value="8+ Tahun"><span data-i18n="experience.opt4">8 Tahun ke atas</span></label>
+
+                  <label class="chip">
+                    <input type="radio" name="experience" value="0-2 Tahun">
+                    <span data-i18n="experience.opt1">0–2 Tahun</span>
+                  </label>
+
+                  <label class="chip">
+                    <input type="radio" name="experience" value="2-4 Tahun">
+                    <span data-i18n="experience.opt2">2–4 Tahun</span>
+                  </label>
+
+                  <label class="chip">
+                    <input type="radio" name="experience" value="4-8 Tahun">
+                    <span data-i18n="experience.opt3">4–8 Tahun</span>
+                  </label>
+
+                  <label class="chip">
+                    <input type="radio" name="experience" value="8+ Tahun">
+                    <span data-i18n="experience.opt4">8 Tahun ke atas</span>
+                  </label>
+                  
                 </div>
               </div>
 
               <div class="field full">
-                <label><span data-i18n="field.goals.label">Tujuan menghadiri Jakarta Film Summit</span> <span class="opt" data-i18n="field.goals.hint">(boleh lebih dari satu)</span></label>
+
+                <label>
+                  <span data-i18n="field.goals.label">Tujuan menghadiri Jakarta Film Summit</span> 
+                  <span class="opt" data-i18n="field.goals.hint">(boleh lebih dari satu)</span>
+                </label>
+
                 <div class="chips" data-group="goals" data-mode="multi">
-                  <label class="chip"><input type="checkbox" name="goals" value="Networking"><span data-i18n="goals.opt1">Networking / Memperluas Jaringan</span></label>
-                  <label class="chip"><input type="checkbox" name="goals" value="Panel/Workshop"><span data-i18n="goals.opt2">Mengikuti Sesi Panel / Workshop</span></label>
-                  <label class="chip"><input type="checkbox" name="goals" value="Memasarkan Proyek"><span data-i18n="goals.opt3">Memasarkan Proyek</span></label>
-                  <label class="chip"><input type="checkbox" name="goals" value="Mencari Proyek"><span data-i18n="goals.opt4">Mencari Proyek Film untuk Didanai / Didistribusikan</span></label>
+
+                  <label class="chip">
+                    <input type="checkbox" name="goals" value="Networking">
+                    <span data-i18n="goals.opt1">Networking / Memperluas Jaringan</span>
+                  </label>
+
+                  <label class="chip">
+                    <input type="checkbox" name="goals" value="Panel/Workshop">
+                    <span data-i18n="goals.opt2">Mengikuti Sesi Panel / Workshop</span>
+                  </label>
+
+                  <label class="chip">
+                    <input type="checkbox" name="goals" value="Memasarkan Proyek">
+                    <span data-i18n="goals.opt3">Memasarkan Proyek</span>
+                  </label>
+
+                  <label class="chip">
+                    <input type="checkbox" name="goals" value="Mencari Proyek">
+                    <span data-i18n="goals.opt4">Mencari Proyek Film untuk Didanai / Didistribusikan</span>
+                  </label>
+
                 </div>
+
               </div>
 
               <div class="field full">
-                <label for="access"><span data-i18n="field.access.label">Kebutuhan Aksesibilitas Khusus</span> <span class="opt" data-i18n="field.access.hint">(opsional)</span></label>
+                <label for="access">
+                  <span data-i18n="field.access.label">Kebutuhan Aksesibilitas Khusus</span> 
+                  <span class="opt" data-i18n="field.access.hint">(opsional)</span>
+                </label>
                 <textarea id="access" name="access" data-i18n-placeholder="field.access.placeholder" placeholder="cth. Juru Bahasa Isyarat, akses kursi roda"></textarea>
               </div>
             </div>
+
           </section>
 
           <section class="block" id="s4">
+
             <div class="block-head">
               <span class="block-num">04</span>
               <div>
@@ -203,30 +340,62 @@
 
             <div class="consent">
               <input type="checkbox" id="marketing" name="marketing">
-              <label for="marketing"><b data-i18n="consent.marketing.bold">Update &amp; promosi.</b> <span data-i18n="consent.marketing.rest">Saya ingin menerima kabar acara, program, dan penawaran dari Jakarta Film Summit melalui email.</span></label>
+              <label for="marketing">
+                <b data-i18n="consent.marketing.bold">Update &amp; promosi.</b> 
+                <span data-i18n="consent.marketing.rest">
+                  Saya ingin menerima kabar acara, program, dan penawaran dari Jakarta Film Summit melalui email.
+                </span>
+              </label>
             </div>
+
             <div class="consent">
               <input type="checkbox" id="thirdparty" name="thirdparty">
-              <label for="thirdparty"><b data-i18n="consent.thirdparty.bold">Berbagi dengan mitra.</b> <span data-i18n="consent.thirdparty.rest">Saya menyetujui data saya dibagikan kepada mitra dan sponsor penyelenggara untuk keperluan acara.</span></label>
+              <label for="thirdparty">
+                <b data-i18n="consent.thirdparty.bold">Berbagi dengan mitra.</b> 
+                <span data-i18n="consent.thirdparty.rest">
+                  Saya menyetujui data saya dibagikan kepada mitra dan sponsor penyelenggara untuk keperluan acara.
+                </span>
+              </label>
             </div>
+
             <div class="consent">
+
               <input type="checkbox" id="terms" name="terms" required>
-              <label for="terms"><b data-i18n="consent.terms.bold">Syarat &amp; Ketentuan.</b> <span data-i18n="consent.terms.rest1">Saya telah membaca dan menyetujui</span> <a href="#" data-i18n="consent.terms.link">Syarat &amp; Ketentuan</a> <span data-i18n="consent.terms.rest2">pendaftaran.</span> <span class="req" style="display:inline-block;vertical-align:middle"></span></label>
+
+              <label for="terms">
+                <b data-i18n="consent.terms.bold">Syarat &amp; Ketentuan.</b> 
+                <span data-i18n="consent.terms.rest1">Saya telah membaca dan menyetujui</span> 
+                <a href="#" data-i18n="consent.terms.link">Syarat &amp; Ketentuan</a> 
+                <span data-i18n="consent.terms.rest2">pendaftaran.</span> 
+                <span class="req" style="display:inline-block;vertical-align:middle"></span>
+              </label>
+
             </div>
 
             <div class="submit-row">
               <p data-i18n="submit.note">Setelah dikirim, tim kami akan mengirimkan konfirmasi dan detail akses ke email bisnis Anda.</p>
               <button type="submit" class="cta" id="submitBtn" data-i18n="submit.button">Kirim Pendaftaran</button>
             </div>
+
           </section>
 
         </form>
 
         <div class="ticket" id="ticket">
           <div class="stub">
-            <span class="badge">Jakarta Film Summit 2026</span>
-            <h2 id="ticketHeading" data-i18n="ticket.heading">Pendaftaran diterima</h2>
-            <p id="ticketMessage" data-i18n="ticket.message">Terima kasih — konfirmasi dan detail akses akan dikirim ke email bisnis yang Anda daftarkan.</p>
+
+            <span class="badge">
+              Jakarta Film Summit 2026
+            </span>
+
+            <h2 id="ticketHeading" data-i18n="ticket.heading">
+              Pendaftaran diterima
+            </h2>
+
+            <p id="ticketMessage" data-i18n="ticket.message">
+              Terima kasih — konfirmasi dan detail akses akan dikirim ke email bisnis yang Anda daftarkan.
+            </p>
+
             <span class="code" id="ticketCode">JFS-000000</span>
 
             <div class="qr-wrap" id="qrWrap">
@@ -234,9 +403,17 @@
             </div>
 
             <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:6px;">
-              <button type="button" class="again" id="downloadBtn" data-i18n="ticket.download">Unduh QR</button>
-              <button type="button" class="again" id="againBtn" data-i18n="ticket.again">Isi formulir lain</button>
+              
+              <button type="button" class="again" id="downloadBtn" data-i18n="ticket.download">
+                Unduh QR
+              </button>
+
+              <button type="button" class="again" id="againBtn" data-i18n="ticket.again">
+                Isi formulir lain
+              </button>
+
             </div>
+
           </div>
         </div>
 
@@ -247,8 +424,9 @@
   </div>
 </main>
 
-<footer data-i18n="footer.text">Jakarta Film Summit &middot; Formulir Pendaftaran</footer>
+  <div id="footerPlaceholder"></div>
 
 <script src="assets/js/registration.js"></script>
+  <script src="assets/js/include.js"></script>
 </body>
 </html>

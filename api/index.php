@@ -23,7 +23,12 @@ apply_cors();
 $method = $_SERVER['REQUEST_METHOD'];
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = trim($path, '/');
-$path = preg_replace('#^api/#', '', $path); // strip leading "api/" if present
+
+$apiPos = strpos($path, 'api/');
+
+if ($apiPos !== false) {
+    $path = substr($path, $apiPos + 4);
+}
 $segments = $path === '' ? [] : explode('/', $path);
 $route = $segments[0] ?? '';
 $sub = $segments[1] ?? '';

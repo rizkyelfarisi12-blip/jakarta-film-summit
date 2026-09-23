@@ -310,13 +310,25 @@ button.cta:disabled{ opacity:.6; cursor:default; transform:none; }
   padding:12px; background:#fff; margin:0 auto;
 }
 
-footer{ text-align:center; padding:34px 0 48px; color:var(--ink-soft); font-size:.82rem; }
-
-@media (max-width:720px){
-  .frame{ grid-template-columns:14px 1fr 14px; border-radius:4px; }
-  .reel-edge{ background-size:14px 14px; background-position:center 6px; }
-  .grid{ grid-template-columns:1fr; }
-  h1.headline{ max-width:100%; }
-  .hero{ padding:70px 0 56px; }
-  .stage{ padding:36px 0 72px; }
+/* ---------- footer ---------- */
+footer{ background:var(--ink); color:rgba(244,240,232,.7); }
+.foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; padding:56px 0 40px; }
+@media (max-width:700px){ .foot-grid{ grid-template-columns:1fr; gap:30px; } }
+.foot-brand{
+  display:flex;
+  align-items:center;
+  margin-bottom:16px;
 }
+
+.foot-brand img{
+  width:150px;
+  height:auto;
+  display:block;
+  object-fit:contain;
+}
+footer p{ font-size:.88rem; max-width:36ch; line-height:1.6; margin:0; }
+footer h5{ color:#F4F0E8; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; margin:0 0 16px; }
+footer .flinks{ display:flex; flex-direction:column; gap:10px; }
+footer .flinks a{ color:rgba(244,240,232,.7); text-decoration:none; font-size:.9rem; }
+footer .flinks a:hover{ color:#F4F0E8; }
+.foot-bottom{ border-top:1px solid rgba(244,240,232,.12); padding:22px 0 40px; font-size:.78rem; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; }

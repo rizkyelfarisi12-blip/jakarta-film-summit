@@ -9,7 +9,7 @@
  *   GET  /api/settings                          -> { quota, deadline }
  *   POST /api/settings {quota, deadline}        -> { quota, deadline }
  * ============================================================ */
-const API_BASE = "/api";
+const API_BASE = "../api";
 const POLL_MS = 5000;
 
 function el(id) { return document.getElementById(id); }
