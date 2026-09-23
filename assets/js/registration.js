@@ -4,7 +4,7 @@
  *   GET  /api/status    -> { open, reason, quota, deadline, total }
  *   POST /api/register  -> { participant } (201) or 409/423 with details
  * ============================================================ */
-const API_BASE = "/api";
+const API_BASE = "api";
 
 function qrImageUrl(token) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&qzone=1&data=${encodeURIComponent(token)}`;
@@ -720,7 +720,19 @@ form.addEventListener("submit", async function (e) {
       return;
     }
     if (!res.ok) {
-      throw new Error("register failed");
+      let errorMessage = `HTTP ${res.status}`;
+
+      try {
+        const errorData = await res.json();
+
+        if (errorData && errorData.error) {
+          errorMessage = errorData.error;
+        }
+      } catch (e) {
+        // Response bukan JSON
+      }
+
+      throw new Error(errorMessage);
     }
 
     const data = await res.json();

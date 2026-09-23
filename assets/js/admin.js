@@ -12,6 +12,32 @@
 const API_BASE = "../api";
 const POLL_MS = 5000;
 
+function segmentLabel(participant) {
+  if (!participant) return "-";
+
+  const segment = participant.segment || "";
+
+  if (segment === "Others" || segment === "Lainnya") {
+    return participant.segmentOther || "Others";
+  }
+
+  const labels = {
+    filmmaker: "Filmmaker",
+    producer: "Producer",
+    production: "Production",
+    distribution: "Distribution",
+    exhibition: "Exhibition",
+    government: "Government",
+    investor: "Investor",
+    media: "Media",
+    student: "Student",
+    academia: "Academia",
+    creative: "Creative Industry"
+  };
+
+  return labels[segment] || segment || "-";
+}
+
 function el(id) { return document.getElementById(id); }
 function timeShort(iso) { if (!iso) return ""; return new Date(iso).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }); }
 function timeFull(iso) { if (!iso) return "—"; return new Date(iso).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
@@ -26,6 +52,217 @@ let pesertaSegmentFilter = "all";
 let pollTimer = null;
 let donutChart = null;
 let timelineChart = null;
+
+// =================================================================
+// QR CAMERA SCANNER
+// =================================================================
+
+let qrScanner = null;
+let scannerRunning = false;
+
+const startScannerBtn = el("startScannerBtn");
+const stopScannerBtn = el("stopScannerBtn");
+const scannerStatus = el("qr-reader-status");
+
+if (startScannerBtn) {
+  startScannerBtn.addEventListener("click", startQrScanner);
+}
+
+if (stopScannerBtn) {
+  stopScannerBtn.addEventListener("click", stopQrScanner);
+}
+
+async function startQrScanner() {
+  if (scannerRunning) return;
+
+  if (typeof Html5Qrcode === "undefined") {
+    scannerStatus.textContent =
+      "QR scanner belum berhasil dimuat. Pastikan komputer terhubung ke internet.";
+    return;
+  }
+
+  scannerStatus.textContent = "Meminta akses kamera...";
+
+  try {
+    qrScanner = new Html5Qrcode("qr-reader");
+
+    const cameras = await Html5Qrcode.getCameras();
+
+    if (!cameras || cameras.length === 0) {
+      throw new Error("Tidak ada kamera yang ditemukan.");
+    }
+
+    // Pilih kamera belakang jika tersedia,
+    // kalau tidak gunakan kamera pertama.
+    let cameraId = cameras[0].id;
+
+    const backCamera = cameras.find((camera) =>
+      /back|rear|environment/i.test(camera.label)
+    );
+
+    if (backCamera) {
+      cameraId = backCamera.id;
+    }
+
+    await qrScanner.start(
+      cameraId,
+      {
+        fps: 10,
+        qrbox: {
+          width: 250,
+          height: 250
+        }
+      },
+      onQrCodeSuccess,
+      onQrCodeError
+    );
+
+    scannerRunning = true;
+
+    startScannerBtn.style.display = "none";
+    stopScannerBtn.style.display = "inline-flex";
+
+    scannerStatus.textContent =
+      "Kamera aktif. Arahkan kamera ke QR tiket peserta.";
+      
+  } catch (error) {
+    console.error("QR scanner error:", error);
+
+    scannerStatus.textContent =
+      "Kamera tidak dapat dibuka: " + getCameraErrorMessage(error);
+
+    scannerRunning = false;
+  }
+}
+
+function onQrCodeSuccess(decodedText) {
+  console.log("QR terbaca:", decodedText);
+
+  if (!decodedText) return;
+
+  // QR peserta dari sistem kita berisi qrToken.
+  // Coba langsung cari sebagai token.
+  const token = decodedText.trim();
+
+  const found = participants.find(
+    (p) =>
+      p.qrToken &&
+      p.qrToken.toUpperCase() === token.toUpperCase()
+  );
+
+  if (found) {
+    stopQrScanner();
+
+    scannerStatus.textContent =
+      "QR berhasil dibaca: " + found.id;
+
+    renderTicket(found);
+
+    return;
+  }
+
+  // Kalau QR berisi URL atau format lain,
+  // coba ambil token dari URL.
+  try {
+    const url = new URL(token);
+    const possibleToken =
+      url.searchParams.get("qrToken") ||
+      url.searchParams.get("token");
+
+    if (possibleToken) {
+      const participant = participants.find(
+        (p) =>
+          p.qrToken &&
+          p.qrToken.toUpperCase() === possibleToken.toUpperCase()
+      );
+
+      if (participant) {
+        stopQrScanner();
+        scannerStatus.textContent =
+          "QR berhasil dibaca: " + participant.id;
+        renderTicket(participant);
+        return;
+      }
+    }
+  } catch (e) {
+    // Bukan URL — tidak masalah.
+  }
+
+  stopQrScanner();
+
+  scannerStatus.textContent =
+    "QR terbaca, tetapi peserta tidak ditemukan.";
+
+  el("notFoundCard").classList.remove("hidden");
+}
+
+function onQrCodeError(errorMessage) {
+  // Error ini terjadi terus-menerus saat kamera belum menemukan QR.
+  // Jangan tampilkan ke console supaya tidak penuh.
+}
+
+async function stopQrScanner() {
+  if (!qrScanner) return;
+
+  try {
+    if (scannerRunning) {
+      await qrScanner.stop();
+    }
+  } catch (error) {
+    console.warn("Gagal menghentikan scanner:", error);
+  }
+
+  try {
+    await qrScanner.clear();
+  } catch (error) {
+    // ignore
+  }
+
+  qrScanner = null;
+  scannerRunning = false;
+
+  startScannerBtn.style.display = "inline-flex";
+  stopScannerBtn.style.display = "none";
+
+  scannerStatus.textContent =
+    'Tekan "Buka Kamera" untuk mulai scan QR.';
+}
+
+function getCameraErrorMessage(error) {
+  if (!error) {
+    return "Alasan tidak diketahui.";
+  }
+
+  const message = String(error.message || error);
+
+  if (
+    error.name === "NotAllowedError" ||
+    message.toLowerCase().includes("permission")
+  ) {
+    return "Izin kamera ditolak. Izinkan kamera di browser lalu coba lagi.";
+  }
+
+  if (
+    error.name === "NotFoundError" ||
+    message.toLowerCase().includes("camera")
+  ) {
+    return "Kamera tidak ditemukan.";
+  }
+
+  if (
+    error.name === "NotReadableError"
+  ) {
+    return "Kamera sedang digunakan aplikasi lain.";
+  }
+
+  if (
+    error.name === "SecurityError"
+  ) {
+    return "Browser memblokir akses kamera karena alasan keamanan.";
+  }
+
+  return message;
+}
 
 // =================================================================
 // Login (email + password, session-cookie based)
@@ -125,10 +362,20 @@ async function fetchData() {
       fetch(`${API_BASE}/settings`, { credentials: "include" }),
     ]);
     if (pRes.status === 401 || sRes.status === 401) return handleSessionExpired();
-    participants = pRes.ok ? await pRes.json() : [];
-    settings = sRes.ok ? await sRes.json() : { quota: null, deadline: null };
+    if (!pRes.ok) {
+      const data = await pRes.json().catch(() => ({}));
+      throw new Error(data.error || `Participants API error (${pRes.status})`);
+    }
+
+    if (!sRes.ok) {
+      const data = await sRes.json().catch(() => ({}));
+      throw new Error(data.error || `Settings API error (${sRes.status})`);
+    }
+
+    participants = await pRes.json();
+    settings = await sRes.json();
   } catch (e) {
-    console.warn("Could not reach API — showing empty state.", e);
+    console.warn("Could not load admin data.", e);
     participants = [];
   }
   renderAll();
@@ -234,7 +481,7 @@ async function doCheckIn(p) {
     const data = await res.json();
     const updated = data.participant;
     participants = participants.map((x) => (x.id === updated.id ? updated : x));
-    checkinLog.unshift({ id: updated.id, nama: updated.nama, time: updated.waktu_checkin, staff: staffName });
+    checkinLog.unshift({ id: updated.id, nama: updated.fullname, time: updated.waktu_checkin, staff: staffName });
     renderTicket(updated);
     renderLog();
     renderAll();

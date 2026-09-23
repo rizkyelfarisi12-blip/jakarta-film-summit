@@ -207,7 +207,7 @@ function handle_register(PDO $pdo): void {
 
 function handle_list_participants(PDO $pdo): void {
     require_auth();
-    $rows = $pdo->query("SELECT * FROM peserta ORDER BY nama_lengkap ASC")->fetchAll();
+    $rows = $pdo->query("SELECT * FROM peserta ORDER BY fullname ASC")->fetchAll();
     json_response(array_map('map_participant', $rows));
 }
 
@@ -220,8 +220,8 @@ function handle_search_participants(PDO $pdo): void {
     $like = '%' . $q . '%';
     $stmt = $pdo->prepare(
         "SELECT * FROM peserta
-         WHERE nama_lengkap LIKE ? OR email LIKE ? OR id LIKE ?
-         ORDER BY nama_lengkap ASC"
+         WHERE fullname LIKE ? OR email LIKE ? OR id LIKE ?
+         ORDER BY fullname ASC"
     );
     $stmt->execute([$like, $like, $like]);
     json_response(array_map('map_participant', $stmt->fetchAll()));
