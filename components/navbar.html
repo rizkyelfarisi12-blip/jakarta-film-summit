@@ -2,15 +2,16 @@
 
   <div class="wrap">
 
-    <a class="brand" href="index.html">
-
-      <img src="assets/icon/jfs_logo_color.png" alt="Jakarta Film Summit">
-
-      <!-- <span>Jakarta Film Summit</span> -->
-
+    <!-- LOGO -->
+    <a class="brand" href="index.html" aria-label="Jakarta Film Summit">
+      <img
+        src="assets/icon/jfs_logo_color.png"
+        alt="Jakarta Film Summit"
+      >
     </a>
 
 
+    <!-- NAVIGATION -->
     <div class="nav-links" id="navLinks">
 
       <a href="index.html">
@@ -28,10 +29,34 @@
     </div>
 
 
+    <!-- CTA -->
     <a class="nav-cta" href="registration.html">
       Daftar
     </a>
 
+
+    <!-- MOBILE HAMBURGER -->
+    <button
+      class="nav-toggle"
+      id="navToggle"
+      type="button"
+      aria-label="Buka menu"
+      aria-expanded="false"
+      aria-controls="navLinks"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
   </div>
+
+
+  <!-- MOBILE BACKDROP -->
+  <div
+    class="nav-backdrop"
+    id="navBackdrop"
+    aria-hidden="true"
+  ></div>
 
 </nav>

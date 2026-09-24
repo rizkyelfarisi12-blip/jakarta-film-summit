@@ -2,7 +2,13 @@
    Jakarta Film Summit — Component Loader
    ======================================================= */
 
+
+/* =======================================================
+   Generic Include Loader
+   ======================================================= */
+
 async function loadInclude(selector, url, afterInsert) {
+
   const element = document.querySelector(selector);
 
   if (!element) {
@@ -11,6 +17,7 @@ async function loadInclude(selector, url, afterInsert) {
   }
 
   try {
+
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -26,13 +33,16 @@ async function loadInclude(selector, url, afterInsert) {
     }
 
   } catch (error) {
+
     console.error(`Gagal memuat ${url}:`, error);
+
   }
+
 }
 
 
 /* =======================================================
-   Active navigation
+   Active Navigation
    ======================================================= */
 
 function markActiveNav() {
@@ -41,11 +51,13 @@ function markActiveNav() {
     window.location.pathname
       .split('/')
       .pop()
-      .toLowerCase() || 'home.html';
+      .toLowerCase() || 'index.html';
+
 
   const links = document.querySelectorAll(
     '#navbarPlaceholder .nav-links a'
   );
+
 
   links.forEach(link => {
 
@@ -57,17 +69,19 @@ function markActiveNav() {
         .split('#')[0]
         .toLowerCase();
 
+
     link.classList.toggle(
       'active',
       href === currentPage
     );
 
   });
+
 }
 
 
 /* =======================================================
-   Mobile navigation (hamburger toggle)
+   Mobile Navigation
    ======================================================= */
 
 function initMobileNav() {
@@ -76,45 +90,192 @@ function initMobileNav() {
   const links = document.getElementById('navLinks');
   const backdrop = document.getElementById('navBackdrop');
 
-  if (!toggle || !links) return;
+
+  if (!toggle || !links) {
+    return;
+  }
+
+
+  /* -------------------------------------------------------
+     Open Menu
+     ------------------------------------------------------- */
 
   function openMenu() {
+
     links.classList.add('open');
+
     toggle.classList.add('active');
-    toggle.setAttribute('aria-expanded', 'true');
-    if (backdrop) backdrop.classList.add('show');
+
+    toggle.setAttribute(
+      'aria-expanded',
+      'true'
+    );
+
+
+    if (backdrop) {
+      backdrop.classList.add('show');
+      backdrop.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+    }
+
+
     document.body.classList.add('nav-open');
+
   }
+
+
+  /* -------------------------------------------------------
+     Close Menu
+     ------------------------------------------------------- */
 
   function closeMenu() {
+
     links.classList.remove('open');
+
     toggle.classList.remove('active');
-    toggle.setAttribute('aria-expanded', 'false');
-    if (backdrop) backdrop.classList.remove('show');
+
+    toggle.setAttribute(
+      'aria-expanded',
+      'false'
+    );
+
+
+    if (backdrop) {
+      backdrop.classList.remove('show');
+      backdrop.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+    }
+
+
     document.body.classList.remove('nav-open');
+
   }
 
+
+  /* -------------------------------------------------------
+     Hamburger Click
+     ------------------------------------------------------- */
+
   toggle.addEventListener('click', function () {
-    if (links.classList.contains('open')) {
+
+    const isOpen =
+      links.classList.contains('open');
+
+
+    if (isOpen) {
       closeMenu();
     } else {
       openMenu();
     }
+
   });
+
+
+  /* -------------------------------------------------------
+     Close When Navigation Item Is Clicked
+     ------------------------------------------------------- */
 
   links.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', closeMenu);
+
+    link.addEventListener(
+      'click',
+      closeMenu
+    );
+
   });
+
+
+  /* -------------------------------------------------------
+     Close When Backdrop Is Clicked
+     ------------------------------------------------------- */
 
   if (backdrop) {
-    backdrop.addEventListener('click', closeMenu);
+
+    backdrop.addEventListener(
+      'click',
+      closeMenu
+    );
+
   }
 
-  // keep things tidy if the window is resized past the mobile breakpoint
-  // while the menu happens to be open
-  window.addEventListener('resize', function () {
-    if (window.innerWidth > 760) closeMenu();
-  });
+
+  /* -------------------------------------------------------
+     Close Menu When Switching Back To Desktop
+     ------------------------------------------------------- */
+
+  window.addEventListener(
+    'resize',
+    function () {
+
+      if (window.innerWidth > 760) {
+        closeMenu();
+      }
+
+    }
+  );
+
+}
+
+
+/* =======================================================
+   Navbar Scroll Effect
+   ======================================================= */
+
+function initNavbarScroll() {
+
+  const nav =
+    document.querySelector('.site-nav');
+
+
+  if (!nav) {
+    return;
+  }
+
+
+  const threshold = 20;
+
+  let ticking = false;
+
+
+  function updateNavbar() {
+
+    nav.classList.toggle(
+      'scrolled',
+      window.scrollY > threshold
+    );
+
+    ticking = false;
+
+  }
+
+
+  window.addEventListener(
+    'scroll',
+    function () {
+
+      if (!ticking) {
+
+        window.requestAnimationFrame(
+          updateNavbar
+        );
+
+        ticking = true;
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  /* Set initial state */
+  updateNavbar();
 
 }
 
@@ -129,8 +290,13 @@ async function loadNavbar() {
     '#navbarPlaceholder',
     'components/navbar.html',
     function () {
+
       markActiveNav();
+
       initMobileNav();
+
+      initNavbarScroll();
+
     }
   );
 
@@ -155,9 +321,13 @@ async function loadFooter() {
    Initialize
    ======================================================= */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener(
+  'DOMContentLoaded',
+  function () {
 
-  loadNavbar();
-  loadFooter();
+    loadNavbar();
 
-});
+    loadFooter();
+
+  }
+);
