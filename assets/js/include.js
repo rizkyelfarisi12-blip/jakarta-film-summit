@@ -67,6 +67,59 @@ function markActiveNav() {
 
 
 /* =======================================================
+   Mobile navigation (hamburger toggle)
+   ======================================================= */
+
+function initMobileNav() {
+
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  const backdrop = document.getElementById('navBackdrop');
+
+  if (!toggle || !links) return;
+
+  function openMenu() {
+    links.classList.add('open');
+    toggle.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+    if (backdrop) backdrop.classList.add('show');
+    document.body.classList.add('nav-open');
+  }
+
+  function closeMenu() {
+    links.classList.remove('open');
+    toggle.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+    if (backdrop) backdrop.classList.remove('show');
+    document.body.classList.remove('nav-open');
+  }
+
+  toggle.addEventListener('click', function () {
+    if (links.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  links.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  if (backdrop) {
+    backdrop.addEventListener('click', closeMenu);
+  }
+
+  // keep things tidy if the window is resized past the mobile breakpoint
+  // while the menu happens to be open
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 760) closeMenu();
+  });
+
+}
+
+
+/* =======================================================
    Load Navbar
    ======================================================= */
 
@@ -75,7 +128,10 @@ async function loadNavbar() {
   await loadInclude(
     '#navbarPlaceholder',
     'components/navbar.html',
-    markActiveNav
+    function () {
+      markActiveNav();
+      initMobileNav();
+    }
   );
 
 }
