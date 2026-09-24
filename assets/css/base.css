@@ -15,7 +15,7 @@
   --mauve: #c67188;
   --gold: #e4c697;
   --red: #cc3315;
-  --grad: linear-gradient(120deg, #c67188 0%, #e4c697 52%, #cc3315 100%);
+  --grad: linear-gradient(120deg, #c67188 0%, #E4C697 37%, #CC3315 68%, #1E1E19 100%);
   --grad-tight: linear-gradient(120deg, #cc3315, #bf4419);
   --grad-wash: linear-gradient(
     160deg,
@@ -86,41 +86,29 @@ button {
   font: inherit;
 }
 /* ---------- premium navbar ---------- */
-/* =======================================================
-   Jakarta Film Summit
-   Navbar
-   ======================================================= */
 
 /* =======================================================
    NAVBAR BASE
    ======================================================= */
-
 .site-nav {
   position: fixed;
-
   top: 0;
   left: 0;
   right: 0;
-
   width: 100%;
-
   z-index: 1000;
 
-  /* Transparan ketika berada di paling atas */
   background: transparent;
-
   border-bottom: 1px solid transparent;
-
   box-shadow: none;
 
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 
   transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    backdrop-filter 0.3s ease;
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 /* =======================================================
@@ -155,23 +143,24 @@ button {
 /* =======================================================
    NAVBAR — SCROLLED STATE
    ======================================================= */
-
 .site-nav.scrolled {
-  background: rgba(244, 244, 241, 0.94);
-
+  background: rgba(244, 244, 241, 0.96);
   border-bottom-color: rgba(194, 204, 204, 0.65);
+  box-shadow: 0 6px 18px rgba(30, 30, 25, 0.07);
 
-  box-shadow: 0 8px 24px rgba(30, 30, 25, 0.08);
-
-  backdrop-filter: blur(18px) saturate(130%);
-
-  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-
 .site-nav.scrolled::after {
   opacity: 0.7;
 }
+.site-nav.scrolled .logo-white {
+  display: none !important;
+}
 
+.site-nav.scrolled .logo-black {
+  display: block !important;
+}
 /* =======================================================
    NAVBAR WRAPPER
    ======================================================= */
@@ -189,21 +178,90 @@ button {
 
   padding: 10px 24px;
 }
+/* =======================================================
+   NAVBAR — COLORS
+   ======================================================= */
 
+/* Saat navbar berada di atas hero */
+.site-nav:not(.scrolled) .nav-links a {
+  color: #fff;
+}
+
+/* Saat navbar sudah scroll */
+.site-nav.scrolled .nav-links a {
+  color: var(--ink);
+}
+
+/* Active tetap putih di atas background hitam */
+.site-nav .nav-links a.active,
+.site-nav.scrolled .nav-links a.active {
+  color: #f4f4f1;
+  background: var(--ink);
+}
+
+/* Hover saat navbar transparan */
+.site-nav:not(.scrolled) .nav-links a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.10);
+}
+
+/* Hover saat navbar sudah scroll */
+.site-nav.scrolled .nav-links a:hover {
+  color: var(--ink);
+  background: rgba(194, 204, 204, 0.28);
+}
+
+/* Active tidak boleh berubah karena hover */
+.site-nav .nav-links a.active:hover,
+.site-nav.scrolled .nav-links a.active:hover {
+  color: #f4f4f1;
+  background: var(--ink);
+}
+
+
+/* =======================================================
+   CTA — DAFTAR
+   Selalu orange + teks putih
+   ======================================================= */
+
+.site-nav .nav-cta {
+  color: #fff;
+  background: var(--grad-tight);
+  border: 0;
+  box-shadow: 0 5px 14px rgba(30, 30, 25, 0.12);
+}
+
+.site-nav .nav-cta:hover,
+.site-nav.scrolled .nav-cta:hover {
+  color: #fff;
+  background: var(--grad-tight);
+  border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(30, 30, 25, 0.17);
+}
 /* =======================================================
    BRAND / LOGO
    ======================================================= */
-
 .brand {
-  display: flex;
-
+  display: inline-flex;
   align-items: center;
-
-  flex: 0 0 auto;
-
-  text-decoration: none;
+  flex-shrink: 0;
 }
 
+.brand .logo {
+  display: block;
+  width: auto;
+  height: 38px;
+  transition: opacity 0.3s ease;
+}
+
+.logo-black {
+  display: none !important;
+}
+
+.logo-white {
+  display: block !important;
+}
 .brand img {
   width: 150px;
 
@@ -666,7 +724,7 @@ button {
     background-position-x: 13px;
   }
   to {
-    background-position-x: 39px;
+    background-position-x: 73px;
   }
 }
 @keyframes clapOpen {
@@ -712,12 +770,17 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    175deg,
-    rgba(30, 30, 25, 0.22),
-    rgba(30, 30, 25, 0.67) 96%
-  );
   z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 30%,
+      rgba(0, 0, 0, 0.12) 52%,
+      rgba(0, 0, 0, 0.42) 78%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
 }
 .hero-watermark {
   position: absolute;
@@ -727,7 +790,7 @@ button {
   pointer-events: none;
   font-family: var(--font-display);
   font-weight: 900;
-  font-style: italic;
+  font-style: normal;
   line-height: 0.78;
   color: rgba(244, 244, 241, 0.08);
   letter-spacing: -0.03em;
@@ -749,13 +812,13 @@ button {
     transparent 26px
   );
 
-  background-size: 32px 8px;
+  background-size: 60px 8px;
   background-position: 13px center;
   background-repeat: repeat-x;
 
   opacity: 0.85;
 
-  animation: reelRun 1.1s linear infinite;
+  animation: reelRun 2s linear infinite;
 }
 .sprockets.top {
   top: 0;
@@ -815,7 +878,7 @@ button {
 h1.headline {
   font-family: var(--font-display);
   font-weight: 800;
-  font-style: italic;
+  font-style: normal;
   letter-spacing: -0.02em;
   line-height: 1.03;
   margin: 0 0 18px;
@@ -854,7 +917,7 @@ h1.headline {
 .ticker-item span {
   font-family: var(--font-display);
   font-weight: 800;
-  font-style: italic;
+  font-style: normal;
   font-size: 1rem;
   letter-spacing: 0.02em;
   color: #e4c697;
@@ -903,7 +966,7 @@ section.block {
 }
 .eyebrow .num {
   font-family: var(--font-display);
-  font-style: italic;
+  font-style: normal;
   font-weight: 800;
   font-size: 1.1rem;
   color: transparent;
@@ -1098,7 +1161,7 @@ p.block-desc {
 .final-cta h2 {
   font-family: var(--font-display);
   font-weight: 800;
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(1.8rem, 4vw, 2.7rem);
   color: #f8f7f3;
   margin: 0 0 14px;

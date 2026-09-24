@@ -31,7 +31,7 @@
       rgba(20, 20, 18, 0.38) 68%,
       rgba(20, 20, 18, 0.55) 100%
     ),
-    url("../image/hero-shooting-bw.jpg")
+    url("../gallery/hero_bg.jpeg")
     center center / cover no-repeat;
 }
 .hero > .wrap {
@@ -80,6 +80,12 @@ h1.headline {
 
 }
 
+.meta-badge img {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+  display: block;
+}
 .meta-badge {
   display: flex;
   align-items: center;
