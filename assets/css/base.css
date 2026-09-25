@@ -911,8 +911,8 @@ h1.headline {
 .ticker-item {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 14px 0;
+  gap: 14px;
+  padding: 20px 20px;
 }
 .ticker-item span {
   font-family: var(--font-display);
@@ -928,7 +928,7 @@ h1.headline {
   width: 3px;
   height: 22px;
 
-  background: var(--rust);
+  background: #ECECEA;
 
   flex: 0 0 auto;
 
