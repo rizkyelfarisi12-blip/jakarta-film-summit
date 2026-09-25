@@ -838,3 +838,688 @@ footer .flinks a:hover {
     height: 160px;
   }
 }
+
+
+/* =======================================================
+   REGISTRATION — MOBILE FIX
+   Prevent overlapping / overflow on phones
+======================================================= */
+
+@media (max-width: 680px) {
+
+  /* =====================================================
+     GLOBAL
+  ===================================================== */
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    box-sizing: border-box;
+  }
+
+
+  /* =====================================================
+     HERO
+  ===================================================== */
+
+  .hero {
+    padding: 88px 0 52px;
+  }
+
+  .hero .wrap {
+    width: 100%;
+  }
+
+  .hero-kicker {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .clap {
+    width: 32px;
+    height: 28px;
+  }
+
+  .hero-kicker span {
+    font-size: .82rem;
+  }
+
+  h1.headline {
+    font-size: clamp(2rem, 9vw, 2.7rem);
+    line-height: 1.04;
+    letter-spacing: -.025em;
+    max-width: 11ch;
+  }
+
+  .hero p.lead {
+    font-size: .9rem;
+    line-height: 1.55;
+    max-width: 100%;
+  }
+
+  .hero p.sub {
+    font-size: .78rem;
+    line-height: 1.5;
+  }
+
+
+  /* =====================================================
+     STEP NAVIGATION
+  ===================================================== */
+
+  .step-nav {
+    overflow: hidden;
+  }
+
+  .step-nav .wrap {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      9px 16px;
+
+    gap: 7px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .step-nav .wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .step-link {
+    flex: 0 0 auto;
+
+    font-size: .76rem;
+
+    padding:
+      6px 11px 6px 6px;
+
+    gap: 7px;
+  }
+
+  .step-link .num {
+    width: 20px;
+    height: 20px;
+
+    font-size: .72rem;
+  }
+
+
+  /* =====================================================
+     MAIN STAGE
+  ===================================================== */
+
+  .stage {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      24px 0 50px;
+
+    overflow: hidden;
+  }
+
+
+  /* =====================================================
+     FILMSTRIP FRAME
+  ===================================================== */
+
+  .frame {
+    width: 100%;
+    max-width: 100%;
+
+    /*
+      Desktop:
+      26px | FORM | 26px
+
+      Mobile:
+      hilangkan reel samping supaya
+      form mendapat seluruh lebar layar.
+    */
+    grid-template-columns: 1fr;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+  }
+
+  .reel-edge {
+    display: none;
+  }
+
+
+  /* =====================================================
+     FORM
+  ===================================================== */
+
+  form {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      4px 16px 20px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+  }
+
+
+  /* =====================================================
+     SECTION
+  ===================================================== */
+
+  section.block {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      30px 0;
+
+    overflow: hidden;
+  }
+
+  .block-head {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 22px;
+  }
+
+  .block-num {
+    flex: 0 0 auto;
+
+    font-size: 1.45rem;
+
+    line-height: 1;
+  }
+
+  .block-head > div {
+    min-width: 0;
+  }
+
+  .block-head h2 {
+    font-size: 1.12rem;
+
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+  }
+
+  .block-head p {
+    font-size: .8rem;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =====================================================
+     FIELD GRID
+  ===================================================== */
+
+  .grid {
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr);
+
+    width: 100%;
+    max-width: 100%;
+
+    gap: 22px;
+
+    min-width: 0;
+  }
+
+  .field,
+  .field.full,
+  .sub-field {
+    width: 100%;
+    max-width: 100%;
+
+    min-width: 0;
+
+    grid-column: 1 / -1;
+  }
+
+  .field {
+    gap: 7px;
+  }
+
+
+  /* =====================================================
+     LABEL
+  ===================================================== */
+
+  label {
+    max-width: 100%;
+
+    font-size: .8rem;
+
+    line-height: 1.35;
+
+    overflow-wrap: anywhere;
+  }
+
+  label .opt {
+    font-size: .7rem;
+  }
+
+
+  /* =====================================================
+     INPUT
+  ===================================================== */
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    width: 100%;
+    max-width: 100%;
+
+    min-width: 0;
+
+    font-size: 16px;
+
+    padding:
+      10px 2px;
+
+    box-sizing: border-box;
+  }
+
+  /*
+    16px penting di iPhone supaya Safari
+    tidak melakukan auto-zoom ketika input disentuh.
+  */
+
+  select {
+    padding-right: 24px;
+
+    text-overflow: ellipsis;
+  }
+
+  textarea {
+    min-height: 90px;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    font-size: .88rem;
+  }
+
+
+  /* =====================================================
+     HINT
+  ===================================================== */
+
+  .hint {
+    font-size: .7rem;
+
+    line-height: 1.45;
+
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =====================================================
+     SUB FIELD / OTHER
+  ===================================================== */
+
+  .sub-field {
+    margin-top: -12px;
+
+    max-height: 0;
+
+    overflow: hidden;
+  }
+
+  .sub-field.show {
+    max-height: 180px;
+
+    margin-top: 0;
+  }
+
+
+  /* =====================================================
+     CHIPS
+  ===================================================== */
+
+  .chips {
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    min-width: 0;
+  }
+
+  .chip {
+    flex:
+      0 1 auto;
+
+    max-width: 100%;
+
+    padding:
+      8px 12px;
+
+    font-size: .76rem;
+
+    line-height: 1.3;
+
+    white-space: normal;
+
+    overflow-wrap: anywhere;
+
+    text-align: center;
+  }
+
+
+  /* =====================================================
+     CONSENT
+  ===================================================== */
+
+  .consent {
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding:
+      14px 0;
+  }
+
+  .consent input[type="checkbox"] {
+    width: 19px;
+    height: 19px;
+
+    flex:
+      0 0 19px;
+
+    margin-top: 2px;
+  }
+
+  .consent label {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: .78rem;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =====================================================
+     ERROR
+  ===================================================== */
+
+  .error-banner {
+    width: 100%;
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    padding:
+      11px 13px;
+
+    margin-bottom: 20px;
+
+    font-size: .78rem;
+
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =====================================================
+     SUBMIT
+  ===================================================== */
+
+  .submit-row {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 16px;
+
+    padding-top: 26px;
+  }
+
+  .submit-row p {
+    width: 100%;
+    max-width: none;
+
+    font-size: .72rem;
+
+    line-height: 1.5;
+
+    margin: 0;
+  }
+
+  button.cta {
+    width: 100%;
+
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    padding:
+      14px 18px;
+
+    font-size: .92rem;
+  }
+
+
+  /* =====================================================
+     SUCCESS TICKET
+  ===================================================== */
+
+  .ticket {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      40px 16px 46px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+  }
+
+  .ticket .stub {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      28px 16px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+  }
+
+  .ticket h2 {
+    font-size: 1.6rem;
+
+    line-height: 1.2;
+
+    overflow-wrap: anywhere;
+  }
+
+  .ticket p {
+    max-width: 100%;
+
+    font-size: .82rem;
+
+    line-height: 1.5;
+  }
+
+  .ticket .code {
+    max-width: 100%;
+
+    font-size: .8rem;
+
+    padding:
+      8px 12px;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+
+  /* =====================================================
+     QR
+  ===================================================== */
+
+  .qr-wrap img {
+    width: 150px;
+    height: 150px;
+
+    padding: 9px;
+
+    border-radius: 10px;
+  }
+
+
+  /* =====================================================
+     FOOTER
+  ===================================================== */
+
+  .foot-grid {
+    grid-template-columns: 1fr;
+
+    gap: 26px;
+
+    padding:
+      40px 0 30px;
+  }
+
+  .foot-brand img {
+    width: 130px;
+  }
+
+  footer p {
+    font-size: .8rem;
+
+    line-height: 1.55;
+  }
+
+  footer h5 {
+    font-size: .74rem;
+
+    margin-bottom: 12px;
+  }
+
+  footer .flinks {
+    gap: 8px;
+  }
+
+  footer .flinks a {
+    font-size: .8rem;
+  }
+
+  .foot-bottom {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 6px;
+
+    padding:
+      18px 0 30px;
+
+    font-size: .7rem;
+  }
+}
+
+
+/* =======================================================
+   EXTRA SMALL PHONE
+======================================================= */
+
+@media (max-width: 400px) {
+
+  .wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero {
+    padding-top: 82px;
+    padding-bottom: 46px;
+  }
+
+  h1.headline {
+    font-size: 2rem;
+  }
+
+  .hero-kicker span {
+    font-size: .76rem;
+  }
+
+  form {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .grid {
+    gap: 19px;
+  }
+
+  .chip {
+    padding:
+      7px 10px;
+
+    font-size: .72rem;
+  }
+
+  .consent label {
+    font-size: .74rem;
+  }
+
+  button.cta {
+    font-size: .88rem;
+  }
+}
