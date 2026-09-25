@@ -26,7 +26,7 @@ async function initSpeakers() {
 
     const speakers = await response.json();
 
-    const visibleLimit = 6;
+    const visibleLimit = 12;
     let expanded = false;
 
     function renderSpeakers() {
@@ -125,111 +125,517 @@ async function initSpeakers() {
 /* =======================================================
    PARTNERS
    ======================================================= */
-
 async function initPartners() {
+  const directory = document.getElementById("partnerDirectory");
+  const presenting = document.getElementById("presentingPartners");
+
+  if (!directory) {
+    console.error("partnerDirectory tidak ditemukan");
+    return;
+  }
+
   try {
-    const response = await fetch("assets/data/partners.json", {
-      cache: "no-store"
-    });
-
-    if (!response.ok) {
-      throw new Error("Gagal mengambil partners.json");
-    }
-
-    const partners = await response.json();
-
-    renderPresentingPartners(partners.presenting || []);
-    renderPartnerGrid(
-      document.getElementById("strategicPartners"),
-      partners.strategic || []
+    const response = await fetch(
+      "assets/data/partners.json",
+      {
+        cache: "no-store"
+      }
     );
 
-    renderPartnerGrid(
-      document.getElementById("mediaPartners"),
-      partners.media || []
+    if (!response.ok) {
+      throw new Error(
+        "partners.json gagal dimuat. Status: " + response.status
+      );
+    }
+
+    const data = await response.json();
+
+    console.log("PARTNERS DATA:", data);
+
+    /* Presenting Partner */
+    renderPresentingPartner(
+      presenting,
+      data.presenting || []
+    );
+
+    /* Semua kategori */
+    renderPartnerCategories(
+      directory,
+      data.categories || []
     );
 
   } catch (error) {
-    console.error(error);
 
-    const container = document.getElementById("partnersData");
+    console.error("PARTNERS ERROR:", error);
 
-    if (container) {
-      container.innerHTML = `
-        <p class="data-error">
-          Data partner belum dapat dimuat.
-        </p>
-      `;
-    }
+    directory.innerHTML = `
+      <div class="data-error">
+        <strong>Data partner belum dapat dimuat.</strong>
+        <br>
+        <small>${escapeHTML(error.message)}</small>
+      </div>
+    `;
   }
 }
 
 
-function renderPresentingPartners(partners) {
-  const container = document.getElementById("presentingPartners");
+/* =====================================================
+   PRESENTING PARTNER
+===================================================== */
+
+function renderPresentingPartner(container, partners) {
 
   if (!container) return;
 
   container.innerHTML = "";
 
-  partners.forEach(function (partner) {
-    const item = document.createElement("div");
+  if (!partners.length) {
+    container.innerHTML = `
+      <span class="wordmark">
+        Presenting Partner
+      </span>
+    `;
+    return;
+  }
 
-    item.className = "partner-feature-item";
+  const partner = partners[0];
 
-    item.innerHTML = partner.logo
-      ? `
-        <img
-          src="${escapeHTML(partner.logo)}"
-          alt="${escapeHTML(partner.name)}"
-          loading="lazy"
-        >
-      `
-      : `
-        <span class="wordmark">
-          ${escapeHTML(partner.name)}
-        </span>
-      `;
+  if (partner.logo) {
 
-    container.appendChild(item);
-  });
+    const img = document.createElement("img");
+
+    img.src = partner.logo;
+    img.alt = partner.name || "Presenting Partner";
+    img.loading = "lazy";
+
+    container.appendChild(img);
+
+  } else {
+
+    const text = document.createElement("span");
+
+    text.className = "wordmark";
+    text.textContent = partner.name || "";
+
+    container.appendChild(text);
+  }
 }
 
 
-function renderPartnerGrid(container, partners) {
-  if (!container) return;
+/* =====================================================
+   RENDER CATEGORY
+===================================================== */
+
+function renderPartnerCategories(container, categories) {
 
   container.innerHTML = "";
 
-  partners.forEach(function (partner) {
-    const item = document.createElement("div");
+  console.log("JUMLAH KATEGORI:", categories.length);
 
-    item.className = "partner-badge";
+  if (!categories.length) {
 
-    item.innerHTML = partner.logo
-      ? `
-        <img
-          src="${escapeHTML(partner.logo)}"
-          alt="${escapeHTML(partner.name)}"
-          loading="lazy"
-        >
-      `
-      : `
-        <span class="wordmark">
-          ${escapeHTML(partner.name)}
-        </span>
-      `;
+    container.innerHTML = `
+      <div class="data-error">
+        Belum ada kategori partner.
+      </div>
+    `;
 
-    container.appendChild(item);
+    return;
+  }
+
+
+  categories.forEach(function (category, index) {
+
+    const element = document.createElement("article");
+
+    element.className = "partner-category";
+
+
+    /*
+     * 4 kategori pertama ditampilkan.
+     * Sisanya disembunyikan.
+     */
+
+    if (index >= 4) {
+      element.classList.add("is-hidden");
+    }
+
+
+    element.innerHTML = `
+      <div class="partner-category-inner">
+
+        <div class="partner-category-info">
+
+          <h3 class="partner-category-title">
+            ${escapeHTML(category.title)}
+          </h3>
+
+          <p class="partner-category-description">
+            ${escapeHTML(category.description || "")}
+          </p>
+
+        </div>
+
+
+        <div class="partner-carousel">
+
+          <button
+            class="partner-arrow prev"
+            type="button"
+            aria-label="Partner sebelumnya">
+            ←
+          </button>
+
+
+          <div class="partner-viewport">
+
+            <div class="partner-track"></div>
+
+          </div>
+
+
+          <button
+            class="partner-arrow next"
+            type="button"
+            aria-label="Partner berikutnya">
+            →
+          </button>
+
+
+          <div class="partner-dots"></div>
+
+        </div>
+
+      </div>
+    `;
+
+
+    container.appendChild(element);
+
+
+    initPartnerCarousel(
+      element,
+      category.partners || []
+    );
+
   });
+
+
+  initPartnerExpand(categories.length);
 }
 
 
-/* =======================================================
-   SIMPLE HTML ESCAPE
-   ======================================================= */
+/* =====================================================
+   CAROUSEL
+===================================================== */
+
+function initPartnerCarousel(element, partners) {
+
+  const track =
+    element.querySelector(".partner-track");
+
+  const prev =
+    element.querySelector(".partner-arrow.prev");
+
+  const next =
+    element.querySelector(".partner-arrow.next");
+
+  const dots =
+    element.querySelector(".partner-dots");
+
+
+  if (!track) return;
+
+
+  /*
+   * Desktop:
+   * 6 logo per halaman
+   *
+   * Mobile:
+   * 4 logo per halaman
+   */
+
+  const itemsPerPage =
+    window.innerWidth <= 700 ? 4 : 6;
+
+
+  const pages = [];
+
+
+  for (
+    let i = 0;
+    i < partners.length;
+    i += itemsPerPage
+  ) {
+
+    pages.push(
+      partners.slice(
+        i,
+        i + itemsPerPage
+      )
+    );
+
+  }
+
+
+  let currentPage = 0;
+
+
+  /*
+   * Buat halaman
+   */
+
+  pages.forEach(function (page) {
+
+    const pageElement =
+      document.createElement("div");
+
+    pageElement.className =
+      "partner-page";
+
+
+    page.forEach(function (partner) {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "partner-logo";
+
+
+      if (partner.logo) {
+
+        const img =
+          document.createElement("img");
+
+        img.src = partner.logo;
+
+        img.alt =
+          partner.name || "Partner";
+
+        img.loading = "lazy";
+
+        item.appendChild(img);
+
+      } else {
+
+        const text =
+          document.createElement("span");
+
+        text.className =
+          "wordmark";
+
+        text.textContent =
+          partner.name || "";
+
+        item.appendChild(text);
+
+      }
+
+
+      pageElement.appendChild(item);
+
+    });
+
+
+    track.appendChild(pageElement);
+
+  });
+
+
+  /*
+   * Kalau cuma satu halaman,
+   * tidak perlu tombol/dots.
+   */
+
+  if (pages.length <= 1) {
+
+    prev.style.display = "none";
+    next.style.display = "none";
+    dots.style.display = "none";
+
+    return;
+  }
+
+
+  /*
+   * Buat dots
+   */
+
+  pages.forEach(function (_, index) {
+
+    const dot =
+      document.createElement("button");
+
+    dot.type = "button";
+
+    dot.className =
+      "partner-dot";
+
+    dot.setAttribute(
+      "aria-label",
+      "Halaman " + (index + 1)
+    );
+
+
+    dot.addEventListener(
+      "click",
+      function () {
+
+        currentPage = index;
+
+        update();
+
+      }
+    );
+
+
+    dots.appendChild(dot);
+
+  });
+
+
+  function update() {
+
+    track.style.transform =
+      "translateX(-" +
+      (currentPage * 100) +
+      "%)";
+
+
+    prev.disabled =
+      currentPage === 0;
+
+    next.disabled =
+      currentPage === pages.length - 1;
+
+
+    dots
+      .querySelectorAll(".partner-dot")
+      .forEach(function (dot, index) {
+
+        dot.classList.toggle(
+          "active",
+          index === currentPage
+        );
+
+      });
+
+  }
+
+
+  prev.addEventListener(
+    "click",
+    function () {
+
+      if (currentPage > 0) {
+
+        currentPage--;
+
+        update();
+
+      }
+
+    }
+  );
+
+
+  next.addEventListener(
+    "click",
+    function () {
+
+      if (
+        currentPage <
+        pages.length - 1
+      ) {
+
+        currentPage++;
+
+        update();
+
+      }
+
+    }
+  );
+
+
+  update();
+}
+
+
+/* =====================================================
+   SHOW ALL CATEGORIES
+===================================================== */
+
+function initPartnerExpand(categoryCount) {
+
+  const button =
+    document.getElementById("partnerExpand");
+
+  const directory =
+    document.getElementById("partnerDirectory");
+
+
+  if (!button || !directory) return;
+
+
+  if (categoryCount <= 4) {
+
+    button.style.display = "none";
+
+    return;
+
+  }
+
+
+  let expanded = false;
+
+
+  button.addEventListener(
+    "click",
+    function () {
+
+      expanded = !expanded;
+
+
+      directory
+        .querySelectorAll(".partner-category")
+        .forEach(function (category, index) {
+
+          if (index >= 4) {
+
+            category.classList.toggle(
+              "is-hidden",
+              !expanded
+            );
+
+          }
+
+        });
+
+
+      button.innerHTML =
+        expanded
+          ? `
+            Sembunyikan Mitra
+            <span aria-hidden="true">↑</span>
+          `
+          : `
+            Lihat Semua Mitra
+            <span aria-hidden="true">→</span>
+          `;
+
+    }
+  );
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHTML(value) {
+
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

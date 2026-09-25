@@ -1,42 +1,326 @@
 {
   "presenting": [
     {
-      "name": "Nusantara Bank",
-      "logo": "assets/image/partners/nusantara-bank.png"
+      "name": "JFC",
+      "logo": "assets/gallery/partners/jfc.png"
     }
   ],
 
-  "strategic": [
+  "categories": [
     {
-      "name": "Kartika Capital",
-      "logo": "assets/image/partners/kartika-capital.png"
+      "id": "financial-investment",
+      "title": "Financial & Investment",
+      "description": "Institusi keuangan dan investor yang mendukung pertumbuhan industri film.",
+      "partners": [
+        {
+          "name": "BCA",
+          "logo": "assets/gallery/partners/bca.png"
+        },
+        {
+          "name": "East Ventures",
+          "logo": "assets/gallery/partners/east-ventures.png"
+        },
+        {
+          "name": "HSBC",
+          "logo": "assets/gallery/partners/hsbc.png"
+        },
+        {
+          "name": "Danantara",
+          "logo": "assets/gallery/partners/danantara.png"
+        },
+        {
+          "name": "BPJS",
+          "logo": "assets/gallery/partners/bpjs.png"
+        },
+        {
+          "name": "PwC",
+          "logo": "assets/gallery/partners/pwc.png"
+        },
+        {
+          "name": "DBS",
+          "logo": "assets/gallery/partners/dbs.png"
+        },
+        {
+          "name": "AC Ventures",
+          "logo": "assets/gallery/partners/ac-ventures.png"
+        }
+      ]
     },
-    {
-      "name": "StreamWave Asia",
-      "logo": "assets/image/partners/streamwave-asia.png"
-    },
-    {
-      "name": "Cinerama Media",
-      "logo": "assets/image/partners/cinerama-media.png"
-    }
-  ],
 
-  "media": [
     {
-      "name": "Layar Indonesia",
-      "logo": "assets/image/partners/layar-indonesia.png"
+      "id": "bumds",
+      "title": "BUMDs",
+      "description": "Perusahaan daerah yang mendukung ekosistem dan aktivitas industri di Jakarta.",
+      "partners": [
+        {
+          "name": "Jakpro",
+          "logo": "assets/gallery/partners/jakpro.png"
+        },
+        {
+          "name": "Bank Jakarta",
+          "logo": "assets/gallery/partners/bank-jakarta.png"
+        },
+        {
+          "name": "MRT Jakarta",
+          "logo": "assets/gallery/partners/mrt-jakarta.png"
+        },
+        {
+          "name": "LRT Jakarta",
+          "logo": "assets/gallery/partners/lrt-jakarta.png"
+        },
+        {
+          "name": "Jaya Ancol",
+          "logo": "assets/gallery/partners/jaya-ancol.png"
+        },
+        {
+          "name": "Jamkrida Jakarta",
+          "logo": "assets/gallery/partners/jamkrida-jakarta.png"
+        }
+      ]
     },
+
     {
-      "name": "FilmDaily",
-      "logo": "assets/image/partners/filmdaily.png"
+      "id": "bumn",
+      "title": "BUMN",
+      "description": "Perusahaan negara yang berkontribusi pada penguatan ekosistem industri dan ekonomi kreatif.",
+      "partners": [
+        {
+          "name": "Mandiri",
+          "logo": "assets/gallery/partners/mandiri.png"
+        },
+        {
+          "name": "BUMN",
+          "logo": "assets/gallery/partners/bumn.png"
+        },
+        {
+          "name": "TVRI",
+          "logo": "assets/gallery/partners/tvri.png"
+        },
+        {
+          "name": "Garuda Indonesia",
+          "logo": "assets/gallery/partners/garuda.png"
+        },
+        {
+          "name": "BNI",
+          "logo": "assets/gallery/partners/bni.png"
+        },
+        {
+          "name": "Bank BRI",
+          "logo": "assets/gallery/partners/bri.png"
+        },
+        {
+          "name": "Telkom Indonesia",
+          "logo": "assets/gallery/partners/telkom.png"
+        },
+        {
+          "name": "Danantara Indonesia",
+          "logo": "assets/gallery/partners/danantara.png"
+        }
+      ]
     },
+
     {
-      "name": "Sinema Now",
-      "logo": "assets/image/partners/sinema-now.png"
+      "id": "transportation",
+      "title": "Transportation Partner",
+      "description": "Mendukung mobilitas peserta dan konektivitas selama penyelenggaraan Jakarta Film Summit.",
+      "partners": [
+        {
+          "name": "Bluebird",
+          "logo": "assets/gallery/partners/bluebird.png"
+        },
+        {
+          "name": "Agoda",
+          "logo": "assets/gallery/partners/agoda.png"
+        },
+        {
+          "name": "Grab",
+          "logo": "assets/gallery/partners/grab.png"
+        },
+        {
+          "name": "Gojek",
+          "logo": "assets/gallery/partners/gojek.png"
+        }
+      ]
     },
+
     {
-      "name": "Berita Budaya",
-      "logo": "assets/image/partners/berita-budaya.png"
+      "id": "cinemas-otts",
+      "title": "Cinemas & OTTs",
+      "description": "Platform pemutaran dan distribusi yang membawa karya kepada penonton global.",
+      "partners": [
+        {
+          "name": "Cinema XXI",
+          "logo": "assets/gallery/partners/cinema-xxi.png"
+        },
+        {
+          "name": "Cinépolis",
+          "logo": "assets/gallery/partners/cinepolis.png"
+        },
+        {
+          "name": "CGV Cinemas",
+          "logo": "assets/gallery/partners/cgv.png"
+        },
+        {
+          "name": "Vidio",
+          "logo": "assets/gallery/partners/vidio.png"
+        },
+        {
+          "name": "Netflix",
+          "logo": "assets/gallery/partners/netflix.png"
+        }
+      ]
+    },
+
+    {
+      "id": "film-commission",
+      "title": "Film Commission",
+      "description": "Lembaga yang mendukung produksi dan promosi film di berbagai negara.",
+      "partners": [
+        {
+          "name": "Busan Film Commission",
+          "logo": "assets/gallery/partners/busan-film-commission.png"
+        },
+        {
+          "name": "World Film Commission",
+          "logo": "assets/gallery/partners/world-film-commission.png"
+        },
+        {
+          "name": "Tokyo Film Commission",
+          "logo": "assets/gallery/partners/tokyo-film-commission.png"
+        },
+        {
+          "name": "Film Development Council of the Philippines",
+          "logo": "assets/gallery/partners/fdcp.png"
+        },
+        {
+          "name": "Asian Film Commissions Network",
+          "logo": "assets/gallery/partners/afcnet.png"
+        },
+        {
+          "name": "Asian Film Alliance Network",
+          "logo": "assets/gallery/partners/afan.png"
+        },
+        {
+          "name": "Thailand Film Office",
+          "logo": "assets/gallery/partners/thailand-film-office.png"
+        },
+        {
+          "name": "Quezon City Film Commission",
+          "logo": "assets/gallery/partners/qcfc.png"
+        }
+      ]
+    },
+
+    {
+      "id": "government",
+      "title": "Government",
+      "description": "Dukungan kebijakan untuk pengembangan industri film dan ekonomi kreatif.",
+      "partners": [
+        {
+          "name": "EKRAF",
+          "logo": "assets/gallery/partners/ekraf.png"
+        },
+        {
+          "name": "Kementerian Kebudayaan",
+          "logo": "assets/gallery/partners/kementerian-kebudayaan.png"
+        },
+        {
+          "name": "BRIN",
+          "logo": "assets/gallery/partners/brin.png"
+        },
+        {
+          "name": "Direktorat Jenderal Pajak",
+          "logo": "assets/gallery/partners/djp.png"
+        },
+        {
+          "name": "Komdigi",
+          "logo": "assets/gallery/partners/komdigi.png"
+        },
+        {
+          "name": "Kemendikdasmen",
+          "logo": "assets/gallery/partners/kemendikdasmen.png"
+        },
+        {
+          "name": "Kemdiktisaintek",
+          "logo": "assets/gallery/partners/kemdiktisaintek.png"
+        },
+        {
+          "name": "Kementerian Investasi / BKPM",
+          "logo": "assets/gallery/partners/bkpm.png"
+        },
+        {
+          "name": "Direktorat Jenderal Kekayaan Intelektual",
+          "logo": "assets/gallery/partners/djki.png"
+        },
+        {
+          "name": "OJK",
+          "logo": "assets/gallery/partners/ojk.png"
+        },
+        {
+          "name": "KADIN Indonesia",
+          "logo": "assets/gallery/partners/kadin.png"
+        },
+        {
+          "name": "Bappenas",
+          "logo": "assets/gallery/partners/bappenas.png"
+        }
+      ]
+    },
+
+    {
+      "id": "government-abroad",
+      "title": "Government Abroad",
+      "description": "Kolaborasi dengan institusi pemerintah dan kota dari berbagai negara.",
+      "partners": [
+        {
+          "name": "City Council of Manila",
+          "logo": "assets/gallery/partners/manila.png"
+        },
+        {
+          "name": "Brunei",
+          "logo": "assets/gallery/partners/brunei.png"
+        },
+        {
+          "name": "Bangkok",
+          "logo": "assets/gallery/partners/bangkok.png"
+        },
+        {
+          "name": "Singapore",
+          "logo": "assets/gallery/partners/singapore.png"
+        },
+        {
+          "name": "Qatar",
+          "logo": "assets/gallery/partners/qatar.png"
+        }
+      ]
+    },
+
+    {
+      "id": "film-equipment",
+      "title": "Film Equipment & Others",
+      "description": "Teknologi dan layanan pendukung kebutuhan produksi film.",
+      "partners": [
+        {
+          "name": "Kodak",
+          "logo": "assets/gallery/partners/kodak.png"
+        },
+        {
+          "name": "Indomaret",
+          "logo": "assets/gallery/partners/indomaret.png"
+        },
+        {
+          "name": "Sony",
+          "logo": "assets/gallery/partners/sony.png"
+        },
+        {
+          "name": "Google",
+          "logo": "assets/gallery/partners/google.png"
+        },
+        {
+          "name": "AHP",
+          "logo": "assets/gallery/partners/ahp.png"
+        }
+      ]
     }
   ]
 }
