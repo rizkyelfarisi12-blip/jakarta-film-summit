@@ -911,8 +911,8 @@ h1.headline {
 .ticker-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 20px 20px;
+  gap: 30px;
+  padding: 14px 20px;
 }
 .ticker-item span {
   font-family: var(--font-display);
