@@ -15,7 +15,13 @@
   --mauve: #c67188;
   --gold: #e4c697;
   --red: #cc3315;
-  --grad: linear-gradient(120deg, #c67188 0%, #E4C697 37%, #CC3315 68%, #1E1E19 100%);
+  --grad: linear-gradient(
+    120deg,
+    #c67188 0%,
+    #e4c697 37%,
+    #cc3315 68%,
+    #1e1e19 100%
+  );
   --grad-tight: linear-gradient(120deg, #cc3315, #bf4419);
   --grad-wash: linear-gradient(
     160deg,
@@ -85,11 +91,7 @@ ul {
 button {
   font: inherit;
 }
-/* ---------- premium navbar ---------- */
-
-/* =======================================================
-   NAVBAR BASE
-   ======================================================= */
+/* ----------  navbar ---------- */
 .site-nav {
   position: fixed;
   top: 0;
@@ -202,7 +204,7 @@ button {
 /* Hover saat navbar transparan */
 .site-nav:not(.scrolled) .nav-links a:hover {
   color: #fff;
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 /* Hover saat navbar sudah scroll */
@@ -217,7 +219,6 @@ button {
   color: #f4f4f1;
   background: var(--ink);
 }
-
 
 /* =======================================================
    CTA — DAFTAR
@@ -773,14 +774,13 @@ button {
   z-index: 0;
   pointer-events: none;
 
-  background:
-    radial-gradient(
-      ellipse at center,
-      transparent 30%,
-      rgba(0, 0, 0, 0.12) 52%,
-      rgba(0, 0, 0, 0.42) 78%,
-      rgba(0, 0, 0, 0.72) 100%
-    );
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    rgba(0, 0, 0, 0.12) 52%,
+    rgba(0, 0, 0, 0.42) 78%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
 }
 .hero-watermark {
   position: absolute;
@@ -920,7 +920,7 @@ h1.headline {
   font-style: normal;
   font-size: 1rem;
   letter-spacing: 0.02em;
-  color: #ECECEA;
+  color: #ececea;
   white-space: nowrap;
   padding: 0 18px;
 }
@@ -928,7 +928,7 @@ h1.headline {
   width: 3px;
   height: 22px;
 
-  background: #ECECEA;
+  background: #ececea;
 
   flex: 0 0 auto;
 
@@ -1237,4 +1237,39 @@ footer .flinks a:hover {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: space-between;
+}
+
+/* =======================================================
+   MOBILE MENU — FIX LAYERING
+   ======================================================= */
+
+@media (max-width: 760px) {
+  /* Backdrop harus berada DI BAWAH navbar + menu */
+  .nav-backdrop {
+    z-index: 997;
+  }
+
+  /* Navbar harus berada di atas backdrop */
+  .site-nav {
+    z-index: 1000;
+  }
+
+  /* Menu drawer harus bisa menerima klik */
+  .nav-links {
+    position: absolute;
+    z-index: 1002;
+  }
+
+  /* Hamburger / X paling atas */
+  .nav-toggle {
+    position: relative;
+    z-index: 1003;
+  }
+
+  /* Semua link harus benar-benar clickable */
+  .nav-links a {
+    position: relative;
+    z-index: 1004;
+    pointer-events: auto;
+  }
 }
