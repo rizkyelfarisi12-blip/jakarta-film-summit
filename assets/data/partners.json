@@ -1,0 +1,42 @@
+{
+  "presenting": [
+    {
+      "name": "Nusantara Bank",
+      "logo": "assets/image/partners/nusantara-bank.png"
+    }
+  ],
+
+  "strategic": [
+    {
+      "name": "Kartika Capital",
+      "logo": "assets/image/partners/kartika-capital.png"
+    },
+    {
+      "name": "StreamWave Asia",
+      "logo": "assets/image/partners/streamwave-asia.png"
+    },
+    {
+      "name": "Cinerama Media",
+      "logo": "assets/image/partners/cinerama-media.png"
+    }
+  ],
+
+  "media": [
+    {
+      "name": "Layar Indonesia",
+      "logo": "assets/image/partners/layar-indonesia.png"
+    },
+    {
+      "name": "FilmDaily",
+      "logo": "assets/image/partners/filmdaily.png"
+    },
+    {
+      "name": "Sinema Now",
+      "logo": "assets/image/partners/sinema-now.png"
+    },
+    {
+      "name": "Berita Budaya",
+      "logo": "assets/image/partners/berita-budaya.png"
+    }
+  ]
+}
