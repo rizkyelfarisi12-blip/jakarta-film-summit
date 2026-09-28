@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
   initPartners();
 });
 
-
 /* =======================================================
    SPEAKERS
    ======================================================= */
@@ -17,7 +16,7 @@ async function initSpeakers() {
 
   try {
     const response = await fetch("assets/data/speakers.json", {
-      cache: "no-store"
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -99,7 +98,7 @@ async function initSpeakers() {
           if (firstExtraSpeaker) {
             firstExtraSpeaker.scrollIntoView({
               behavior: "smooth",
-              block: "center"
+              block: "center",
             });
           }
         }, 80);
@@ -107,7 +106,6 @@ async function initSpeakers() {
     });
 
     renderSpeakers();
-
   } catch (error) {
     console.error(error);
 
@@ -120,7 +118,6 @@ async function initSpeakers() {
     moreWrap.style.display = "none";
   }
 }
-
 
 /* =======================================================
    PARTNERS
@@ -135,17 +132,12 @@ async function initPartners() {
   }
 
   try {
-    const response = await fetch(
-      "assets/data/partners.json",
-      {
-        cache: "no-store"
-      }
-    );
+    const response = await fetch("assets/data/partners.json", {
+      cache: "no-store",
+    });
 
     if (!response.ok) {
-      throw new Error(
-        "partners.json gagal dimuat. Status: " + response.status
-      );
+      throw new Error("partners.json gagal dimuat. Status: " + response.status);
     }
 
     const data = await response.json();
@@ -153,19 +145,11 @@ async function initPartners() {
     console.log("PARTNERS DATA:", data);
 
     /* Presenting Partner */
-    renderPresentingPartner(
-      presenting,
-      data.presenting || []
-    );
+    renderPresentingPartner(presenting, data.presenting || []);
 
     /* Semua kategori */
-    renderPartnerCategories(
-      directory,
-      data.categories || []
-    );
-
+    renderPartnerCategories(directory, data.categories || []);
   } catch (error) {
-
     console.error("PARTNERS ERROR:", error);
 
     directory.innerHTML = `
@@ -178,13 +162,11 @@ async function initPartners() {
   }
 }
 
-
 /* =====================================================
    PRESENTING PARTNER
 ===================================================== */
 
 function renderPresentingPartner(container, partners) {
-
   if (!container) return;
 
   container.innerHTML = "";
@@ -201,7 +183,6 @@ function renderPresentingPartner(container, partners) {
   const partner = partners[0];
 
   if (partner.logo) {
-
     const img = document.createElement("img");
 
     img.src = partner.logo;
@@ -209,9 +190,7 @@ function renderPresentingPartner(container, partners) {
     img.loading = "lazy";
 
     container.appendChild(img);
-
   } else {
-
     const text = document.createElement("span");
 
     text.className = "wordmark";
@@ -221,19 +200,16 @@ function renderPresentingPartner(container, partners) {
   }
 }
 
-
 /* =====================================================
    RENDER CATEGORY
 ===================================================== */
 
 function renderPartnerCategories(container, categories) {
-
   container.innerHTML = "";
 
   console.log("JUMLAH KATEGORI:", categories.length);
 
   if (!categories.length) {
-
     container.innerHTML = `
       <div class="data-error">
         Belum ada kategori partner.
@@ -243,13 +219,10 @@ function renderPartnerCategories(container, categories) {
     return;
   }
 
-
   categories.forEach(function (category, index) {
-
     const element = document.createElement("article");
 
     element.className = "partner-category";
-
 
     /*
      * 4 kategori pertama ditampilkan.
@@ -259,7 +232,6 @@ function renderPartnerCategories(container, categories) {
     if (index >= 4) {
       element.classList.add("is-hidden");
     }
-
 
     element.innerHTML = `
       <div class="partner-category-inner">
@@ -309,43 +281,28 @@ function renderPartnerCategories(container, categories) {
       </div>
     `;
 
-
     container.appendChild(element);
 
-
-    initPartnerCarousel(
-      element,
-      category.partners || []
-    );
-
+    initPartnerCarousel(element, category.partners || []);
   });
-
 
   initPartnerExpand(categories.length);
 }
-
 
 /* =====================================================
    CAROUSEL
 ===================================================== */
 
 function initPartnerCarousel(element, partners) {
+  const track = element.querySelector(".partner-track");
 
-  const track =
-    element.querySelector(".partner-track");
+  const prev = element.querySelector(".partner-arrow.prev");
 
-  const prev =
-    element.querySelector(".partner-arrow.prev");
+  const next = element.querySelector(".partner-arrow.next");
 
-  const next =
-    element.querySelector(".partner-arrow.next");
-
-  const dots =
-    element.querySelector(".partner-dots");
-
+  const dots = element.querySelector(".partner-dots");
 
   if (!track) return;
-
 
   /*
    * Desktop:
@@ -355,93 +312,55 @@ function initPartnerCarousel(element, partners) {
    * 4 logo per halaman
    */
 
-  const itemsPerPage =
-    window.innerWidth <= 700 ? 4 : 6;
-
+  const itemsPerPage = window.innerWidth <= 700 ? 4 : 6;
 
   const pages = [];
 
-
-  for (
-    let i = 0;
-    i < partners.length;
-    i += itemsPerPage
-  ) {
-
-    pages.push(
-      partners.slice(
-        i,
-        i + itemsPerPage
-      )
-    );
-
+  for (let i = 0; i < partners.length; i += itemsPerPage) {
+    pages.push(partners.slice(i, i + itemsPerPage));
   }
 
-
   let currentPage = 0;
-
 
   /*
    * Buat halaman
    */
 
   pages.forEach(function (page) {
+    const pageElement = document.createElement("div");
 
-    const pageElement =
-      document.createElement("div");
-
-    pageElement.className =
-      "partner-page";
-
+    pageElement.className = "partner-page";
 
     page.forEach(function (partner) {
+      const item = document.createElement("div");
 
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "partner-logo";
-
+      item.className = "partner-logo";
 
       if (partner.logo) {
-
-        const img =
-          document.createElement("img");
+        const img = document.createElement("img");
 
         img.src = partner.logo;
 
-        img.alt =
-          partner.name || "Partner";
+        img.alt = partner.name || "Partner";
 
         img.loading = "lazy";
 
         item.appendChild(img);
-
       } else {
+        const text = document.createElement("span");
 
-        const text =
-          document.createElement("span");
+        text.className = "wordmark";
 
-        text.className =
-          "wordmark";
-
-        text.textContent =
-          partner.name || "";
+        text.textContent = partner.name || "";
 
         item.appendChild(text);
-
       }
 
-
       pageElement.appendChild(item);
-
     });
 
-
     track.appendChild(pageElement);
-
   });
-
 
   /*
    * Kalau cuma satu halaman,
@@ -449,7 +368,6 @@ function initPartnerCarousel(element, partners) {
    */
 
   if (pages.length <= 1) {
-
     prev.style.display = "none";
     next.style.display = "none";
     dots.style.display = "none";
@@ -457,185 +375,106 @@ function initPartnerCarousel(element, partners) {
     return;
   }
 
-
   /*
    * Buat dots
    */
 
   pages.forEach(function (_, index) {
-
-    const dot =
-      document.createElement("button");
+    const dot = document.createElement("button");
 
     dot.type = "button";
 
-    dot.className =
-      "partner-dot";
+    dot.className = "partner-dot";
 
-    dot.setAttribute(
-      "aria-label",
-      "Halaman " + (index + 1)
-    );
+    dot.setAttribute("aria-label", "Halaman " + (index + 1));
 
+    dot.addEventListener("click", function () {
+      currentPage = index;
 
-    dot.addEventListener(
-      "click",
-      function () {
-
-        currentPage = index;
-
-        update();
-
-      }
-    );
-
+      update();
+    });
 
     dots.appendChild(dot);
-
   });
 
-
   function update() {
+    track.style.transform = "translateX(-" + currentPage * 100 + "%)";
 
-    track.style.transform =
-      "translateX(-" +
-      (currentPage * 100) +
-      "%)";
+    prev.disabled = currentPage === 0;
 
+    next.disabled = currentPage === pages.length - 1;
 
-    prev.disabled =
-      currentPage === 0;
-
-    next.disabled =
-      currentPage === pages.length - 1;
-
-
-    dots
-      .querySelectorAll(".partner-dot")
-      .forEach(function (dot, index) {
-
-        dot.classList.toggle(
-          "active",
-          index === currentPage
-        );
-
-      });
-
+    dots.querySelectorAll(".partner-dot").forEach(function (dot, index) {
+      dot.classList.toggle("active", index === currentPage);
+    });
   }
 
+  prev.addEventListener("click", function () {
+    if (currentPage > 0) {
+      currentPage--;
 
-  prev.addEventListener(
-    "click",
-    function () {
-
-      if (currentPage > 0) {
-
-        currentPage--;
-
-        update();
-
-      }
-
+      update();
     }
-  );
+  });
 
+  next.addEventListener("click", function () {
+    if (currentPage < pages.length - 1) {
+      currentPage++;
 
-  next.addEventListener(
-    "click",
-    function () {
-
-      if (
-        currentPage <
-        pages.length - 1
-      ) {
-
-        currentPage++;
-
-        update();
-
-      }
-
+      update();
     }
-  );
-
+  });
 
   update();
 }
-
 
 /* =====================================================
    SHOW ALL CATEGORIES
 ===================================================== */
 
 function initPartnerExpand(categoryCount) {
+  const button = document.getElementById("partnerExpand");
 
-  const button =
-    document.getElementById("partnerExpand");
-
-  const directory =
-    document.getElementById("partnerDirectory");
-
+  const directory = document.getElementById("partnerDirectory");
 
   if (!button || !directory) return;
 
-
   if (categoryCount <= 4) {
-
     button.style.display = "none";
 
     return;
-
   }
-
 
   let expanded = false;
 
+  button.addEventListener("click", function () {
+    expanded = !expanded;
 
-  button.addEventListener(
-    "click",
-    function () {
+    directory
+      .querySelectorAll(".partner-category")
+      .forEach(function (category, index) {
+        if (index >= 4) {
+          category.classList.toggle("is-hidden", !expanded);
+        }
+      });
 
-      expanded = !expanded;
-
-
-      directory
-        .querySelectorAll(".partner-category")
-        .forEach(function (category, index) {
-
-          if (index >= 4) {
-
-            category.classList.toggle(
-              "is-hidden",
-              !expanded
-            );
-
-          }
-
-        });
-
-
-      button.innerHTML =
-        expanded
-          ? `
+    button.innerHTML = expanded
+      ? `
             Sembunyikan Mitra
             <span aria-hidden="true">↑</span>
           `
-          : `
+      : `
             Lihat Semua Mitra
             <span aria-hidden="true">→</span>
           `;
-
-    }
-  );
+  });
 }
-
 
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
 
 function escapeHTML(value) {
-
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

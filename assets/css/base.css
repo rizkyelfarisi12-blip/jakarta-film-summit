@@ -346,23 +346,14 @@ button {
 
 .nav-links a::before {
   content: "";
-
   position: absolute;
-
   left: 50%;
-
   bottom: 5px;
-
   width: 0;
-
   height: 2px;
-
   border-radius: 999px;
-
   background: var(--rust);
-
   transform: translateX(-50%);
-
   transition: width 0.2s ease;
 }
 
@@ -372,21 +363,16 @@ button {
 
 .nav-links a:hover {
   color: var(--ink);
-
   background: rgba(194, 204, 204, 0.28);
-
   transform: translateY(-1px);
 }
 
 /* =======================================================
    ACTIVE NAVIGATION
    ======================================================= */
-
 .nav-links a.active {
   color: #f4f4f1;
-
   background: var(--ink);
-
   box-shadow: 0 4px 12px rgba(30, 30, 25, 0.14);
 }
 
@@ -400,29 +386,17 @@ button {
 
 .nav-cta {
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   flex: 0 0 auto;
-
   text-decoration: none;
-
   color: #f4f4f1;
-
   font-size: 0.84rem;
-
   font-weight: 700;
-
   letter-spacing: -0.005em;
-
   padding: 10px 18px;
-
   border-radius: 999px;
-
   background: var(--grad-tight);
-
   box-shadow: 0 5px 14px rgba(30, 30, 25, 0.12);
 
   transition:
@@ -1279,7 +1253,6 @@ footer .flinks a:hover {
    ======================================================= */
 
 @media (max-width: 760px) {
-
   /* Drawer selalu terang */
   .nav-links {
     background: #f4f4f1 !important;

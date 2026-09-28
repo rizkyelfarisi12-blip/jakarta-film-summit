@@ -519,7 +519,6 @@ h1.headline {
 ======================================================= */
 
 @media (max-width: 760px) {
-
   /* ---------------------------------
      GLOBAL MOBILE GUTTER
   --------------------------------- */
@@ -532,7 +531,6 @@ h1.headline {
     padding-right: 18px;
     box-sizing: border-box;
   }
-
 
   /* ---------------------------------
      HERO
@@ -556,11 +554,10 @@ h1.headline {
   }
 
   .hero p.lead {
-    font-size: .96rem;
+    font-size: 0.96rem;
     line-height: 1.6;
     max-width: 100%;
   }
-
 
   /* ---------------------------------
      FILTER
@@ -589,11 +586,10 @@ h1.headline {
 
     padding: 8px 14px;
 
-    font-size: .78rem;
+    font-size: 0.78rem;
 
     white-space: nowrap;
   }
-
 
   /* ---------------------------------
      FEATURE NEWS
@@ -624,7 +620,7 @@ h1.headline {
   }
 
   .news-tag {
-    font-size: .67rem;
+    font-size: 0.67rem;
     padding: 5px 10px;
     margin-bottom: 10px;
   }
@@ -637,21 +633,20 @@ h1.headline {
   }
 
   .feature-body p {
-    font-size: .86rem;
+    font-size: 0.86rem;
     line-height: 1.55;
 
     margin-bottom: 12px;
   }
 
   .news-meta {
-    font-size: .73rem;
+    font-size: 0.73rem;
     margin-bottom: 12px;
   }
 
   .feature-body a {
-    font-size: .84rem;
+    font-size: 0.84rem;
   }
-
 
   /* ---------------------------------
      NEWS LIST
@@ -685,7 +680,7 @@ h1.headline {
   .news-row h4 {
     grid-column: 1;
 
-    font-size: .96rem;
+    font-size: 0.96rem;
     line-height: 1.35;
 
     margin: 0;
@@ -694,7 +689,7 @@ h1.headline {
   .news-row p {
     grid-column: 1;
 
-    font-size: .82rem;
+    font-size: 0.82rem;
     line-height: 1.5;
 
     max-width: none;
@@ -711,9 +706,8 @@ h1.headline {
     width: 32px;
     height: 32px;
 
-    font-size: .85rem;
+    font-size: 0.85rem;
   }
-
 
   /* ---------------------------------
      MEDIA INFO
@@ -738,7 +732,7 @@ h1.headline {
 
     padding: 11px 0;
 
-    font-size: .82rem;
+    font-size: 0.82rem;
 
     align-items: flex-start;
   }
@@ -771,21 +765,20 @@ h1.headline {
   }
 
   .contact-card h4 {
-    font-size: .98rem;
+    font-size: 0.98rem;
   }
 
   .contact-card .role {
-    font-size: .78rem;
+    font-size: 0.78rem;
 
     margin-bottom: 12px;
   }
 
   .contact-card a {
-    font-size: .82rem;
+    font-size: 0.82rem;
 
     overflow-wrap: anywhere;
   }
-
 
   /* ---------------------------------
      DOWNLOAD
@@ -811,20 +804,19 @@ h1.headline {
   }
 
   .download-card h4 {
-    font-size: .94rem;
+    font-size: 0.94rem;
   }
 
   .download-card p {
-    font-size: .78rem;
+    font-size: 0.78rem;
     line-height: 1.5;
 
     margin-bottom: 12px;
   }
 
   .download-card a {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
-
 
   /* ---------------------------------
      RECAP STATS
@@ -849,10 +841,9 @@ h1.headline {
   }
 
   .recap-label {
-    font-size: .62rem;
+    font-size: 0.62rem;
     line-height: 1.35;
   }
-
 
   /* ---------------------------------
      VIDEO
@@ -880,9 +871,8 @@ h1.headline {
     left: 16px;
     bottom: 16px;
 
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
-
 
   /* ---------------------------------
      PHOTO RAIL
@@ -911,7 +901,6 @@ h1.headline {
     background-position: 6px center;
   }
 
-
   /* ---------------------------------
      TESTIMONIAL
   --------------------------------- */
@@ -935,35 +924,31 @@ h1.headline {
   }
 
   .testimonial p {
-    font-size: .84rem;
+    font-size: 0.84rem;
     line-height: 1.55;
 
     margin-bottom: 13px;
   }
 
   .testimonial .who {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 
   .testimonial .co {
-    font-size: .74rem;
+    font-size: 0.74rem;
   }
-
 }
-
 
 /* =======================================================
    SMALL PHONE
 ======================================================= */
 
 @media (max-width: 480px) {
-
   .news-page .wrap,
   body .wrap {
     padding-left: 16px;
     padding-right: 16px;
   }
-
 
   /* Hero */
 
@@ -977,9 +962,8 @@ h1.headline {
   }
 
   .hero p.lead {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
-
 
   /* Feature */
 
@@ -995,7 +979,6 @@ h1.headline {
     font-size: 1.08rem;
   }
 
-
   /* News */
 
   .news-row {
@@ -1007,22 +990,21 @@ h1.headline {
   .news-row-meta {
     gap: 6px;
 
-    font-size: .7rem;
+    font-size: 0.7rem;
   }
 
   .news-row h4 {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 
   .news-row p {
-    font-size: .78rem;
+    font-size: 0.78rem;
   }
 
   .news-row-arrow {
     width: 30px;
     height: 30px;
   }
-
 
   /* Fact sheet */
 
@@ -1031,9 +1013,8 @@ h1.headline {
   }
 
   .fact-row {
-    font-size: .76rem;
+    font-size: 0.76rem;
   }
-
 
   /* Stats */
 
@@ -1046,14 +1027,12 @@ h1.headline {
   }
 
   .recap-label {
-    font-size: .56rem;
+    font-size: 0.56rem;
   }
-
 
   /* Photo */
 
   .photo-frame {
     width: 145px;
   }
-
 }

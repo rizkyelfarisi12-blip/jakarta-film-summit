@@ -32,22 +32,39 @@ function segmentLabel(participant) {
     media: "Media",
     student: "Student",
     academia: "Academia",
-    creative: "Creative Industry"
+    creative: "Creative Industry",
   };
 
   return labels[segment] || segment || "-";
 }
 
-function el(id) { return document.getElementById(id); }
-function timeShort(iso) { if (!iso) return ""; return new Date(iso).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }); }
-function timeFull(iso) { if (!iso) return "—"; return new Date(iso).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }); }
+function el(id) {
+  return document.getElementById(id);
+}
+function timeShort(iso) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+function timeFull(iso) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 let staffName = "";
 let participants = [];
 let checkinLog = [];
 let settings = { quota: null, deadline: null };
-let currentMode = "scan";           // check-in sub-tab: scan | search
-let pesertaStatusFilter = "all";    // peserta view: all | in | out
+let currentMode = "scan"; // check-in sub-tab: scan | search
+let pesertaStatusFilter = "all"; // peserta view: all | in | out
 let pesertaSegmentFilter = "all";
 let pollTimer = null;
 let donutChart = null;
@@ -97,7 +114,7 @@ async function startQrScanner() {
     let cameraId = cameras[0].id;
 
     const backCamera = cameras.find((camera) =>
-      /back|rear|environment/i.test(camera.label)
+      /back|rear|environment/i.test(camera.label),
     );
 
     if (backCamera) {
@@ -110,11 +127,11 @@ async function startQrScanner() {
         fps: 10,
         qrbox: {
           width: 250,
-          height: 250
-        }
+          height: 250,
+        },
       },
       onQrCodeSuccess,
-      onQrCodeError
+      onQrCodeError,
     );
 
     scannerRunning = true;
@@ -124,7 +141,6 @@ async function startQrScanner() {
 
     scannerStatus.textContent =
       "Kamera aktif. Arahkan kamera ke QR tiket peserta.";
-      
   } catch (error) {
     console.error("QR scanner error:", error);
 
@@ -145,16 +161,13 @@ function onQrCodeSuccess(decodedText) {
   const token = decodedText.trim();
 
   const found = participants.find(
-    (p) =>
-      p.qrToken &&
-      p.qrToken.toUpperCase() === token.toUpperCase()
+    (p) => p.qrToken && p.qrToken.toUpperCase() === token.toUpperCase(),
   );
 
   if (found) {
     stopQrScanner();
 
-    scannerStatus.textContent =
-      "QR berhasil dibaca: " + found.id;
+    scannerStatus.textContent = "QR berhasil dibaca: " + found.id;
 
     renderTicket(found);
 
@@ -166,20 +179,17 @@ function onQrCodeSuccess(decodedText) {
   try {
     const url = new URL(token);
     const possibleToken =
-      url.searchParams.get("qrToken") ||
-      url.searchParams.get("token");
+      url.searchParams.get("qrToken") || url.searchParams.get("token");
 
     if (possibleToken) {
       const participant = participants.find(
         (p) =>
-          p.qrToken &&
-          p.qrToken.toUpperCase() === possibleToken.toUpperCase()
+          p.qrToken && p.qrToken.toUpperCase() === possibleToken.toUpperCase(),
       );
 
       if (participant) {
         stopQrScanner();
-        scannerStatus.textContent =
-          "QR berhasil dibaca: " + participant.id;
+        scannerStatus.textContent = "QR berhasil dibaca: " + participant.id;
         renderTicket(participant);
         return;
       }
@@ -190,8 +200,7 @@ function onQrCodeSuccess(decodedText) {
 
   stopQrScanner();
 
-  scannerStatus.textContent =
-    "QR terbaca, tetapi peserta tidak ditemukan.";
+  scannerStatus.textContent = "QR terbaca, tetapi peserta tidak ditemukan.";
 
   el("notFoundCard").classList.remove("hidden");
 }
@@ -224,8 +233,7 @@ async function stopQrScanner() {
   startScannerBtn.style.display = "inline-flex";
   stopScannerBtn.style.display = "none";
 
-  scannerStatus.textContent =
-    'Tekan "Buka Kamera" untuk mulai scan QR.';
+  scannerStatus.textContent = 'Tekan "Buka Kamera" untuk mulai scan QR.';
 }
 
 function getCameraErrorMessage(error) {
@@ -249,15 +257,11 @@ function getCameraErrorMessage(error) {
     return "Kamera tidak ditemukan.";
   }
 
-  if (
-    error.name === "NotReadableError"
-  ) {
+  if (error.name === "NotReadableError") {
     return "Kamera sedang digunakan aplikasi lain.";
   }
 
-  if (
-    error.name === "SecurityError"
-  ) {
+  if (error.name === "SecurityError") {
     return "Browser memblokir akses kamera karena alasan keamanan.";
   }
 
@@ -268,7 +272,9 @@ function getCameraErrorMessage(error) {
 // Login (email + password, session-cookie based)
 // =================================================================
 el("loginBtn").addEventListener("click", doLogin);
-el("staffPasswordInput").addEventListener("keydown", (e) => { if (e.key === "Enter") doLogin(); });
+el("staffPasswordInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") doLogin();
+});
 
 async function doLogin() {
   const email = el("staffEmailInput").value.trim();
@@ -297,7 +303,8 @@ async function doLogin() {
     const user = await res.json();
     enterApp(user.nama);
   } catch (e) {
-    errBox.textContent = "Tidak bisa menghubungi server. (Backend belum terhubung?)";
+    errBox.textContent =
+      "Tidak bisa menghubungi server. (Backend belum terhubung?)";
     errBox.style.display = "block";
     console.error(e);
   } finally {
@@ -316,8 +323,13 @@ function enterApp(nama) {
 
 el("logoutBtn").addEventListener("click", async () => {
   try {
-    await fetch(`${API_BASE}/logout`, { method: "POST", credentials: "include" });
-  } catch (e) { /* ignore */ }
+    await fetch(`${API_BASE}/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+  } catch (e) {
+    /* ignore */
+  }
   clearInterval(pollTimer);
   el("appShell").classList.add("hidden");
   el("loginScreen").classList.remove("hidden");
@@ -332,7 +344,9 @@ el("logoutBtn").addEventListener("click", async () => {
       const user = await res.json();
       enterApp(user.nama);
     }
-  } catch (e) { /* not logged in yet — show login screen as normal */ }
+  } catch (e) {
+    /* not logged in yet — show login screen as normal */
+  }
 })();
 
 // =================================================================
@@ -340,9 +354,13 @@ el("logoutBtn").addEventListener("click", async () => {
 // =================================================================
 document.querySelectorAll(".nav-item").forEach((btn) => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".nav-item").forEach((b) => b.classList.remove("active"));
+    document
+      .querySelectorAll(".nav-item")
+      .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    ["scan", "dashboard", "peserta", "settings"].forEach((v) => el("view-" + v).classList.add("hidden"));
+    ["scan", "dashboard", "peserta", "settings"].forEach((v) =>
+      el("view-" + v).classList.add("hidden"),
+    );
     el("view-" + btn.dataset.view).classList.remove("hidden");
   });
 });
@@ -361,7 +379,8 @@ async function fetchData() {
       fetch(`${API_BASE}/participants`, { credentials: "include" }),
       fetch(`${API_BASE}/settings`, { credentials: "include" }),
     ]);
-    if (pRes.status === 401 || sRes.status === 401) return handleSessionExpired();
+    if (pRes.status === 401 || sRes.status === 401)
+      return handleSessionExpired();
     if (!pRes.ok) {
       const data = await pRes.json().catch(() => ({}));
       throw new Error(data.error || `Participants API error (${pRes.status})`);
@@ -401,7 +420,9 @@ function renderAll() {
 // =================================================================
 document.querySelectorAll(".tab").forEach((btn) => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach((b) => b.classList.remove("active"));
+    document
+      .querySelectorAll(".tab")
+      .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     currentMode = btn.dataset.mode;
     el("modeScanPanel").classList.toggle("hidden", currentMode !== "scan");
@@ -411,36 +432,57 @@ document.querySelectorAll(".tab").forEach((btn) => {
   });
 });
 
-el("verifyBtn").addEventListener("click", () => lookupToken(el("tokenInput").value));
-el("tokenInput").addEventListener("keydown", (e) => { if (e.key === "Enter") lookupToken(el("tokenInput").value); });
+el("verifyBtn").addEventListener("click", () =>
+  lookupToken(el("tokenInput").value),
+);
+el("tokenInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") lookupToken(el("tokenInput").value);
+});
 
 function lookupToken(token) {
   el("resultTicket").classList.add("hidden");
   el("notFoundCard").classList.add("hidden");
   const t = token.trim();
   if (!t) return;
-  const found = participants.find((p) => p.qrToken.toUpperCase() === t.toUpperCase());
-  if (found) renderTicket(found); else el("notFoundCard").classList.remove("hidden");
+  const found = participants.find(
+    (p) => p.qrToken.toUpperCase() === t.toUpperCase(),
+  );
+  if (found) renderTicket(found);
+  else el("notFoundCard").classList.remove("hidden");
 }
 
 el("checkinSearchInput").addEventListener("input", (e) => {
   const q = e.target.value.trim().toLowerCase();
   el("resultTicket").classList.add("hidden");
-  const matches = q ? participants.filter((p) =>
-    p.fullname.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)
-  ) : [];
-  el("searchEmptyNote").classList.toggle("hidden", !(q && matches.length === 0));
-  el("searchMatches").innerHTML = matches.map((p) => `
+  const matches = q
+    ? participants.filter(
+        (p) =>
+          p.fullname.toLowerCase().includes(q) ||
+          p.email.toLowerCase().includes(q) ||
+          p.id.toLowerCase().includes(q),
+      )
+    : [];
+  el("searchEmptyNote").classList.toggle(
+    "hidden",
+    !(q && matches.length === 0),
+  );
+  el("searchMatches").innerHTML = matches
+    .map(
+      (p) => `
     <div class="matchrow" data-id="${p.id}">
       <div><div class="name">${p.fullname}</div><div class="meta">${p.email} · ${p.id}</div></div>
       <div class="status-badge ${p.kehadiran ? "done" : "valid"}">${p.kehadiran ? "✓ Sudah check-in" : "⏱ Belum check-in"}</div>
-    </div>`).join("");
-  el("searchMatches").querySelectorAll(".matchrow").forEach((row) => {
-    row.addEventListener("click", () => {
-      const p = participants.find((x) => x.id === row.dataset.id);
-      if (p) renderTicket(p);
+    </div>`,
+    )
+    .join("");
+  el("searchMatches")
+    .querySelectorAll(".matchrow")
+    .forEach((row) => {
+      row.addEventListener("click", () => {
+        const p = participants.find((x) => x.id === row.dataset.id);
+        if (p) renderTicket(p);
+      });
     });
-  });
 });
 
 function renderTicket(p) {
@@ -460,9 +502,11 @@ function renderTicket(p) {
       <div class="detail-row">🎬 <strong>${segmentLabel(p)}</strong></div>
     </div>
     <div class="ticket-footer">
-      ${p.kehadiran
-        ? `<div class="timestamp">⏱ Check-in pukul ${timeShort(p.waktu_checkin)} oleh ${p.checkin_oleh}</div>`
-        : `<div></div><button class="btn btn-primary" id="confirmCheckinBtn">✓ Check-in Sekarang</button>`}
+      ${
+        p.kehadiran
+          ? `<div class="timestamp">⏱ Check-in pukul ${timeShort(p.waktu_checkin)} oleh ${p.checkin_oleh}</div>`
+          : `<div></div><button class="btn btn-primary" id="confirmCheckinBtn">✓ Check-in Sekarang</button>`
+      }
     </div>`;
   if (!p.kehadiran) {
     el("confirmCheckinBtn").addEventListener("click", () => doCheckIn(p));
@@ -481,12 +525,19 @@ async function doCheckIn(p) {
     const data = await res.json();
     const updated = data.participant;
     participants = participants.map((x) => (x.id === updated.id ? updated : x));
-    checkinLog.unshift({ id: updated.id, nama: updated.fullname, time: updated.waktu_checkin, staff: staffName });
+    checkinLog.unshift({
+      id: updated.id,
+      nama: updated.fullname,
+      time: updated.waktu_checkin,
+      staff: staffName,
+    });
     renderTicket(updated);
     renderLog();
     renderAll();
   } catch (e) {
-    alert("Gagal check-in. Cek koneksi ke backend.\n\n(Backend belum terhubung — lihat jfs-api-reference.md)");
+    alert(
+      "Gagal check-in. Cek koneksi ke backend.\n\n(Backend belum terhubung — lihat jfs-api-reference.md)",
+    );
     console.error(e);
   }
 }
@@ -497,9 +548,14 @@ function renderLog() {
     box.innerHTML = `<p class="empty-note" style="margin-top:0;">Belum ada peserta yang check-in.</p>`;
     return;
   }
-  box.innerHTML = checkinLog.slice(0, 20).map((e) => `
+  box.innerHTML = checkinLog
+    .slice(0, 20)
+    .map(
+      (e) => `
     <div class="log-row"><span>${e.nama}</span><span class="who">${timeShort(e.time)} · ${e.staff}</span></div>
-  `).join("");
+  `,
+    )
+    .join("");
 }
 
 // =================================================================
@@ -513,12 +569,17 @@ function renderDashboard() {
   const miss = total - hadir;
   const rate = total ? Math.round((hadir / total) * 100) : 0;
 
-  el("dashboardSyncLabel").textContent = "Sync " + timeShort(new Date().toISOString());
+  el("dashboardSyncLabel").textContent =
+    "Sync " + timeShort(new Date().toISOString());
   el("valTotal").textContent = total;
   el("valHadir").textContent = hadir;
   el("valMiss").textContent = miss;
-  el("subHadir").textContent = total ? `${rate}% dari total terdaftar` : "Belum ada data";
-  el("subMiss").textContent = total ? `${100 - rate}% belum melakukan absen` : "Belum ada data";
+  el("subHadir").textContent = total
+    ? `${rate}% dari total terdaftar`
+    : "Belum ada data";
+  el("subMiss").textContent = total
+    ? `${100 - rate}% belum melakukan absen`
+    : "Belum ada data";
 
   renderDonut(total, hadir, miss, rate);
   renderTimeline(participants);
@@ -529,7 +590,10 @@ function renderDonut(total, hadir, miss, rate) {
   const wrap = el("donutWrap");
   if (total === 0) {
     wrap.innerHTML = `<div class="empty-chart">Belum ada data peserta</div>`;
-    if (donutChart) { donutChart.destroy(); donutChart = null; }
+    if (donutChart) {
+      donutChart.destroy();
+      donutChart = null;
+    }
     return;
   }
   wrap.innerHTML = `
@@ -548,8 +612,19 @@ function renderDonut(total, hadir, miss, rate) {
   if (donutChart) donutChart.destroy();
   donutChart = new Chart(ctx, {
     type: "doughnut",
-    data: { datasets: [{ data: [hadir, miss], backgroundColor: ["#59B292", "#FF6A14"], borderWidth: 0 }] },
-    options: { cutout: "72%", plugins: { legend: { display: false }, tooltip: { enabled: true } } },
+    data: {
+      datasets: [
+        {
+          data: [hadir, miss],
+          backgroundColor: ["#59B292", "#FF6A14"],
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      cutout: "72%",
+      plugins: { legend: { display: false }, tooltip: { enabled: true } },
+    },
   });
 }
 
@@ -565,7 +640,10 @@ function renderTimeline(list) {
   const wrap = el("timelineWrap");
   if (labels.length === 0) {
     wrap.innerHTML = `<div class="empty-chart">Belum ada peserta yang absen</div>`;
-    if (timelineChart) { timelineChart.destroy(); timelineChart = null; }
+    if (timelineChart) {
+      timelineChart.destroy();
+      timelineChart = null;
+    }
     return;
   }
   if (!document.getElementById("timelineChart")) {
@@ -575,12 +653,29 @@ function renderTimeline(list) {
   if (timelineChart) timelineChart.destroy();
   timelineChart = new Chart(ctx, {
     type: "bar",
-    data: { labels, datasets: [{ data: labels.map((k) => buckets[k]), backgroundColor: "#FFC94D", borderRadius: 5, maxBarThickness: 36 }] },
+    data: {
+      labels,
+      datasets: [
+        {
+          data: labels.map((k) => buckets[k]),
+          backgroundColor: "#FFC94D",
+          borderRadius: 5,
+          maxBarThickness: 36,
+        },
+      ],
+    },
     options: {
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { display: false }, ticks: { color: "#7A7168", font: { size: 11.5 } } },
-        y: { beginAtZero: true, ticks: { precision: 0, color: "#7A7168", font: { size: 11.5 } }, grid: { color: "#E6D9BC" } },
+        x: {
+          grid: { display: false },
+          ticks: { color: "#7A7168", font: { size: 11.5 } },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0, color: "#7A7168", font: { size: 11.5 } },
+          grid: { color: "#E6D9BC" },
+        },
       },
     },
   });
@@ -604,13 +699,17 @@ function renderNegaraBreakdown(list) {
     <table class="inst-table">
       <thead><tr><th>Segment</th><th>Terdaftar</th><th>Sudah Absen</th><th style="width:100px;">Proporsi</th></tr></thead>
       <tbody>
-        ${rows.map((r) => `
+        ${rows
+          .map(
+            (r) => `
           <tr>
             <td style="font-weight:500;">${r.segment}</td>
             <td>${r.total}</td>
             <td>${r.hadir}</td>
             <td><div class="inst-bar-wrap"><div class="inst-bar" style="width:${r.total ? (r.hadir / r.total) * 100 : 0}%"></div></div></td>
-          </tr>`).join("")}
+          </tr>`,
+          )
+          .join("")}
       </tbody>
     </table>`;
 }
@@ -620,13 +719,18 @@ function renderNegaraBreakdown(list) {
 // =================================================================
 document.querySelectorAll("#view-peserta .filter-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll("#view-peserta .filter-btn").forEach((b) => b.classList.remove("active"));
+    document
+      .querySelectorAll("#view-peserta .filter-btn")
+      .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     pesertaStatusFilter = btn.dataset.status;
     renderPeserta();
   });
 });
-el("segmentFilter").addEventListener("change", (e) => { pesertaSegmentFilter = e.target.value; renderPeserta(); });
+el("segmentFilter").addEventListener("change", (e) => {
+  pesertaSegmentFilter = e.target.value;
+  renderPeserta();
+});
 el("pesertaSearchInput").addEventListener("input", renderPeserta);
 el("pesertaRefreshBtn").addEventListener("click", fetchData);
 el("exportPdfBtn").addEventListener("click", () => window.print());
@@ -634,30 +738,52 @@ el("exportPdfBtn").addEventListener("click", () => window.print());
 function populateSegmentFilter() {
   const select = el("segmentFilter");
   const current = select.value;
-  const segments = Array.from(new Set(participants.map((p) => segmentLabel(p) || "Tidak diketahui"))).sort();
-  select.innerHTML = `<option value="all">Semua Segment</option>` + segments.map((c) => `<option value="${c}">${c}</option>`).join("");
+  const segments = Array.from(
+    new Set(participants.map((p) => segmentLabel(p) || "Tidak diketahui")),
+  ).sort();
+  select.innerHTML =
+    `<option value="all">Semua Segment</option>` +
+    segments.map((c) => `<option value="${c}">${c}</option>`).join("");
   select.value = segments.includes(current) ? current : "all";
 }
 
 function getFilteredPeserta() {
   const q = el("pesertaSearchInput").value.trim().toLowerCase();
   return participants
-    .filter((p) => (pesertaStatusFilter === "in" ? p.kehadiran : pesertaStatusFilter === "out" ? !p.kehadiran : true))
-    .filter((p) => (pesertaSegmentFilter === "all" ? true : (segmentLabel(p) || "Tidak diketahui") === pesertaSegmentFilter))
-    .filter((p) => !q ||
-      p.fullname.toLowerCase().includes(q) || p.email.toLowerCase().includes(q) ||
-      p.id.toLowerCase().includes(q) || (p.company || "").toLowerCase().includes(q) ||
-      (p.country || "").toLowerCase().includes(q))
+    .filter((p) =>
+      pesertaStatusFilter === "in"
+        ? p.kehadiran
+        : pesertaStatusFilter === "out"
+          ? !p.kehadiran
+          : true,
+    )
+    .filter((p) =>
+      pesertaSegmentFilter === "all"
+        ? true
+        : (segmentLabel(p) || "Tidak diketahui") === pesertaSegmentFilter,
+    )
+    .filter(
+      (p) =>
+        !q ||
+        p.fullname.toLowerCase().includes(q) ||
+        p.email.toLowerCase().includes(q) ||
+        p.id.toLowerCase().includes(q) ||
+        (p.company || "").toLowerCase().includes(q) ||
+        (p.country || "").toLowerCase().includes(q),
+    )
     .sort((a, b) => a.fullname.localeCompare(b.fullname));
 }
 
 function renderPeserta() {
   populateSegmentFilter();
   const filtered = getFilteredPeserta();
-  el("pesertaMetaLabel").textContent = `Menampilkan ${filtered.length} dari ${participants.length} peserta`;
+  el("pesertaMetaLabel").textContent =
+    `Menampilkan ${filtered.length} dari ${participants.length} peserta`;
   el("pesertaEmptyState").classList.toggle("hidden", filtered.length !== 0);
 
-  el("pesertaTableBody").innerHTML = filtered.map((p, i) => `
+  el("pesertaTableBody").innerHTML = filtered
+    .map(
+      (p, i) => `
     <tr>
       <td class="sub">${i + 1}</td>
       <td><div class="name-cell">${p.fullname}</div><div class="sub">${p.email}</div></td>
@@ -669,9 +795,16 @@ function renderPeserta() {
       <td class="mono sub">${p.id}</td>
       <td><span class="badge ${p.kehadiran ? "in" : "out"}">${p.kehadiran ? "Hadir" : "Belum Hadir"}</span></td>
       <td>${p.waktu_checkin ? timeFull(p.waktu_checkin) : "—"}</td>
-    </tr>`).join("");
+    </tr>`,
+    )
+    .join("");
 
-  el("printDate").textContent = "Dicetak " + new Date().toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" });
+  el("printDate").textContent =
+    "Dicetak " +
+    new Date().toLocaleString("id-ID", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
   el("printStats").innerHTML = `
     <div>Total ditampilkan: ${filtered.length} dari ${participants.length} peserta</div>
     <div>Sudah absen: ${filtered.filter((p) => p.kehadiran).length}</div>`;
@@ -681,11 +814,15 @@ function renderPeserta() {
 // View: Settings (quota / deadline)
 // =================================================================
 el("saveSettingsBtn").addEventListener("click", saveSettings);
-el("deadlineInput").addEventListener("input", (e) => { e.target.dataset.touched = "1"; });
+el("deadlineInput").addEventListener("input", (e) => {
+  e.target.dataset.touched = "1";
+});
 
 function renderSettings() {
-  el("quotaInput").value = settings.quota != null ? settings.quota : el("quotaInput").value;
-  el("quotaCurrentHint").textContent = `Saat ini: ${participants.length} peserta terdaftar`;
+  el("quotaInput").value =
+    settings.quota != null ? settings.quota : el("quotaInput").value;
+  el("quotaCurrentHint").textContent =
+    `Saat ini: ${participants.length} peserta terdaftar`;
   if (settings.deadline && !el("deadlineInput").dataset.touched) {
     el("deadlineInput").value = settings.deadline.slice(0, 16);
   }
@@ -698,10 +835,14 @@ function renderSettings() {
   const closed = quotaReached || deadlinePassed;
 
   let html = `<div class="status-pill ${closed ? "closed" : "open"}">${closed ? "Pendaftaran TERTUTUP" : "Pendaftaran TERBUKA"}</div>`;
-  if (closed) html += `<p class="settings-hint" style="margin-top:10px;">${quotaReached ? "Alasan: kuota sudah terpenuhi." : "Alasan: sudah melewati batas tanggal pendaftaran."}</p>`;
-  if (quota != null) html += `<p class="settings-hint" style="margin-top:8px;">Kuota: ${total} / ${quota}</p>`;
-  if (deadline) html += `<p class="settings-hint" style="margin-top:4px;">Batas waktu: ${new Date(deadline).toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" })}</p>`;
-  if (quota == null && !deadline) html += `<p class="settings-hint" style="margin-top:8px;">Belum ada kuota atau batas tanggal yang diset — pendaftaran terbuka tanpa batas.</p>`;
+  if (closed)
+    html += `<p class="settings-hint" style="margin-top:10px;">${quotaReached ? "Alasan: kuota sudah terpenuhi." : "Alasan: sudah melewati batas tanggal pendaftaran."}</p>`;
+  if (quota != null)
+    html += `<p class="settings-hint" style="margin-top:8px;">Kuota: ${total} / ${quota}</p>`;
+  if (deadline)
+    html += `<p class="settings-hint" style="margin-top:4px;">Batas waktu: ${new Date(deadline).toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" })}</p>`;
+  if (quota == null && !deadline)
+    html += `<p class="settings-hint" style="margin-top:8px;">Belum ada kuota atau batas tanggal yang diset — pendaftaran terbuka tanpa batas.</p>`;
   el("statusPillWrap").innerHTML = html;
 }
 
@@ -724,7 +865,9 @@ async function saveSettings() {
     settings = await res.json();
     renderSettings();
   } catch (e) {
-    alert("Gagal menyimpan pengaturan. Cek koneksi ke backend.\n\n(Backend belum terhubung — lihat jfs-api-reference.md)");
+    alert(
+      "Gagal menyimpan pengaturan. Cek koneksi ke backend.\n\n(Backend belum terhubung — lihat jfs-api-reference.md)",
+    );
     console.error(e);
   } finally {
     btn.disabled = false;

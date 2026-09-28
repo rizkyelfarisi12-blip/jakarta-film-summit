@@ -69,7 +69,8 @@ try {
 // Handlers
 // =================================================================
 
-function handle_status(PDO $pdo): void {
+function handle_status(PDO $pdo): void
+{
     $status = evaluate_registration_status($pdo);
     json_response($status);
 }
@@ -77,11 +78,12 @@ function handle_status(PDO $pdo): void {
 // -----------------------------------------------------------------
 // Auth
 // -----------------------------------------------------------------
-function handle_login(PDO $pdo): void {
+function handle_login(PDO $pdo): void
+{
     start_session();
     $body = read_json_body();
     $email = trim($body['email'] ?? '');
-    $password = (string)($body['password'] ?? '');
+    $password = (string) ($body['password'] ?? '');
 
     if (!$email || !$password) {
         json_error('Email and password are required.', 422);
@@ -108,7 +110,8 @@ function handle_login(PDO $pdo): void {
     json_response(['id' => $user['id'], 'nama' => $user['nama'], 'email' => $user['email']]);
 }
 
-function handle_logout(): void {
+function handle_logout(): void
+{
     start_session();
     $_SESSION = [];
     if (ini_get('session.use_cookies')) {
@@ -119,29 +122,31 @@ function handle_logout(): void {
     json_response(['ok' => true]);
 }
 
-function handle_me(): void {
+function handle_me(): void
+{
     $user = require_auth();
     json_response($user);
 }
 
-function handle_register(PDO $pdo): void {
+function handle_register(PDO $pdo): void
+{
     $body = read_json_body();
-    $fullname  = trim($body['fullname'] ?? '');
-    $email     = trim($body['email'] ?? '');
-    $phone     = trim($body['phone'] ?? '');
-    $country   = trim($body['country'] ?? '');
-    $company   = trim($body['company'] ?? '');
-    $jobtitle  = trim($body['jobtitle'] ?? '');
-    $segment   = trim($body['segment'] ?? '');
-    $segmentOther  = trim($body['segmentOther'] ?? '');
-    $industry      = trim($body['industry'] ?? '');
+    $fullname = trim($body['fullname'] ?? '');
+    $email = trim($body['email'] ?? '');
+    $phone = trim($body['phone'] ?? '');
+    $country = trim($body['country'] ?? '');
+    $company = trim($body['company'] ?? '');
+    $jobtitle = trim($body['jobtitle'] ?? '');
+    $segment = trim($body['segment'] ?? '');
+    $segmentOther = trim($body['segmentOther'] ?? '');
+    $industry = trim($body['industry'] ?? '');
     $industryOther = trim($body['industryOther'] ?? '');
-    $experience    = trim($body['experience'] ?? '');
-    $goals     = is_array($body['goals'] ?? null) ? $body['goals'] : [];
-    $access    = trim($body['access'] ?? '');
-    $marketing  = !empty($body['marketing']);
+    $experience = trim($body['experience'] ?? '');
+    $goals = is_array($body['goals'] ?? null) ? $body['goals'] : [];
+    $access = trim($body['access'] ?? '');
+    $marketing = !empty($body['marketing']);
     $thirdparty = !empty($body['thirdparty']);
-    $terms      = !empty($body['terms']);
+    $terms = !empty($body['terms']);
 
     // Required fields — mirrors the `required` attributes in registration.html
     if (!$fullname || !$email || !$phone || !$country || !$company || !$jobtitle || !$segment || !$experience) {
@@ -188,9 +193,24 @@ function handle_register(PDO $pdo): void {
                 (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE)"
         );
         $insert->execute([
-            $id, $fullname, $email, $phone, $country, $company, $jobtitle, $segment, $segmentOther ?: null,
-            $industry ?: null, $industryOther ?: null, $experience, implode(',', $goals), $access ?: null,
-            $marketing ? 1 : 0, $thirdparty ? 1 : 0, $terms ? 1 : 0, $qrToken,
+            $id,
+            $fullname,
+            $email,
+            $phone,
+            $country,
+            $company,
+            $jobtitle,
+            $segment,
+            $segmentOther ?: null,
+            $industry ?: null,
+            $industryOther ?: null,
+            $experience,
+            implode(',', $goals),
+            $access ?: null,
+            $marketing ? 1 : 0,
+            $thirdparty ? 1 : 0,
+            $terms ? 1 : 0,
+            $qrToken,
         ]);
         $pdo->commit();
     } catch (Throwable $e) {
@@ -205,13 +225,15 @@ function handle_register(PDO $pdo): void {
     json_response(['participant' => map_participant($row)], 201);
 }
 
-function handle_list_participants(PDO $pdo): void {
+function handle_list_participants(PDO $pdo): void
+{
     require_auth();
     $rows = $pdo->query("SELECT * FROM peserta ORDER BY fullname ASC")->fetchAll();
     json_response(array_map('map_participant', $rows));
 }
 
-function handle_search_participants(PDO $pdo): void {
+function handle_search_participants(PDO $pdo): void
+{
     require_auth();
     $q = trim($_GET['q'] ?? '');
     if ($q === '') {
@@ -227,7 +249,8 @@ function handle_search_participants(PDO $pdo): void {
     json_response(array_map('map_participant', $stmt->fetchAll()));
 }
 
-function handle_checkin(PDO $pdo): void {
+function handle_checkin(PDO $pdo): void
+{
     $staff = require_auth();
     $body = read_json_body();
     $qrToken = trim($body['qrToken'] ?? '');
@@ -244,7 +267,7 @@ function handle_checkin(PDO $pdo): void {
     if (!$row) {
         json_error('QR token not found.', 404);
     }
-    if ((bool)$row['kehadiran']) {
+    if ((bool) $row['kehadiran']) {
         json_response([
             'error' => 'Already checked in.',
             'participant' => map_participant($row),
@@ -285,22 +308,24 @@ function handle_checkin(PDO $pdo): void {
     json_response(['participant' => map_participant($stmt->fetch())]);
 }
 
-function handle_get_settings(PDO $pdo): void {
+function handle_get_settings(PDO $pdo): void
+{
     require_auth();
     $row = $pdo->query("SELECT quota, deadline, force_closed FROM registration_settings WHERE id = 1")->fetch();
     if (!$row) {
         json_response(['quota' => null, 'deadline' => null]);
     }
     json_response([
-        'quota'    => $row['quota'] !== null ? (int)$row['quota'] : null,
+        'quota' => $row['quota'] !== null ? (int) $row['quota'] : null,
         'deadline' => $row['deadline'],
     ]);
 }
 
-function handle_save_settings(PDO $pdo): void {
+function handle_save_settings(PDO $pdo): void
+{
     require_auth();
     $body = read_json_body();
-    $quota = array_key_exists('quota', $body) && $body['quota'] !== null ? max(0, (int)$body['quota']) : null;
+    $quota = array_key_exists('quota', $body) && $body['quota'] !== null ? max(0, (int) $body['quota']) : null;
     $deadline = !empty($body['deadline']) ? $body['deadline'] : null;
 
     $stmt = $pdo->prepare(

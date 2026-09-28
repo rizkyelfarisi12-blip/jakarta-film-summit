@@ -16,8 +16,7 @@
   display: flex;
   align-items: center;
 
-  padding:
-    110px 0;
+  padding: 110px 0;
 
   color: #f4f0e8;
 
@@ -31,8 +30,7 @@
       rgba(20, 20, 18, 0.38) 68%,
       rgba(20, 20, 18, 0.55) 100%
     ),
-    url("../gallery/hero_bg.jpeg")
-    center center / cover no-repeat;
+    url("../gallery/hero_bg.jpeg") center center / cover no-repeat;
 }
 .hero > .wrap {
   position: relative;
@@ -63,21 +61,17 @@ h1.headline {
 }
 
 @media (max-width: 760px) {
-
   .hero {
     min-height: 88vh;
 
-    padding:
-      100px 0 70px;
+    padding: 100px 0 70px;
 
-    background-position:
-      62% center;
+    background-position: 62% center;
   }
 
   .hero > .wrap {
     transform: none;
   }
-
 }
 
 .meta-badge img {
@@ -162,7 +156,7 @@ h1.headline {
   font-weight: 800;
   font-size: clamp(2.2rem, 4.4vw, 3.2rem);
   color: transparent;
-  background: #CF4D2F;
+  background: #cf4d2f;
   -webkit-background-clip: text;
   background-clip: text;
   line-height: 1;
@@ -342,7 +336,7 @@ h1.headline {
     border-color 0.16s ease;
 }
 .day-tab.active {
-  background: #CB3F20;
+  background: #cb3f20;
   color: #fff;
   border-color: transparent;
 }
@@ -384,7 +378,7 @@ h1.headline {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #CB3F20;
+  background: #cb3f20;
   box-shadow: 0 0 0 5px var(--ink);
   animation: markerPulse 2.6s ease-in-out infinite;
 }
@@ -550,7 +544,6 @@ h1.headline {
 }
 
 @media (max-width: 840px) {
-
   .map-card {
     min-height: 300px;
   }
@@ -558,9 +551,7 @@ h1.headline {
   .map-card iframe {
     min-height: 300px;
   }
-
 }
-
 
 /* ---------- updates gallery ---------- */
 .film-rail {
@@ -675,7 +666,6 @@ h1.headline {
 ======================================================= */
 
 @media (max-width: 760px) {
-
   /* =========================================
      GLOBAL MOBILE GUTTER
   ========================================= */
@@ -688,7 +678,6 @@ h1.headline {
     box-sizing: border-box;
   }
 
-
   /* =========================================
      HERO
   ========================================= */
@@ -696,11 +685,9 @@ h1.headline {
   .hero {
     min-height: auto;
 
-    padding:
-      104px 0 64px;
+    padding: 104px 0 64px;
 
-    background-position:
-      62% center;
+    background-position: 62% center;
   }
 
   .hero > .wrap {
@@ -723,14 +710,13 @@ h1.headline {
   }
 
   .hero p.lead {
-    font-size: .94rem;
+    font-size: 0.94rem;
     line-height: 1.6;
 
     max-width: 100%;
 
     margin-bottom: 24px;
   }
-
 
   /* =========================================
      HERO META
@@ -747,8 +733,7 @@ h1.headline {
 
     overflow-x: auto;
 
-    padding:
-      2px 2px 6px;
+    padding: 2px 2px 6px;
 
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -761,7 +746,7 @@ h1.headline {
   .meta-badge {
     flex: 0 0 auto;
 
-    font-size: .74rem;
+    font-size: 0.74rem;
 
     padding: 8px 12px;
 
@@ -776,7 +761,6 @@ h1.headline {
     width: 15px;
     height: 15px;
   }
-
 
   /* =========================================
      HERO BUTTONS
@@ -801,9 +785,8 @@ h1.headline {
   }
 
   .scroll-cue {
-    font-size: .72rem;
+    font-size: 0.72rem;
   }
-
 
   /* =========================================
      STATS
@@ -826,13 +809,12 @@ h1.headline {
   }
 
   .stat-label {
-    font-size: .68rem;
+    font-size: 0.68rem;
 
     line-height: 1.35;
 
-    letter-spacing: .025em;
+    letter-spacing: 0.025em;
   }
-
 
   /* =========================================
      REGISTRATION
@@ -871,15 +853,14 @@ h1.headline {
   }
 
   .benefit h4 {
-    font-size: .95rem;
+    font-size: 0.95rem;
   }
 
   .benefit p {
-    font-size: .82rem;
+    font-size: 0.82rem;
 
     line-height: 1.5;
   }
-
 
   /* =========================================
      TICKET CTA
@@ -892,7 +873,7 @@ h1.headline {
   }
 
   .ticket-cta .status {
-    font-size: .68rem;
+    font-size: 0.68rem;
 
     padding: 6px 11px;
 
@@ -906,7 +887,7 @@ h1.headline {
   }
 
   .ticket-cta p {
-    font-size: .84rem;
+    font-size: 0.84rem;
 
     line-height: 1.55;
 
@@ -918,11 +899,10 @@ h1.headline {
   }
 
   .ticket-cta .fine {
-    font-size: .68rem;
+    font-size: 0.68rem;
 
     line-height: 1.45;
   }
-
 
   /* =========================================
      SCHEDULE TABS
@@ -937,8 +917,7 @@ h1.headline {
 
     margin-bottom: 28px;
 
-    padding:
-      2px 2px 7px;
+    padding: 2px 2px 7px;
 
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
@@ -953,11 +932,10 @@ h1.headline {
 
     padding: 9px 15px;
 
-    font-size: .78rem;
+    font-size: 0.78rem;
 
     white-space: nowrap;
   }
-
 
   /* =========================================
      TIMELINE
@@ -992,8 +970,7 @@ h1.headline {
     width: 18px;
     height: 18px;
 
-    box-shadow:
-      0 0 0 4px var(--ink);
+    box-shadow: 0 0 0 4px var(--ink);
   }
 
   .t-time {
@@ -1003,7 +980,7 @@ h1.headline {
   }
 
   .t-title {
-    font-size: .94rem;
+    font-size: 0.94rem;
 
     line-height: 1.35;
 
@@ -1011,11 +988,10 @@ h1.headline {
   }
 
   .t-tag {
-    font-size: .76rem;
+    font-size: 0.76rem;
 
     line-height: 1.45;
   }
-
 
   /* =========================================
      VENUE / TICKET
@@ -1038,7 +1014,7 @@ h1.headline {
   }
 
   .venue-addr {
-    font-size: .84rem;
+    font-size: 0.84rem;
 
     line-height: 1.5;
 
@@ -1052,7 +1028,7 @@ h1.headline {
   }
 
   .venue-fact {
-    font-size: .8rem;
+    font-size: 0.8rem;
 
     gap: 9px;
 
@@ -1064,7 +1040,6 @@ h1.headline {
     height: 18px;
   }
 
-
   /* -----------------------------------------
      MOBILE TICKET DIVIDER
   ----------------------------------------- */
@@ -1072,8 +1047,7 @@ h1.headline {
   .ticket-divider {
     border-left: none;
 
-    border-top:
-      2px dashed var(--line-strong);
+    border-top: 2px dashed var(--line-strong);
   }
 
   .ticket-divider::before {
@@ -1090,7 +1064,6 @@ h1.headline {
     left: auto;
     right: -11px;
   }
-
 
   /* -----------------------------------------
      MAP
@@ -1110,7 +1083,6 @@ h1.headline {
     min-height: 230px;
   }
 
-
   /* =========================================
      FILM / UPDATES
   ========================================= */
@@ -1118,8 +1090,7 @@ h1.headline {
   .film-rail {
     gap: 12px;
 
-    padding:
-      4px 2px 18px;
+    padding: 4px 2px 18px;
 
     margin-right: -18px;
 
@@ -1147,20 +1118,19 @@ h1.headline {
   }
 
   .update-date {
-    font-size: .7rem;
+    font-size: 0.7rem;
   }
 
   .film-frame h4 {
-    font-size: .96rem;
+    font-size: 0.96rem;
 
     line-height: 1.35;
 
-    margin:
-      7px 0 7px;
+    margin: 7px 0 7px;
   }
 
   .film-frame p {
-    font-size: .8rem;
+    font-size: 0.8rem;
 
     line-height: 1.5;
 
@@ -1168,29 +1138,25 @@ h1.headline {
   }
 
   .film-frame a {
-    font-size: .78rem;
+    font-size: 0.78rem;
   }
 
   .swipe-hint {
-    font-size: .72rem;
+    font-size: 0.72rem;
 
     margin-top: 2px;
   }
-
 }
-
 
 /* =======================================================
    SMALL PHONE
 ======================================================= */
 
 @media (max-width: 480px) {
-
   .wrap {
     padding-left: 16px;
     padding-right: 16px;
   }
-
 
   /* -----------------------------------------
      HERO
@@ -1208,13 +1174,12 @@ h1.headline {
   }
 
   .hero p.lead {
-    font-size: .88rem;
+    font-size: 0.88rem;
   }
 
   .hero-actions {
     gap: 9px;
   }
-
 
   /* -----------------------------------------
      STATS
@@ -1233,9 +1198,8 @@ h1.headline {
   }
 
   .stat-label {
-    font-size: .6rem;
+    font-size: 0.6rem;
   }
-
 
   /* -----------------------------------------
      BENEFIT
@@ -1245,7 +1209,6 @@ h1.headline {
     padding: 17px;
   }
 
-
   /* -----------------------------------------
      TICKET CTA
   ----------------------------------------- */
@@ -1253,7 +1216,6 @@ h1.headline {
   .ticket-cta {
     padding: 22px 18px;
   }
-
 
   /* -----------------------------------------
      TIMELINE
@@ -1269,7 +1231,6 @@ h1.headline {
     width: 17px;
     height: 17px;
   }
-
 
   /* -----------------------------------------
      VENUE
@@ -1288,7 +1249,6 @@ h1.headline {
     min-height: 210px;
   }
 
-
   /* -----------------------------------------
      FILM RAIL
   ----------------------------------------- */
@@ -1304,5 +1264,4 @@ h1.headline {
 
     max-width: 275px;
   }
-
 }

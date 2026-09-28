@@ -8,24 +8,24 @@
    ========================================================= */
 
 :root {
-  --bg: #F8F1E0;
-  --surface: #FFFFFF;
-  --surface-2: #FBF3E1;
-  --border: #E6D9BC;
+  --bg: #f8f1e0;
+  --surface: #ffffff;
+  --surface-2: #fbf3e1;
+  --border: #e6d9bc;
 
-  --text: #231F20;
-  --text-dim: #7A7168;
+  --text: #231f20;
+  --text-dim: #7a7168;
 
-  --accent: #FF6A14;
-  --accent-dim: #E85A08;
+  --accent: #ff6a14;
+  --accent-dim: #e85a08;
 
-  --gold: #FFC94D;
+  --gold: #ffc94d;
   --gold-bg: rgba(255, 201, 77, 0.28);
 
-  --success: #59B292;
+  --success: #59b292;
   --success-bg: rgba(89, 178, 146, 0.16);
 
-  --error: #FF6A14;
+  --error: #ff6a14;
   --error-bg: rgba(255, 106, 20, 0.14);
 
   --radius-sm: 8px;
@@ -62,7 +62,12 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -651,7 +656,7 @@ video {
 
 .status-badge.valid {
   background: var(--gold-bg);
-  color: #8A6415;
+  color: #8a6415;
 }
 
 .status-badge.done {
@@ -733,7 +738,7 @@ video {
   border: 1px solid rgba(255, 106, 20, 0.35);
   border-radius: 12px;
 
-  color: #B34A00;
+  color: #b34a00;
   font-size: 14px;
   line-height: 1.45;
 }
@@ -959,7 +964,7 @@ tbody tr:last-child td {
 
 .badge.out {
   background: var(--gold-bg);
-  color: #8A6415;
+  color: #8a6415;
 }
 
 .empty {
@@ -1234,12 +1239,12 @@ tbody tr:last-child td {
 
 .status-pill.open {
   background: var(--success-bg);
-  color: #2F7A5D;
+  color: #2f7a5d;
 }
 
 .status-pill.closed {
   background: var(--error-bg);
-  color: #B34A00;
+  color: #b34a00;
 }
 
 /* =========================================================
