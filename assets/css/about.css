@@ -239,57 +239,41 @@ h1.headline {
   letter-spacing: 0.03em;
 }
 
-.video-card {
+
+.video-player {
+  margin: 0 0 36px;
+}
+.video-frame {
   position: relative;
+  aspect-ratio: 16 / 9;
   border-radius: 18px;
   overflow: hidden;
-  background: var(--grad);
-  aspect-ratio: 16/7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 36px;
-  cursor: pointer;
+  background: var(--ink);
   box-shadow: var(--shadow);
 }
-.video-card::before {
-  content: "";
+.video-frame iframe {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(30, 30, 25, 0.15),
-    rgba(30, 30, 25, 0.55)
-  );
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
-.video-card .play {
-  position: relative;
-  z-index: 1;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  background: rgba(244, 244, 241, 0.94);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
+.video-player figcaption {
+  margin-top: 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-soft);
 }
-.video-card:hover .play {
-  transform: scale(1.1);
-}
-.video-card .play svg {
-  width: 26px;
-  height: 26px;
-  margin-left: 4px;
-}
-.video-card .vlabel {
-  position: absolute;
-  z-index: 1;
-  bottom: 22px;
-  left: 26px;
-  color: #f8f7f3;
-  font-weight: 700;
-  font-size: 0.95rem;
+@media (max-width: 760px) {
+  .video-frame {
+    border-radius: 14px;
+  }
+  .video-player {
+    margin-bottom: 28px;
+  }
+  .video-player figcaption {
+    font-size: 0.78rem;
+  }
 }
 
 /* ---------- 02 media info ---------- */
@@ -480,34 +464,10 @@ h1.headline {
     line-height: 1.35;
   }
 
-  /* ---------------------------------
-     VIDEO
-  --------------------------------- */
 
-  .video-card {
-    aspect-ratio: 16 / 9;
 
-    border-radius: 14px;
 
-    margin-bottom: 28px;
-  }
 
-  .video-card .play {
-    width: 58px;
-    height: 58px;
-  }
-
-  .video-card .play svg {
-    width: 21px;
-    height: 21px;
-  }
-
-  .video-card .vlabel {
-    left: 16px;
-    bottom: 16px;
-
-    font-size: 0.8rem;
-  }
 }
 
 @media (max-width: 480px) {

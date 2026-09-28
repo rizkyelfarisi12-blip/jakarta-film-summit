@@ -429,6 +429,37 @@ h1.headline {
   }
 }
 
+/* ---------- schedule CTA ---------- */
+.schedule-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  margin-top: 52px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(244, 240, 232, 0.16);
+}
+.schedule-cta p {
+  margin: 0;
+  font-size: 1.02rem;
+  color: rgba(244, 240, 232, 0.78);
+}
+@media (max-width: 760px) {
+  .schedule-cta {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 38px;
+    padding-top: 26px;
+  }
+  .schedule-cta p {
+    font-size: 0.92rem;
+  }
+  .schedule-cta .btn-light {
+    justify-content: center;
+  }
+}
+
 /* ---------- venue ---------- */
 .ticket-card {
   position: relative;
