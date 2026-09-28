@@ -1273,3 +1273,62 @@ footer .flinks a:hover {
     pointer-events: auto;
   }
 }
+
+/* =======================================================
+   MOBILE MENU — FINAL COLOR & LAYER FIX
+   ======================================================= */
+
+@media (max-width: 760px) {
+
+  /* Drawer selalu terang */
+  .nav-links {
+    background: #f4f4f1 !important;
+    color: #1e1e19 !important;
+    opacity: 1;
+    z-index: 1002;
+  }
+
+  /* Semua link di drawer selalu hitam */
+  .nav-links a,
+  .site-nav:not(.scrolled) .nav-links a,
+  .site-nav.scrolled .nav-links a {
+    color: #1e1e19 !important;
+    opacity: 1 !important;
+  }
+
+  /* Hover */
+  .nav-links a:hover {
+    color: #1e1e19 !important;
+    background: rgba(30, 30, 25, 0.06);
+  }
+
+  /* Menu aktif */
+  .nav-links a.active,
+  .site-nav:not(.scrolled) .nav-links a.active,
+  .site-nav.scrolled .nav-links a.active {
+    background: #1e1e19 !important;
+    color: #f4f4f1 !important;
+  }
+
+  /* Backdrop di bawah navbar */
+  .nav-backdrop {
+    z-index: 997;
+  }
+
+  /* Navbar di atas backdrop */
+  .site-nav {
+    z-index: 1000;
+  }
+
+  /* Drawer di atas backdrop */
+  .nav-links {
+    position: absolute;
+    z-index: 1002;
+  }
+
+  /* Tombol X paling atas */
+  .nav-toggle {
+    position: relative;
+    z-index: 1003;
+  }
+}
