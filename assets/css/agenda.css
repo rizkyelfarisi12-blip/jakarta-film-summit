@@ -1,0 +1,683 @@
+/* =======================================================
+   Jakarta Film Summit — Agenda page (agenda.html) styles
+   Requires: base.css
+   -------------------------------------------------------
+   Yang sudah disediakan base.css dan TIDAK diulang di sini:
+   hero, breadcrumb, kicker, watermark, sprockets, ticker,
+   eyebrow, block-title, block-desc, band-*, final-cta,
+   warna (--ink, --paper, --line, --ink-soft, --rust, dst).
+   ======================================================= */
+
+/* ---------- page gutter (sama seperti about & news) ---------- */
+.wrap {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (max-width: 760px) {
+  .wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+@media (max-width: 480px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* =======================================================
+   HERO — override ukuran, identik dengan about & news
+   ======================================================= */
+.hero {
+  padding: 130px 0 84px;
+}
+.hero-watermark {
+  font-size: min(34vw, 440px);
+  bottom: -18%;
+}
+h1.headline {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  max-width: 18ch;
+}
+.hero p.lead {
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  max-width: 56ch;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding: 108px 0 68px;
+  }
+  .hero-watermark {
+    font-size: 42vw;
+    bottom: -8%;
+    right: -5%;
+  }
+  h1.headline {
+    font-size: clamp(2.25rem, 10vw, 3.2rem);
+    line-height: 1.04;
+    max-width: 13ch;
+    letter-spacing: -0.035em;
+  }
+  .hero p.lead {
+    font-size: 0.96rem;
+    line-height: 1.6;
+    max-width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .hero {
+    padding-top: 100px;
+    padding-bottom: 58px;
+  }
+  h1.headline {
+    font-size: 2.25rem;
+  }
+  .hero p.lead {
+    font-size: 0.9rem;
+  }
+}
+
+/* =======================================================
+   SECTION HEAD (judul + aksi di sisi kanan)
+   ======================================================= */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.section-head > div:first-child {
+  max-width: 760px;
+}
+.section-head p.block-desc {
+  margin-bottom: 0;
+}
+
+.all-speakers-link {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 700;
+  border-bottom: 1.6px solid var(--ink);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.all-speakers-link:hover {
+  color: var(--rust);
+  border-color: var(--rust);
+}
+
+.speaker-count {
+  flex: 0 0 auto;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: rgba(244, 240, 232, 0.6);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 22px;
+  }
+}
+
+/* =======================================================
+   DAY SWITCHER
+   ======================================================= */
+.day-switcher {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 52px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.day-button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+.day-button:last-child {
+  border-right: 0;
+}
+.day-button:hover {
+  background: rgba(194, 204, 204, 0.28);
+}
+.day-button.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+.day-number {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  opacity: 0.45;
+}
+.day-button.active .day-number {
+  color: var(--gold);
+  opacity: 1;
+}
+.day-button strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.day-button small {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  opacity: 0.65;
+}
+
+/* =======================================================
+   AGENDA — day header & timeline
+   ======================================================= */
+.agenda-day-header {
+  margin-bottom: 32px;
+}
+.agenda-day-title {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.agenda-day-date {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 158px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 116px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--line);
+}
+
+.session {
+  position: relative;
+  padding-bottom: 48px;
+}
+.session:last-child {
+  padding-bottom: 0;
+}
+.session::before {
+  content: "";
+  position: absolute;
+  left: -48px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: 0 0 0 4px var(--paper);
+  z-index: 2;
+}
+.session-time {
+  position: absolute;
+  left: -158px;
+  top: 0;
+  width: 100px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--rust-deep);
+  letter-spacing: -0.01em;
+}
+.session-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.session-type {
+  display: inline-flex;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(191, 68, 25, 0.09);
+  color: var(--rust-deep);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.session-room {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+.session-title {
+  max-width: 62ch;
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.session-description {
+  max-width: 64ch;
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.session-speakers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.session-speaker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 14px 5px 5px;
+  border: 1.4px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+.session-speaker:hover {
+  border-color: var(--rust);
+  transform: translateY(-1px);
+}
+.session-speaker img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--line);
+}
+.session-speaker span {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.break-row {
+  margin: 0 0 48px;
+  padding: 16px 20px;
+  border-top: 1px dashed var(--line-strong);
+  border-bottom: 1px dashed var(--line-strong);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.agenda-empty {
+  padding: 40px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+/* =======================================================
+   SPEAKERS (band-dark)
+   ======================================================= */
+.speaker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.speaker-card {
+  padding: 0;
+  border: 1px solid rgba(244, 244, 241, 0.16);
+  border-radius: 14px;
+  background: rgba(244, 244, 241, 0.04);
+  color: #f4f4f1;
+  text-align: left;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+.speaker-card:hover {
+  transform: translateY(-5px);
+  background: rgba(244, 244, 241, 0.08);
+  border-color: rgba(228, 198, 151, 0.4);
+}
+.speaker-photo {
+  aspect-ratio: 4 / 3;
+  background: #d8d4ca;
+  overflow: hidden;
+}
+.speaker-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.speaker-card:hover .speaker-photo img {
+  transform: scale(1.04);
+}
+.speaker-info {
+  padding: 16px 18px 18px;
+}
+.speaker-name {
+  margin: 0 0 5px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #f8f7f3;
+}
+.speaker-role {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(244, 240, 232, 0.62);
+}
+.speaker-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* =======================================================
+   SPEAKER MODAL
+   ======================================================= */
+body.modal-open {
+  overflow: hidden;
+}
+.speaker-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.speaker-modal.open {
+  display: flex;
+}
+.speaker-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 8, 0.72);
+  backdrop-filter: blur(5px);
+}
+.speaker-dialog {
+  position: relative;
+  z-index: 2;
+  width: min(920px, 100%);
+  max-height: min(680px, 90vh);
+  display: grid;
+  grid-template-columns: 38% 62%;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 18px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+  overflow: auto;
+}
+.speaker-dialog-photo {
+  min-height: 440px;
+  background: #d7d3ca;
+}
+.speaker-dialog-photo img {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  display: block;
+  object-fit: cover;
+}
+.speaker-dialog-content {
+  align-self: center;
+  padding: 52px;
+}
+.modal-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--rust);
+}
+.speaker-dialog-content h2 {
+  margin: 10px 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.speaker-modal-role {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.modal-rule {
+  width: 44px;
+  height: 2px;
+  margin: 26px 0;
+  background: var(--grad-tight);
+}
+.speaker-modal-bio {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.modal-sessions {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.modal-sessions[hidden] {
+  display: none;
+}
+.modal-sessions ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px 0 0;
+}
+.modal-sessions li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.modal-sessions strong {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.modal-sessions span {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(244, 244, 241, 0.92);
+  color: var(--ink);
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.modal-close:hover {
+  border-color: var(--rust);
+}
+
+/* =======================================================
+   RESPONSIVE
+   ======================================================= */
+@media (max-width: 900px) {
+  .speaker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .timeline {
+    padding-left: 118px;
+  }
+  .timeline::before {
+    left: 84px;
+  }
+  .session-time {
+    left: -118px;
+    width: 76px;
+  }
+  .session::before {
+    left: -40px;
+  }
+}
+
+@media (max-width: 680px) {
+  .section-head {
+    margin-bottom: 30px;
+  }
+
+  /* day switcher: bisa digeser horizontal */
+  .day-switcher {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 40px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .day-switcher::-webkit-scrollbar {
+    display: none;
+  }
+  .day-button {
+    flex: 0 0 150px;
+    padding: 16px 15px;
+    gap: 12px;
+  }
+
+  /* timeline: waktu pindah ke atas judul */
+  .timeline {
+    padding-left: 30px;
+  }
+  .timeline::before {
+    left: 6px;
+    top: 6px;
+    bottom: 5px;
+  }
+  .session {
+    padding-bottom: 38px;
+  }
+  .session::before {
+    left: -30px;
+    top: 5px;
+    width: 13px;
+    height: 13px;
+  }
+  .session-time {
+    position: static;
+    width: auto;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .session-meta {
+    flex-wrap: wrap;
+  }
+  .session-title {
+    font-size: 1.2rem;
+  }
+  .session-description {
+    font-size: 0.84rem;
+  }
+  .break-row {
+    margin-bottom: 38px;
+    font-size: 0.78rem;
+  }
+
+  .speaker-grid {
+    gap: 10px;
+  }
+  .speaker-info {
+    padding: 13px;
+  }
+  .speaker-name {
+    font-size: 0.86rem;
+  }
+  .speaker-role {
+    font-size: 0.68rem;
+  }
+  .speaker-tag {
+    margin-top: 9px;
+    font-size: 0.68rem;
+  }
+
+  .speaker-modal {
+    padding: 14px;
+  }
+  .speaker-dialog {
+    grid-template-columns: 1fr;
+    max-height: 92vh;
+  }
+  .speaker-dialog-photo {
+    height: 46vh;
+    min-height: 250px;
+    max-height: 380px;
+  }
+  .speaker-dialog-photo img {
+    min-height: 250px;
+  }
+  .speaker-dialog-content {
+    padding: 28px 24px 34px;
+  }
+}
+
+@media (max-width: 400px) {
+  .speaker-grid {
+    gap: 8px;
+  }
+  .speaker-info {
+    padding: 11px;
+  }
+  .speaker-name {
+    font-size: 0.8rem;
+  }
+  .speaker-role {
+    font-size: 0.62rem;
+  }
+}
+
+/* hormati preferensi pengguna: kurangi animasi */
+@media (prefers-reduced-motion: reduce) {
+  .speaker-card,
+  .speaker-photo img,
+  .session-speaker {
+    transition: none;
+  }
+}

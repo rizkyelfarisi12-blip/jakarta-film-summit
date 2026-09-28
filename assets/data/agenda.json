@@ -1,0 +1,317 @@
+{
+  "days": [
+    {
+      "id": "day-1",
+      "label": "Day 1",
+      "title": "Opening & Policy",
+      "date": "19 November 2026",
+      "sessions": [
+        {
+          "time": "09.00 — 10.00",
+          "type": "Opening",
+          "room": "Main Hall",
+          "title": "Opening Ceremony & Keynote",
+          "description": "Pembukaan Jakarta Film Summit 2026 dan pengantar mengenai arah masa depan ekosistem perfilman Indonesia.",
+          "speakers": ["speaker-001"]
+        },
+        {
+          "kind": "break",
+          "time": "10.00 — 10.30",
+          "title": "Welcome Coffee & Networking"
+        },
+        {
+          "time": "10.30 — 12.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Building a Film-Friendly Government",
+          "description": "Membahas bagaimana kebijakan publik dapat menciptakan lingkungan yang lebih kondusif bagi produksi dan pertumbuhan industri film.",
+          "speakers": ["speaker-002", "speaker-003"]
+        },
+        {
+          "time": "13.30 — 15.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "From Regulation to Incentives",
+          "description": "Percakapan tentang regulasi, insentif, dan dukungan produksi yang dapat membuka peluang baru bagi industri film di Indonesia.",
+          "speakers": ["speaker-004", "speaker-005"]
+        },
+        {
+          "time": "15.30 — 17.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Regional Production & Multiplier Effect",
+          "description": "Melihat bagaimana dukungan produksi daerah dapat menciptakan dampak ekonomi yang lebih luas bagi kota dan daerah.",
+          "speakers": ["speaker-006", "speaker-007"]
+        }
+      ]
+    },
+    {
+      "id": "day-2",
+      "label": "Day 2",
+      "title": "Investment & Financing",
+      "date": "20 November 2026",
+      "sessions": [
+        {
+          "time": "09.30 — 11.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Unlocking Investment for the Film Industry",
+          "description": "Mempertemukan perspektif industri, investor, dan lembaga keuangan untuk membahas akses modal bagi proyek film.",
+          "speakers": ["speaker-008", "speaker-009"]
+        },
+        { "kind": "break", "time": "11.00 — 11.30", "title": "Coffee Break" },
+        {
+          "time": "11.30 — 13.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Financing the Next Indonesian Film",
+          "description": "Membahas berbagai struktur pembiayaan dan pendekatan investasi yang dapat mendukung keberlanjutan produksi film.",
+          "speakers": ["speaker-010", "speaker-011"]
+        },
+        {
+          "time": "14.00 — 15.30",
+          "type": "Case Study",
+          "room": "Studio A",
+          "title": "Jakarta as a Screen Production Ecosystem",
+          "description": "Studi kasus mengenai peluang Jakarta dalam memperkuat ekosistem produksi, layanan, talenta, dan investasi film.",
+          "speakers": ["speaker-012", "speaker-013"]
+        },
+        {
+          "time": "16.00 — 17.30",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "The Future of Film Investment",
+          "description": "Percakapan tentang perubahan lanskap investasi dan bagaimana industri film Indonesia dapat mempersiapkan diri.",
+          "speakers": ["speaker-014", "speaker-015"]
+        }
+      ]
+    },
+    {
+      "id": "day-3",
+      "label": "Day 3",
+      "title": "Future & Global Film Commissions",
+      "date": "21 November 2026",
+      "sessions": [
+        {
+          "time": "09.30 — 11.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Innovation Across the Screen Economy",
+          "description": "Melihat perubahan model bisnis, teknologi, dan peluang kolaborasi yang membentuk masa depan industri layar.",
+          "speakers": ["speaker-016", "speaker-017"]
+        },
+        { "kind": "break", "time": "11.00 — 11.30", "title": "Coffee Break" },
+        {
+          "time": "11.30 — 13.00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Building a Competitive Production Destination",
+          "description": "Membahas faktor kebijakan, infrastruktur, talenta, dan layanan yang membentuk daya saing sebuah destinasi produksi.",
+          "speakers": ["speaker-018", "speaker-019"]
+        },
+        {
+          "time": "14.00 — 15.30",
+          "type": "Forum",
+          "room": "Main Hall",
+          "title": "Global Film Commission Forum",
+          "description": "Film commissions dari berbagai wilayah berbagi pengalaman mengenai kebijakan, insentif, investasi, dan arah masa depan industri.",
+          "speakers": ["speaker-020", "speaker-021", "speaker-022"]
+        },
+        {
+          "time": "16.00 — 17.00",
+          "type": "Closing",
+          "room": "Main Hall",
+          "title": "What Comes Next",
+          "description": "Rangkuman gagasan utama Jakarta Film Summit 2026 dan percakapan mengenai langkah berikutnya bagi ekosistem film Indonesia.",
+          "speakers": ["speaker-023"]
+        }
+      ]
+    }
+  ],
+  "speakers": [
+    {
+      "id": "speaker-001",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-001.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-002",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-002.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-003",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-003.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-004",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-004.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-005",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-005.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-006",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-006.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-007",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-007.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-008",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-008.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-009",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-009.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-010",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-010.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-011",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-011.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-012",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-012.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-013",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-013.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-014",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-014.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-015",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-015.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-016",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-016.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-017",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-017.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-018",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-018.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-019",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-019.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-020",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-020.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-021",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-021.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-022",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-022.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    },
+    {
+      "id": "speaker-023",
+      "name": "Nama Pembicara",
+      "position": "Jabatan / Peran",
+      "institution": "Institusi",
+      "photo": "assets/image/speakers/speaker-023.jpg",
+      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+    }
+  ]
+}
