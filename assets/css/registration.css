@@ -154,16 +154,21 @@ a {
   position: absolute;
   left: 0;
   right: 0;
-  height: 22px;
+  height: 20px;
   z-index: 2;
-  background-image: radial-gradient(
-    circle,
-    rgba(244, 244, 241, 0.9) 4.2px,
-    transparent 4.6px
+
+  background-image: linear-gradient(
+    90deg,
+    rgba(244, 244, 241, 0.9) 0,
+    rgba(244, 244, 241, 0.9) 18px,
+    transparent 18px,
+    transparent 26px
   );
-  background-size: 26px 22px;
+
+  background-size: 60px 8px;
   background-position: 13px center;
   background-repeat: repeat-x;
+
   opacity: 0.85;
 }
 .sprockets.top {

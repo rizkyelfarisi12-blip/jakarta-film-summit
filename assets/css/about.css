@@ -9,6 +9,14 @@
   padding-right: 24px;
 }
 
+/* ---------- latar seragam untuk 4 section About (01–04) ---------- */
+#positioning,
+#programme,
+#highlights,
+#media {
+  background: #ece2df;
+}
+
 /* ---------- hero overrides ---------- */
 .hero {
   padding: 130px 0 84px;
@@ -144,27 +152,27 @@ h1.headline {
 }
 .prog-card {
   position: relative;
-  background: rgba(244, 244, 241, 0.04);
-  border: 1px solid rgba(244, 244, 241, 0.16);
+  background: var(--panel);
+  border: 1px solid var(--line);
   border-radius: 14px;
   padding: 28px 24px;
   transition:
     transform 0.2s ease,
-    background 0.2s ease,
+    box-shadow 0.2s ease,
     border-color 0.2s ease;
   overflow: hidden;
 }
 .prog-card:hover {
   transform: translateY(-5px);
-  background: rgba(244, 244, 241, 0.08);
-  border-color: rgba(228, 198, 151, 0.4);
+  box-shadow: var(--shadow);
+  border-color: transparent;
 }
 .prog-card .pnum {
   font-family: var(--font-display);
   font-weight: 800;
   font-style: italic;
   font-size: 1.6rem;
-  color: rgba(228, 198, 151, 0.35);
+  color: rgba(191, 68, 25, 0.35);
   margin-bottom: 14px;
   line-height: 1;
 }
@@ -172,7 +180,7 @@ h1.headline {
   width: 40px;
   height: 40px;
   border-radius: 11px;
-  background: rgba(228, 198, 151, 0.12);
+  background: rgba(191, 68, 25, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,12 +195,12 @@ h1.headline {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.08rem;
-  color: #f8f7f3;
+  color: var(--ink);
 }
 .prog-card p {
   margin: 0;
   font-size: 0.88rem;
-  color: rgba(244, 240, 232, 0.68);
+  color: var(--ink-soft);
   line-height: 1.55;
 }
 
@@ -290,8 +298,8 @@ h1.headline {
   }
 }
 .fact-sheet {
-  background: rgba(244, 244, 241, 0.05);
-  border: 1px solid rgba(244, 244, 241, 0.16);
+  background: var(--panel);
+  border: 1px solid var(--line);
   border-radius: 16px;
   padding: 30px;
 }
@@ -300,22 +308,23 @@ h1.headline {
   justify-content: space-between;
   gap: 16px;
   padding: 13px 0;
-  border-bottom: 1px solid rgba(244, 244, 241, 0.12);
+  border-bottom: 1px solid var(--line);
   font-size: 0.92rem;
 }
 .fact-row:last-child {
   border-bottom: none;
 }
 .fact-row span:first-child {
-  color: rgba(244, 240, 232, 0.6);
+  color: var(--ink-soft);
 }
 .fact-row span:last-child {
   font-weight: 700;
   text-align: right;
+  color: var(--ink);
 }
 .contact-card {
-  background: rgba(228, 198, 151, 0.1);
-  border: 1px solid rgba(228, 198, 151, 0.3);
+  background: rgba(191, 68, 25, 0.06);
+  border: 1px solid rgba(191, 68, 25, 0.22);
   border-radius: 16px;
   padding: 28px;
 }
@@ -338,21 +347,23 @@ h1.headline {
   margin: 0 0 3px;
   font-family: var(--font-display);
   font-size: 1.05rem;
+  color: var(--ink);
 }
 .contact-card .role {
   font-size: 0.85rem;
-  color: var(--gold);
+  color: var(--rust-deep);
+  font-weight: 600;
   margin-bottom: 14px;
 }
 .contact-card a {
   display: block;
   font-size: 0.9rem;
-  color: #f4f0e8;
+  color: var(--ink);
   text-decoration: none;
   margin-bottom: 6px;
 }
 .contact-card a:hover {
-  color: var(--gold);
+  color: var(--rust);
 }
 
 .contact-card .avatar {
