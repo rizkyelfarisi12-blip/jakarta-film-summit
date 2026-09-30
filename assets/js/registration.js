@@ -212,11 +212,10 @@ const I18N = {
     "hero.headline": "Daftarkan diri Anda ke layar utama industri film.",
     "hero.lead":
       "Satu formulir untuk bergabung bersama produser, investor, distributor, dan penggerak film di Jakarta Film Summit.",
-    "hero.sub": "Empat bagian singkat · sekitar 5 menit untuk diselesaikan",
+    "hero.sub": "Tiga bagian singkat · sekitar 3 menit untuk diselesaikan",
     "stepnav.s1": "Informasi Diri",
-    "stepnav.s2": "Perusahaan & Pekerjaan",
-    "stepnav.s3": "Keterlibatan di Film",
-    "stepnav.s4": "Persetujuan",
+    "stepnav.s2": "Perusahaan & Keterlibatan",
+    "stepnav.s3": "Persetujuan",
     "error.required":
       "Beberapa bagian wajib diisi terlebih dahulu — periksa kembali kolom yang ditandai.",
     "error.server": "Terjadi kesalahan saat mengirim pendaftaran. Coba lagi.",
@@ -224,19 +223,23 @@ const I18N = {
     "s1.desc": "Data kontak utama untuk konfirmasi pendaftaran Anda.",
     "field.fullname.label": "Nama Lengkap",
     "field.fullname.placeholder": "cth. Amara Wibowo",
-    "field.email.label": "Business Email",
+    "field.email.label": "Email",
     "field.email.placeholder": "nama@perusahaan.com",
     "field.phone.label": "Nomor Telepon / WhatsApp",
     "field.phone.placeholder": "+62 8xx xxxx xxxx",
+    "field.phone.hint": "(opsional)",
     "field.country.label": "Negara Asal",
     "field.country.placeholder": "Cari negara…",
-    "s2.title": "Perusahaan & Pekerjaan",
-    "s2.desc": "Ceritakan di mana dan sebagai apa Anda berkarya.",
+    "s2.title": "Perusahaan & Keterlibatan",
+    "s2.desc": "Semua kolom di bagian ini opsional — isi jika relevan, supaya kami bisa menyusun sesi dan pertemuan yang lebih sesuai untuk Anda.",
     "field.company.label": "Nama Perusahaan / Organisasi",
     "field.company.placeholder": "cth. Langit Pictures",
+    "field.company.hint": "(opsional)",
     "field.jobtitle.label": "Jabatan / Posisi",
     "field.jobtitle.placeholder": "cth. Executive Producer",
+    "field.jobtitle.hint": "(opsional)",
     "field.segment.label": "Segment / Peran Pekerjaan",
+    "field.segment.hint": "(opsional)",
     "segment.opt1": "Produser / Sutradara / Scriptwriter / Distributor",
     "segment.opt2": "Investor / Financier",
     "segment.opt3": "Film Commission",
@@ -245,24 +248,7 @@ const I18N = {
     "segment.opt6": "Others",
     "field.segmentOther.label": "Sebutkan segment Anda",
     "field.segmentOther.placeholder": "Tuliskan peran pekerjaan Anda",
-    "field.industry.label": "Industry",
-    "industry.placeholder": "Pilih industri Anda",
-    "industry.opt1": "Pelaku Seni (Artis, Penari, dll.)",
-    "industry.opt2": "Perfilman",
-    "industry.opt3": "Keuangan",
-    "industry.opt4": "Musik",
-    "industry.opt5": "Bisnis",
-    "industry.opt6": "Lainnya",
-    "field.industryOther.label": "Sebutkan industri Anda",
-    "field.industryOther.placeholder": "Tuliskan industri Anda",
-    "s3.title": "Keterlibatan di Dunia Film",
-    "s3.desc":
-      "Pengalaman dan tujuan Anda membantu kami menyusun sesi yang relevan.",
-    "field.experience.label": "Pengalaman di dunia perfilman",
-    "experience.opt1": "0–2 Tahun",
-    "experience.opt2": "2–4 Tahun",
-    "experience.opt3": "4–8 Tahun",
-    "experience.opt4": "8 Tahun ke atas",
+    "field.involvement.subheading": "Keterlibatan di Jakarta Film Summit",
     "field.goals.label": "Tujuan menghadiri Jakarta Film Summit",
     "field.goals.hint": "(boleh lebih dari satu)",
     "goals.opt1": "Networking / Memperluas Jaringan",
@@ -272,8 +258,8 @@ const I18N = {
     "field.access.label": "Kebutuhan Aksesibilitas Khusus",
     "field.access.hint": "(opsional)",
     "field.access.placeholder": "cth. Juru Bahasa Isyarat, akses kursi roda",
-    "s4.title": "Persetujuan & Komunikasi",
-    "s4.desc": "Terakhir, beri tahu kami bagaimana boleh menghubungi Anda.",
+    "s3.title": "Persetujuan & Komunikasi",
+    "s3.desc": "Terakhir, beri tahu kami bagaimana boleh menghubungi Anda.",
     "consent.marketing.bold": "Update & promosi.",
     "consent.marketing.rest":
       "Saya ingin menerima kabar acara, program, dan penawaran dari Jakarta Film Summit melalui email.",
@@ -311,11 +297,10 @@ const I18N = {
     "hero.headline": "Register for the main stage of the film industry.",
     "hero.lead":
       "One form to join producers, investors, distributors, and film movers at Jakarta Film Summit.",
-    "hero.sub": "Four short sections · about 5 minutes to complete",
+    "hero.sub": "Three short sections · about 3 minutes to complete",
     "stepnav.s1": "Personal Info",
-    "stepnav.s2": "Company & Role",
-    "stepnav.s3": "Involvement in Film",
-    "stepnav.s4": "Consent",
+    "stepnav.s2": "Company & Involvement",
+    "stepnav.s3": "Consent",
     "error.required":
       "Some required sections are missing — please check the highlighted fields.",
     "error.server":
@@ -324,19 +309,23 @@ const I18N = {
     "s1.desc": "Your main contact details for registration confirmation.",
     "field.fullname.label": "Full Name",
     "field.fullname.placeholder": "e.g. Amara Wibowo",
-    "field.email.label": "Business Email",
+    "field.email.label": "Email",
     "field.email.placeholder": "name@company.com",
     "field.phone.label": "Phone / WhatsApp Number",
     "field.phone.placeholder": "+1 234 567 8900",
+    "field.phone.hint": "(optional)",
     "field.country.label": "Country of Origin",
     "field.country.placeholder": "Search country…",
-    "s2.title": "Company & Role",
-    "s2.desc": "Tell us where and in what capacity you work.",
+    "s2.title": "Company & Involvement",
+    "s2.desc": "Every field in this section is optional — fill in what's relevant so we can shape sessions and meetings around you.",
     "field.company.label": "Company / Organization Name",
     "field.company.placeholder": "e.g. Langit Pictures",
+    "field.company.hint": "(optional)",
     "field.jobtitle.label": "Job Title / Position",
     "field.jobtitle.placeholder": "e.g. Executive Producer",
+    "field.jobtitle.hint": "(optional)",
     "field.segment.label": "Segment / Job Role",
+    "field.segment.hint": "(optional)",
     "segment.opt1": "Producer / Director / Scriptwriter / Distributor",
     "segment.opt2": "Investor / Financier",
     "segment.opt3": "Film Commission",
@@ -345,24 +334,7 @@ const I18N = {
     "segment.opt6": "Others",
     "field.segmentOther.label": "Please specify your segment",
     "field.segmentOther.placeholder": "Describe your job role",
-    "field.industry.label": "Industry",
-    "industry.placeholder": "Select your industry",
-    "industry.opt1": "Performing Arts (Artist, Dancer, etc.)",
-    "industry.opt2": "Film",
-    "industry.opt3": "Finance",
-    "industry.opt4": "Music",
-    "industry.opt5": "Business",
-    "industry.opt6": "Others",
-    "field.industryOther.label": "Please specify your industry",
-    "field.industryOther.placeholder": "Describe your industry",
-    "s3.title": "Involvement in Film",
-    "s3.desc":
-      "Your experience and goals help us design more relevant sessions.",
-    "field.experience.label": "Experience in the film industry",
-    "experience.opt1": "0–2 Years",
-    "experience.opt2": "2–4 Years",
-    "experience.opt3": "4–8 Years",
-    "experience.opt4": "8+ Years",
+    "field.involvement.subheading": "Involvement in Jakarta Film Summit",
     "field.goals.label": "Goals for attending Jakarta Film Summit",
     "field.goals.hint": "(select all that apply)",
     "goals.opt1": "Networking",
@@ -373,8 +345,8 @@ const I18N = {
     "field.access.hint": "(optional)",
     "field.access.placeholder":
       "e.g. Sign language interpreter, wheelchair access",
-    "s4.title": "Consent & Communication",
-    "s4.desc": "Lastly, let us know how we may contact you.",
+    "s3.title": "Consent & Communication",
+    "s3.desc": "Lastly, let us know how we may contact you.",
     "consent.marketing.bold": "Updates & promotions.",
     "consent.marketing.rest":
       "I'd like to receive event news, programs, and offers from Jakarta Film Summit by email.",
@@ -522,17 +494,6 @@ function toggleOtherField(wrap, input, show) {
   }
   requestProgressUpdate();
 }
-var industrySelect = document.getElementById("industry");
-industrySelect.addEventListener("change", function () {
-  var opt = industrySelect.options[industrySelect.selectedIndex];
-  var isOther =
-    opt && (opt.textContent === "Lainnya" || opt.textContent === "Others");
-  toggleOtherField(
-    document.getElementById("industryOtherWrap"),
-    document.getElementById("industryOther"),
-    isOther,
-  );
-});
 
 // ---------- step nav active state via IntersectionObserver ----------
 var links = Array.prototype.slice.call(document.querySelectorAll(".step-link"));
@@ -670,10 +631,12 @@ form.addEventListener("submit", async function (e) {
   errorBanner.classList.remove("show");
   serverErrorBanner.classList.remove("show");
 
+  // Validitas native (fullname, email, country, terms) — segment & goals
+  // sengaja tidak diwajibkan lagi, jadi tidak ada lagi pengecekan manual
+  // untuk keduanya di sini.
   var valid = form.checkValidity();
   var segmentPicked = form.querySelector('input[name="segment"]:checked');
-  var experiencePicked = form.querySelector('input[name="experience"]:checked');
-  if (!valid || !segmentPicked || !experiencePicked) {
+  if (!valid) {
     form.reportValidity();
     errorBanner.classList.add("show");
     errorBanner.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -687,11 +650,11 @@ form.addEventListener("submit", async function (e) {
     country: document.getElementById("country").value.trim(),
     company: document.getElementById("company").value.trim(),
     jobtitle: document.getElementById("jobtitle").value.trim(),
-    segment: segmentPicked.value,
+    segment: segmentPicked ? segmentPicked.value : "",
     segmentOther: document.getElementById("segmentOther").value.trim(),
-    industry: document.getElementById("industry").value || "",
-    industryOther: document.getElementById("industryOther").value.trim(),
-    experience: experiencePicked.value,
+    industry: "", // kolom industri sudah tidak ada di formulir
+    industryOther: "",
+    experience: "", // kolom pengalaman sudah tidak ada di formulir
     goals: collectGoals(),
     access: document.getElementById("access").value.trim(),
     marketing: document.getElementById("marketing").checked,
@@ -759,7 +722,6 @@ document.getElementById("againBtn").addEventListener("click", function () {
     c.classList.remove("is-selected");
   });
   document.getElementById("segmentOtherWrap").classList.remove("show");
-  document.getElementById("industryOtherWrap").classList.remove("show");
   document.getElementById("ticket").classList.remove("show");
   form.style.display = "";
   document.querySelector(".step-nav").style.display = "";

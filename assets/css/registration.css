@@ -151,7 +151,7 @@ a {
   z-index: 0;
 }
 .sprockets {
-  position: absolute;
+position: absolute;
   left: 0;
   right: 0;
   height: 20px;
@@ -457,6 +457,31 @@ input:invalid:not(:placeholder-shown) {
   font-size: 0.78rem;
   color: var(--ink-soft);
   margin-top: -2px;
+}
+
+/* ---------- pemisah dua kelompok field di section gabungan (02) ---------- */
+.field-divider {
+  height: 1px;
+  margin: 8px 0 28px;
+  background: var(--line);
+}
+.field-subheading {
+  margin: 0 0 20px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+@media (max-width: 680px) {
+  .field-divider {
+    margin: 4px 0 22px;
+  }
+  .field-subheading {
+    margin-bottom: 16px;
+    font-size: 0.72rem;
+  }
 }
 
 /* chip groups */

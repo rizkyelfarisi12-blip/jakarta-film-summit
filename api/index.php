@@ -148,8 +148,10 @@ function handle_register(PDO $pdo): void
     $thirdparty = !empty($body['thirdparty']);
     $terms = !empty($body['terms']);
 
-    // Required fields — mirrors the `required` attributes in registration.html
-    if (!$fullname || !$email || !$phone || !$country || !$company || !$jobtitle || !$segment || !$experience) {
+    // Required fields — mirrors the `required` attributes in registration.html.
+    // phone, company, jobtitle, segment and experience are optional per the
+    // current form (experience no longer even has a field in the UI).
+    if (!$fullname || !$email || !$country) {
         json_error('All required fields must be filled.', 422);
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
