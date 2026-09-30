@@ -7,7 +7,7 @@
   <title>JFS Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&family=IBM+Plex+Mono:wght@500;600&display=swap"
     rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="../assets/css/admin.css">
@@ -41,6 +41,7 @@
         <button class="nav-item active" data-view="scan">🔍 Check-in</button>
         <button class="nav-item" data-view="dashboard">📊 Dashboard</button>
         <button class="nav-item" data-view="peserta">👥 Peserta</button>
+        <button class="nav-item" data-view="gallery">▧ Gallery</button>
         <button class="nav-item" data-view="settings">⚙️ Pengaturan</button>
       </div>
       <div class="sidebar-foot">
@@ -211,6 +212,93 @@
           </table>
           <div id="pesertaEmptyState" class="empty hidden">Belum ada peserta yang mendaftar.</div>
         </div>
+      </div>
+
+      <div id="view-gallery" class="hidden">
+        <div class="page-head gallery-head">
+          <div>
+            <div class="eyebrow-admin">MEDIA MANAGEMENT</div>
+            <h1 class="display">Gallery</h1>
+            <p>Kelola foto dan video dokumentasi Jakarta Film Summit untuk ditampilkan di website.</p>
+          </div>
+          <div class="live"><span class="dot"></span><span id="galleryTotalLabel">0 media</span></div>
+        </div>
+
+        <div class="gallery-toolbar">
+          <div class="gallery-toolbar-left">
+            <button class="gallery-filter active" type="button" data-gallery-filter="all">Semua</button>
+            <button class="gallery-filter" type="button" data-gallery-filter="photo">Foto</button>
+            <button class="gallery-filter" type="button" data-gallery-filter="video">Video</button>
+          </div>
+          <div class="gallery-toolbar-right">
+            <select id="galleryDayFilter" aria-label="Filter hari gallery">
+              <option value="all">Semua hari</option>
+              <option value="1">Day 1</option>
+              <option value="2">Day 2</option>
+              <option value="3">Day 3</option>
+            </select>
+            <button class="btn btn-primary" id="galleryOpenUploadBtn" type="button">＋ Upload Media</button>
+          </div>
+        </div>
+
+        <div id="galleryUploadPanel" class="gallery-upload-panel hidden">
+          <div class="gallery-upload-head">
+            <div>
+              <div class="eyebrow-admin">UPLOAD MEDIA</div>
+              <h2>Tambahkan dokumentasi</h2>
+              <p>Pilih beberapa foto atau video sekaligus, lalu lengkapi metadata sebelum dipublikasikan.</p>
+            </div>
+            <button class="icon-btn" id="galleryCloseUploadBtn" type="button" aria-label="Tutup upload">✕</button>
+          </div>
+
+          <div class="gallery-upload-grid">
+            <div>
+              <label class="gallery-dropzone" id="galleryDropzone" for="galleryFileInput">
+                <span class="gallery-drop-icon">＋</span>
+                <strong>Pilih foto atau video</strong>
+                <span>atau tarik file ke area ini</span>
+                <small>JPG · PNG · WEBP · MP4 · MOV</small>
+              </label>
+              <input id="galleryFileInput" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime" multiple hidden>
+              <div id="galleryUploadQueue" class="gallery-upload-queue"></div>
+            </div>
+
+            <div class="gallery-meta-card">
+              <div class="gallery-form-grid">
+                <label>Hari
+                  <select id="galleryDayInput">
+                    <option value="1">Day 1</option>
+                    <option value="2">Day 2</option>
+                    <option value="3">Day 3</option>
+                  </select>
+                </label>
+                <label>Sesi
+                  <input id="gallerySessionInput" type="text" placeholder="Contoh: Opening Ceremony" autocomplete="off">
+                </label>
+                <label class="full">Caption / Keterangan
+                  <textarea id="galleryCaptionInput" rows="4" placeholder="Contoh: Suasana opening ceremony Jakarta Film Summit 2026."></textarea>
+                </label>
+              </div>
+              <button class="btn btn-primary gallery-publish-btn" id="galleryPublishBtn" type="button">Publish Media</button>
+              <p class="gallery-note">Preview saat ini tersimpan di browser. Penyimpanan permanen akan dihubungkan ke API Gallery setelah UI final.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-summary-grid">
+          <div class="gallery-summary-card"><span>Foto</span><strong id="galleryPhotoCount">0</strong></div>
+          <div class="gallery-summary-card"><span>Video</span><strong id="galleryVideoCount">0</strong></div>
+          <div class="gallery-summary-card"><span>Published</span><strong id="galleryPublishedCount">0</strong></div>
+          <div class="gallery-summary-card"><span>Day 1–3</span><strong id="galleryDayCount">0</strong></div>
+        </div>
+
+        <div class="gallery-section-head">
+          <div>
+            <h2>Media Library</h2>
+            <p id="galleryLibraryLabel">0 media</p>
+          </div>
+        </div>
+        <div id="galleryLibrary" class="gallery-library"></div>
       </div>
 
       <div id="view-settings" class="hidden">

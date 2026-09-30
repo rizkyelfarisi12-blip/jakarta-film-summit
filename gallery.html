@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gallery — Jakarta Film Summit 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/gallery.css">
+  <link rel="icon" type="image/png" href="assets/icon/jfs.ico">
+</head>
+<body>
+  <div id="navbarPlaceholder"></div>
+
+  <header class="gallery-hero">
+    <div class="gallery-hero-bg" aria-hidden="true"></div>
+    <div class="wrap gallery-hero-inner">
+      <span class="gallery-eyebrow">GALLERY</span>
+      <h1>Moments from<br>Jakarta Film Summit 2026.</h1>
+      <p>Dokumentasi foto dan video dari seluruh rangkaian Jakarta Film Summit 2026.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="gallery-overview">
+      <div class="wrap">
+        <div class="gallery-toolbar">
+          <div class="media-filters" id="overviewFilters" aria-label="Filter media">
+            <button class="media-filter active" type="button" data-filter="all">Semua</button>
+            <button class="media-filter" type="button" data-filter="photo">Foto</button>
+            <button class="media-filter" type="button" data-filter="video">Video</button>
+          </div>
+        </div>
+
+        <div id="daySections" class="day-sections" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footerPlaceholder"></div>
+
+  <script src="assets/js/include.js"></script>
+  <script src="assets/js/gallery.js"></script>
+</body>
+</html>

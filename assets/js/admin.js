@@ -350,7 +350,7 @@ el("logoutBtn").addEventListener("click", async () => {
 })();
 
 // =================================================================
-// Sidebar navigation (4 views)
+// Sidebar navigation (5 views)
 // =================================================================
 document.querySelectorAll(".nav-item").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -358,7 +358,7 @@ document.querySelectorAll(".nav-item").forEach((btn) => {
       .querySelectorAll(".nav-item")
       .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    ["scan", "dashboard", "peserta", "settings"].forEach((v) =>
+    ["scan", "dashboard", "peserta", "gallery", "settings"].forEach((v) =>
       el("view-" + v).classList.add("hidden"),
     );
     el("view-" + btn.dataset.view).classList.remove("hidden");
@@ -873,3 +873,175 @@ async function saveSettings() {
     btn.disabled = false;
   }
 }
+
+
+// =================================================================
+// View: Gallery (frontend prototype)
+// =================================================================
+let galleryMedia = [];
+let galleryFilter = "all";
+let galleryDayFilter = "all";
+let galleryInitialized = false;
+
+function initGalleryView() {
+  if (galleryInitialized) return;
+  galleryInitialized = true;
+
+  const openBtn = el("galleryOpenUploadBtn");
+  const closeBtn = el("galleryCloseUploadBtn");
+  const panel = el("galleryUploadPanel");
+  const input = el("galleryFileInput");
+  const dropzone = el("galleryDropzone");
+  const publishBtn = el("galleryPublishBtn");
+  const dayFilter = el("galleryDayFilter");
+
+  openBtn?.addEventListener("click", () => {
+    panel?.classList.remove("hidden");
+    setTimeout(() => panel?.scrollIntoView({ behavior: "smooth", block: "start" }), 30);
+  });
+  closeBtn?.addEventListener("click", () => panel?.classList.add("hidden"));
+  input?.addEventListener("change", (e) => setGalleryFiles(e.target.files));
+  dayFilter?.addEventListener("change", (e) => {
+    galleryDayFilter = e.target.value;
+    renderGalleryLibrary();
+  });
+  document.querySelectorAll("[data-gallery-filter]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-gallery-filter]").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      galleryFilter = btn.dataset.galleryFilter;
+      renderGalleryLibrary();
+    });
+  });
+
+  ["dragenter", "dragover"].forEach((eventName) => {
+    dropzone?.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      dropzone.classList.add("dragover");
+    });
+  });
+  ["dragleave", "drop"].forEach((eventName) => {
+    dropzone?.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+    });
+  });
+  dropzone?.addEventListener("drop", (e) => setGalleryFiles(e.dataTransfer.files));
+  publishBtn?.addEventListener("click", publishGalleryFiles);
+  renderGalleryLibrary();
+  updateGalleryStats();
+}
+
+function setGalleryFiles(fileList) {
+  const files = Array.from(fileList || []).filter((file) =>
+    /^(image\/(jpeg|png|webp)|video\/(mp4|quicktime))$/i.test(file.type)
+  );
+  if (!files.length) return;
+  const queue = el("galleryUploadQueue");
+  queue.innerHTML = files.map((file, i) => `
+    <div class="gallery-queue-item">
+      <span class="gallery-queue-index">${i + 1}</span>
+      <div><strong>${escapeGalleryText(file.name)}</strong><small>${formatGalleryBytes(file.size)}</small></div>
+    </div>`).join("");
+  queue.dataset.count = String(files.length);
+  queue._files = files;
+}
+
+function publishGalleryFiles() {
+  const queue = el("galleryUploadQueue");
+  const files = queue?._files || [];
+  if (!files.length) {
+    alert("Pilih minimal satu foto atau video terlebih dahulu.");
+    return;
+  }
+  const day = el("galleryDayInput").value;
+  const session = el("gallerySessionInput").value || "General";
+  const caption = el("galleryCaptionInput").value.trim();
+  files.forEach((file) => {
+    galleryMedia.unshift({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+      file,
+      url: URL.createObjectURL(file),
+      type: file.type.startsWith("video/") ? "video" : "photo",
+      day,
+      session,
+      caption,
+      published: true,
+      createdAt: new Date(),
+    });
+  });
+  queue.innerHTML = "";
+  queue._files = [];
+  el("galleryFileInput").value = "";
+  el("galleryCaptionInput").value = "";
+  el("gallerySessionInput").value = "";
+  el("galleryUploadPanel").classList.add("hidden");
+  renderGalleryLibrary();
+  updateGalleryStats();
+}
+
+function renderGalleryLibrary() {
+  const wrap = el("galleryLibrary");
+  if (!wrap) return;
+  const list = galleryMedia.filter((item) =>
+    (galleryFilter === "all" || item.type === galleryFilter) &&
+    (galleryDayFilter === "all" || item.day === galleryDayFilter)
+  );
+  el("galleryLibraryLabel").textContent = `${list.length} media ditampilkan`;
+  el("galleryTotalLabel").textContent = `${galleryMedia.length} media`;
+  if (!list.length) {
+    wrap.innerHTML = `<div class="gallery-empty"><div class="gallery-empty-icon">▧</div><strong>Belum ada media</strong><p>Upload foto atau video dokumentasi untuk mulai mengisi Gallery.</p><button class="btn btn-primary" type="button" onclick="document.getElementById('galleryOpenUploadBtn').click()">＋ Upload Media</button></div>`;
+    return;
+  }
+  wrap.innerHTML = list.map((item) => `
+    <article class="gallery-media-card">
+      <div class="gallery-media-preview">
+        ${item.type === "video"
+          ? `<video src="${item.url}" muted preload="metadata"></video><span class="media-type">VIDEO</span>`
+          : `<img src="${item.url}" alt="${escapeGalleryText(item.caption || item.file.name)}" loading="lazy"><span class="media-type">PHOTO</span>`}
+        <button class="gallery-delete" type="button" data-gallery-delete="${item.id}" aria-label="Hapus media">×</button>
+      </div>
+      <div class="gallery-media-info">
+        <div class="gallery-media-meta"><span>DAY ${item.day}</span><span>${escapeGalleryText(item.session)}</span></div>
+        <h3>${escapeGalleryText(item.caption || item.file.name)}</h3>
+        <div class="gallery-media-bottom"><span>${formatGalleryBytes(item.file.size)}</span><span class="published-dot">● Published</span></div>
+      </div>
+    </article>`).join("");
+  wrap.querySelectorAll("[data-gallery-delete]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = galleryMedia.find((x) => x.id === btn.dataset.galleryDelete);
+      if (item?.url) URL.revokeObjectURL(item.url);
+      galleryMedia = galleryMedia.filter((x) => x.id !== btn.dataset.galleryDelete);
+      renderGalleryLibrary();
+      updateGalleryStats();
+    });
+  });
+}
+
+function updateGalleryStats() {
+  const photos = galleryMedia.filter((x) => x.type === "photo").length;
+  const videos = galleryMedia.filter((x) => x.type === "video").length;
+  const published = galleryMedia.filter((x) => x.published).length;
+  const days = new Set(galleryMedia.map((x) => x.day)).size;
+  if (el("galleryPhotoCount")) el("galleryPhotoCount").textContent = photos;
+  if (el("galleryVideoCount")) el("galleryVideoCount").textContent = videos;
+  if (el("galleryPublishedCount")) el("galleryPublishedCount").textContent = published;
+  if (el("galleryDayCount")) el("galleryDayCount").textContent = days;
+  if (el("galleryTotalLabel")) el("galleryTotalLabel").textContent = `${galleryMedia.length} media`;
+}
+
+function formatGalleryBytes(bytes) {
+  if (!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  return `${(bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0)} ${units[i]}`;
+}
+
+function escapeGalleryText(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+  }[char]));
+}
+
+// Initialise Gallery only after the DOM exists. Other admin views keep their original flow.
+document.addEventListener("DOMContentLoaded", initGalleryView);

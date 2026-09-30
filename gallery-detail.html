@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Day 1 — Gallery — Jakarta Film Summit 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/gallery.css">
+  <link rel="icon" type="image/png" href="assets/icon/jfs.ico">
+</head>
+<body class="gallery-detail-page">
+  <div id="navbarPlaceholder"></div>
+
+  <main>
+    <section class="detail-head detail-hero">
+      <div class="detail-hero-bg" id="detailHeroBg" aria-hidden="true"></div>
+
+      <div class="detail-hero-vignette" aria-hidden="true"></div>
+
+      <div class="wrap detail-hero-content">
+        <a class="back-link" href="gallery.html">
+          ← &nbsp;Kembali ke Gallery
+        </a>
+
+        <div class="detail-head-grid">
+          <div>
+            <span class="gallery-eyebrow">GALLERY</span>
+
+            <h1 id="detailTitle">DAY 1</h1>
+
+            <p class="detail-date" id="detailDate">
+              19 NOVEMBER 2026
+            </p>
+          </div>
+
+          <p class="detail-intro" id="detailIntro">
+            Dokumentasi dari seluruh sesi, diskusi, pertemuan, dan momen penting di hari pertama Jakarta Film Summit 2026.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-gallery-section">
+      <div class="wrap">
+
+        <div class="detail-toolbar">
+          <div
+            class="media-filters"
+            id="detailFilters"
+            aria-label="Filter media"
+          >
+            <button
+              class="media-filter active"
+              type="button"
+              data-filter="all"
+            >
+              Semua
+            </button>
+
+            <button
+              class="media-filter"
+              type="button"
+              data-filter="photo"
+            >
+              Foto
+            </button>
+
+            <button
+              class="media-filter"
+              type="button"
+              data-filter="video"
+            >
+              Video
+            </button>
+          </div>
+
+          <label class="sort-control">
+            <span>Urutkan:</span>
+
+            <select id="sortSelect" aria-label="Urutkan gallery">
+              <option value="newest">Terbaru</option>
+              <option value="oldest">Terlama</option>
+            </select>
+          </label>
+        </div>
+
+        <div
+          class="detail-grid"
+          id="detailGrid"
+          aria-live="polite"
+        ></div>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="mediaLightbox" class="media-lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" data-close-lightbox></div>
+    <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Media viewer">
+      <button class="lightbox-close" type="button" data-close-lightbox aria-label="Tutup">×</button>
+      <button class="lightbox-arrow prev" type="button" id="lightboxPrev" aria-label="Media sebelumnya">‹</button>
+      <button class="lightbox-arrow next" type="button" id="lightboxNext" aria-label="Media berikutnya">›</button>
+      <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+      <div class="lightbox-media" id="lightboxMedia"></div>
+      <div class="lightbox-caption">
+        <div>
+          <h2 id="lightboxTitle"></h2>
+          <p id="lightboxMeta"></p>
+          <p id="lightboxCaption"></p>
+        </div>
+        <a class="lightbox-download" id="lightboxDownload" href="#" download aria-label="Unduh media">↓</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="footerPlaceholder"></div>
+
+  <script src="assets/js/include.js"></script>
+  <script src="assets/js/gallery-detail.js"></script>
+</body>
+</html>
