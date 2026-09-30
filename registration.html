@@ -41,7 +41,7 @@
       <h1 class="headline" data-i18n="hero.headline">Daftarkan diri Anda ke layar utama industri film.</h1>
       <p class="lead" data-i18n="hero.lead">Satu formulir untuk bergabung bersama produser, investor, distributor, dan
         penggerak film di Jakarta Film Summit.</p>
-      <p class="sub" data-i18n="hero.sub">Tiga bagian singkat &middot; sekitar 3 menit untuk diselesaikan</p>
+      <p class="sub" data-i18n="hero.sub">Empat bagian singkat &middot; sekitar 3 menit untuk diselesaikan</p>
     </div>
 
     <div class="sprockets bottom" aria-hidden="true"></div>
@@ -55,13 +55,18 @@
         <span data-i18n="stepnav.s1">Informasi Diri</span>
       </a>
 
-      <a class="step-link" data-target="s2">
+      <a class="step-link" data-target="sDays">
         <span class="num">2</span>
+        <span data-i18n="stepnav.days">Pilih Hari</span>
+      </a>
+
+      <a class="step-link" data-target="s2">
+        <span class="num">3</span>
         <span data-i18n="stepnav.s2">Perusahaan &amp; Keterlibatan</span>
       </a>
 
       <a class="step-link" data-target="s3">
-        <span class="num">3</span>
+        <span class="num">4</span>
         <span data-i18n="stepnav.s3">Persetujuan</span>
       </a>
 
@@ -157,10 +162,58 @@
 
             </section>
 
-            <section class="block" id="s2">
+            <section class="block" id="sDays">
 
               <div class="block-head">
                 <span class="block-num">02</span>
+                <div>
+                  <h2 data-i18n="days.title">Pilih Hari Kehadiran</h2>
+                  <p data-i18n="days.desc">Pilih hari yang ingin Anda hadiri.</p>
+                </div>
+              </div>
+
+              <div class="day-cards" id="dayCards">
+          <label class="day-card">
+            <input type="checkbox" name="days" value="1">
+            <span class="day-check" aria-hidden="true"></span>
+            <span class="day-num"><span data-i18n="days.day">Hari</span> 1</span>
+            <span class="day-date">19 Nov 2026</span>
+            <h3>Opening &amp; Policy</h3>
+            <p data-i18n="day1.desc"></p>
+            <ul><li><b>09.00</b><span>Opening Ceremony &amp; Keynote</span></li><li><b>10.30</b><span>Building a Film-Friendly Government</span></li><li><b>13.30</b><span>From Regulation to Incentives</span></li><li><b>15.30</b><span>Regional Production &amp; Multiplier Effect</span></li></ul>
+          </label>
+          <label class="day-card">
+            <input type="checkbox" name="days" value="2">
+            <span class="day-check" aria-hidden="true"></span>
+            <span class="day-num"><span data-i18n="days.day">Hari</span> 2</span>
+            <span class="day-date">20 Nov 2026</span>
+            <h3>Investment &amp; Financing</h3>
+            <p data-i18n="day2.desc"></p>
+            <ul><li><b>09.30</b><span>Unlocking Investment for the Film Industry</span></li><li><b>11.30</b><span>Financing the Next Indonesian Film</span></li><li><b>14.00</b><span>Jakarta as a Screen Production Ecosystem</span></li><li><b>16.00</b><span>The Future of Film Investment</span></li></ul>
+          </label>
+          <label class="day-card">
+            <input type="checkbox" name="days" value="3">
+            <span class="day-check" aria-hidden="true"></span>
+            <span class="day-num"><span data-i18n="days.day">Hari</span> 3</span>
+            <span class="day-date">21 Nov 2026</span>
+            <h3>Future &amp; Global Film Commissions</h3>
+            <p data-i18n="day3.desc"></p>
+            <ul><li><b>09.30</b><span>Innovation Across the Screen Economy</span></li><li><b>11.30</b><span>Building a Competitive Production Destination</span></li><li><b>14.00</b><span>Global Film Commission Forum</span></li><li><b>16.00</b><span>What Comes Next (Closing)</span></li></ul>
+          </label>
+              </div>
+
+              <div class="day-bar">
+                <span class="day-summary" id="daySummary" aria-live="polite"></span>
+                <button type="button" class="day-all" id="dayAll"></button>
+              </div>
+              <div class="days-error" id="daysError" data-i18n="days.error">Pilih minimal satu hari.</div>
+
+            </section>
+
+            <section class="block" id="s2">
+
+              <div class="block-head">
+                <span class="block-num">03</span>
                 <div>
                   <h2 data-i18n="s2.title">Perusahaan &amp; Keterlibatan</h2>
                   <p data-i18n="s2.desc">Semua kolom di bagian ini opsional — isi jika relevan, supaya kami bisa
@@ -287,7 +340,7 @@
             <section class="block" id="s3">
 
               <div class="block-head">
-                <span class="block-num">03</span>
+                <span class="block-num">04</span>
                 <div>
                   <h2 data-i18n="s3.title">Persetujuan &amp; Komunikasi</h2>
                   <p data-i18n="s3.desc">Terakhir, beri tahu kami bagaimana boleh menghubungi Anda.</p>
@@ -354,6 +407,9 @@
               </p> -->
 
               <span class="code" id="ticketCode">JFS-000000</span>
+
+              <div class="ticket-days" id="ticketDays"></div>
+              <p id="ticketMessage" hidden></p>
 
               <div class="qr-wrap" id="qrWrap">
                 <img id="qrImg" alt="QR tiket masuk" src="">

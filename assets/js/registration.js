@@ -212,10 +212,26 @@ const I18N = {
     "hero.headline": "Daftarkan diri Anda ke layar utama industri film.",
     "hero.lead":
       "Satu formulir untuk bergabung bersama produser, investor, distributor, dan penggerak film di Jakarta Film Summit.",
-    "hero.sub": "Tiga bagian singkat · sekitar 3 menit untuk diselesaikan",
+    "hero.sub": "Empat bagian singkat · sekitar 3 menit untuk diselesaikan",
     "stepnav.s1": "Informasi Diri",
     "stepnav.s2": "Perusahaan & Keterlibatan",
     "stepnav.s3": "Persetujuan",
+    "stepnav.days": "Pilih Hari",
+    "days.title": "Pilih Hari Kehadiran",
+    "days.desc":
+      "Pilih satu atau lebih hari yang ingin Anda hadiri. Pilihan tidak bisa diubah sendiri setelah mendaftar; hubungi panitia jika perlu mengubahnya.",
+    "days.day": "Hari",
+    "days.selectAll": "Pilih semua hari",
+    "days.clear": "Hapus pilihan",
+    "days.summary": "Anda mendaftar untuk:",
+    "days.summary.none": "Belum ada hari yang dipilih.",
+    "days.error": "Pilih minimal satu hari untuk dihadiri.",
+    "day1.desc":
+      "Pembukaan resmi dan diskusi kebijakan: bagaimana pemerintah dan regulasi mendukung produksi film.",
+    "day2.desc":
+      "Fokus pada investasi dan pembiayaan: akses modal, struktur pendanaan, dan ekosistem produksi Jakarta.",
+    "day3.desc":
+      "Inovasi industri layar dan forum film commission global, ditutup dengan langkah berikutnya.",
     "error.required":
       "Beberapa bagian wajib diisi terlebih dahulu — periksa kembali kolom yang ditandai.",
     "error.server": "Terjadi kesalahan saat mengirim pendaftaran. Coba lagi.",
@@ -231,7 +247,8 @@ const I18N = {
     "field.country.label": "Negara Asal",
     "field.country.placeholder": "Cari negara…",
     "s2.title": "Perusahaan & Keterlibatan",
-    "s2.desc": "Semua kolom di bagian ini opsional — isi jika relevan, supaya kami bisa menyusun sesi dan pertemuan yang lebih sesuai untuk Anda.",
+    "s2.desc":
+      "Semua kolom di bagian ini opsional — isi jika relevan, supaya kami bisa menyusun sesi dan pertemuan yang lebih sesuai untuk Anda.",
     "field.company.label": "Nama Perusahaan / Organisasi",
     "field.company.placeholder": "cth. Langit Pictures",
     "field.company.hint": "(opsional)",
@@ -297,10 +314,26 @@ const I18N = {
     "hero.headline": "Register for the main stage of the film industry.",
     "hero.lead":
       "One form to join producers, investors, distributors, and film movers at Jakarta Film Summit.",
-    "hero.sub": "Three short sections · about 3 minutes to complete",
+    "hero.sub": "Four short sections · about 3 minutes to complete",
     "stepnav.s1": "Personal Info",
     "stepnav.s2": "Company & Involvement",
     "stepnav.s3": "Consent",
+    "stepnav.days": "Choose Days",
+    "days.title": "Choose Your Days",
+    "days.desc":
+      "Select one or more days you want to attend. You cannot change your choice after registering; contact the committee if you need to.",
+    "days.day": "Day",
+    "days.selectAll": "Select all days",
+    "days.clear": "Clear selection",
+    "days.summary": "You are registering for:",
+    "days.summary.none": "No day selected yet.",
+    "days.error": "Select at least one day to attend.",
+    "day1.desc":
+      "Official opening and policy talks on how government and regulation support film production.",
+    "day2.desc":
+      "Investment and financing: access to capital, funding structures, and Jakarta's production ecosystem.",
+    "day3.desc":
+      "Screen-economy innovation and the global film commission forum, closing with what comes next.",
     "error.required":
       "Some required sections are missing — please check the highlighted fields.",
     "error.server":
@@ -317,7 +350,8 @@ const I18N = {
     "field.country.label": "Country of Origin",
     "field.country.placeholder": "Search country…",
     "s2.title": "Company & Involvement",
-    "s2.desc": "Every field in this section is optional — fill in what's relevant so we can shape sessions and meetings around you.",
+    "s2.desc":
+      "Every field in this section is optional — fill in what's relevant so we can shape sessions and meetings around you.",
     "field.company.label": "Company / Organization Name",
     "field.company.placeholder": "e.g. Langit Pictures",
     "field.company.hint": "(optional)",
@@ -414,6 +448,7 @@ function applyLanguage(lang) {
 
   populateCountryList();
 
+  renderDaySummary();
   if (lastClosedData) showClosed(lastClosedData);
   if (lastTicketData)
     renderTicket(lastTicketData.participant, lastTicketData.isDuplicate);
@@ -602,6 +637,11 @@ function renderTicket(p, isDuplicate) {
     isDuplicate ? "ticket.message.duplicate" : "ticket.message",
   );
   document.getElementById("ticketCode").textContent = p.id;
+  var dl = p.days || window.__lastDays || [];
+  if (typeof dl === "string") dl = dl.split(",");
+  document.getElementById("ticketDays").textContent = dl.length
+    ? formatDays(dl)
+    : "";
   document.getElementById("qrImg").src = qrImageUrl(p.qrToken);
 
   form.style.display = "none";
@@ -634,12 +674,19 @@ form.addEventListener("submit", async function (e) {
   // Validitas native (fullname, email, country, terms) — segment & goals
   // sengaja tidak diwajibkan lagi, jadi tidak ada lagi pengecekan manual
   // untuk keduanya di sini.
-  var valid = form.checkValidity();
+  var daysPicked = collectDays();
+  var daysOk = daysPicked.length > 0;
+  document.getElementById("daysError").classList.toggle("show", !daysOk);
+  window.__lastDays = daysPicked;
+  var valid = form.checkValidity() && daysOk;
   var segmentPicked = form.querySelector('input[name="segment"]:checked');
   if (!valid) {
     form.reportValidity();
     errorBanner.classList.add("show");
-    errorBanner.scrollIntoView({ behavior: "smooth", block: "center" });
+    (daysOk
+      ? errorBanner
+      : document.getElementById("daysError")
+    ).scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
 
@@ -656,6 +703,7 @@ form.addEventListener("submit", async function (e) {
     industryOther: "",
     experience: "", // kolom pengalaman sudah tidak ada di formulir
     goals: collectGoals(),
+    days: daysPicked,
     access: document.getElementById("access").value.trim(),
     marketing: document.getElementById("marketing").checked,
     thirdparty: document.getElementById("thirdparty").checked,
@@ -730,4 +778,44 @@ document.getElementById("againBtn").addEventListener("click", function () {
 });
 
 applyLanguage(currentLang);
+// ---------- day selection cards ----------
+function collectDays() {
+  return Array.prototype.slice
+    .call(form.querySelectorAll('input[name="days"]:checked'))
+    .map(function (el) {
+      return el.value;
+    });
+}
+function formatDays(list) {
+  return list
+    .map(function (d) {
+      return t("days.day") + " " + d;
+    })
+    .join(" · ");
+}
+function renderDaySummary() {
+  var picked = collectDays();
+  document.getElementById("daySummary").textContent = picked.length
+    ? t("days.summary") + " " + formatDays(picked)
+    : t("days.summary.none");
+  document.getElementById("dayAll").textContent =
+    picked.length === 3 ? t("days.clear") : t("days.selectAll");
+}
+document.getElementById("dayCards").addEventListener("change", function () {
+  document.getElementById("daysError").classList.remove("show");
+  renderDaySummary();
+});
+document.getElementById("dayAll").addEventListener("click", function () {
+  var boxes = form.querySelectorAll('input[name="days"]');
+  var all = collectDays().length === boxes.length;
+  boxes.forEach(function (b) {
+    b.checked = !all;
+  });
+  document.getElementById("daysError").classList.remove("show");
+  renderDaySummary();
+});
+form.addEventListener("reset", function () {
+  setTimeout(renderDaySummary, 0);
+});
+renderDaySummary();
 checkStatus();
