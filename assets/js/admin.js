@@ -67,6 +67,72 @@ let currentMode = "scan"; // check-in sub-tab: scan | search
 let pesertaStatusFilter = "all"; // peserta view: all | in | out
 let pesertaSegmentFilter = "all";
 let pollTimer = null;
+let pesertaDay = "all"; // peserta view: all | 1 | 2 | 3
+
+// ---- day helpers: one participant can attend several days, check-in is per day ----
+function todayEventDay() {
+  const d = new Date();
+  const key =
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0");
+  return (
+    { "2026-11-19": "1", "2026-11-20": "2", "2026-11-21": "3" }[key] || "1"
+  );
+}
+let checkinDay = todayEventDay(); // day staff are checking people in for
+let dashDay = checkinDay; // day shown on the dashboard
+
+const registeredOn = (p, day) =>
+  (p.days || []).map(String).includes(String(day));
+const checkinOn = (p, day) => (p.checkins && p.checkins[day]) || null;
+const attendedOn = (p, day) => !!checkinOn(p, day);
+const daysLabel = (p) =>
+  (p.days || []).map((d) => "Day " + d).join(", ") || "—";
+
+// Copy of a participant whose kehadiran / waktu_checkin / checkin_oleh describe one day ("all" = any day).
+function viewFor(p, day) {
+  const all = Object.values(p.checkins || {}).sort((a, b) =>
+    String(b.time).localeCompare(String(a.time)),
+  );
+  const c = day === "all" ? all[0] : checkinOn(p, day);
+  return {
+    ...p,
+    kehadiran: !!c,
+    waktu_checkin: c ? c.time : null,
+    checkin_oleh: c ? c.by : null,
+  };
+}
+function forDay(day) {
+  return participants
+    .filter((p) => day === "all" || registeredOn(p, day))
+    .map((p) => viewFor(p, day));
+}
+function statusBadge(p) {
+  if (!registeredOn(p, checkinDay))
+    return `<div class="status-badge out-day">✕ Tidak terdaftar Day ${checkinDay}</div>`;
+  return attendedOn(p, checkinDay)
+    ? `<div class="status-badge done">✓ Sudah check-in</div>`
+    : `<div class="status-badge valid">⏱ Belum check-in</div>`;
+}
+function initDayFilters(id, current, onPick) {
+  const box = el(id);
+  const mark = () =>
+    box
+      .querySelectorAll(".filter-btn")
+      .forEach((b) =>
+        b.classList.toggle("active", b.dataset.day === String(current())),
+      );
+  box.querySelectorAll(".filter-btn").forEach((b) =>
+    b.addEventListener("click", () => {
+      onPick(b.dataset.day);
+      mark();
+    }),
+  );
+  mark();
+}
 let donutChart = null;
 let timelineChart = null;
 
@@ -471,7 +537,7 @@ el("checkinSearchInput").addEventListener("input", (e) => {
       (p) => `
     <div class="matchrow" data-id="${p.id}">
       <div><div class="name">${p.fullname}</div><div class="meta">${p.email} · ${p.id}</div></div>
-      <div class="status-badge ${p.kehadiran ? "done" : "valid"}">${p.kehadiran ? "✓ Sudah check-in" : "⏱ Belum check-in"}</div>
+      ${statusBadge(p)}
     </div>`,
     )
     .join("");
@@ -485,15 +551,26 @@ el("checkinSearchInput").addEventListener("input", (e) => {
     });
 });
 
-function renderTicket(p) {
+function renderTicket(raw) {
+  const p = viewFor(raw, checkinDay);
+  const registered = registeredOn(raw, checkinDay);
+  let footer;
+  if (!registered) {
+    footer = `<div class="timestamp">Terdaftar hanya untuk ${daysLabel(raw)} — tidak bisa check-in di Day ${checkinDay}.</div>`;
+  } else if (p.kehadiran) {
+    footer = `<div class="timestamp">⏱ Check-in Day ${checkinDay} pukul ${timeShort(p.waktu_checkin)} oleh ${p.checkin_oleh}</div>`;
+  } else {
+    footer = `<div></div><button class="btn btn-primary" id="confirmCheckinBtn">✓ Check-in Day ${checkinDay} Sekarang</button>`;
+  }
   el("resultTicket").classList.remove("hidden");
   el("resultTicket").innerHTML = `
     <div class="ticket-head">
       <div><div class="ticket-id mono">${p.id}</div><div class="ticket-name">${p.fullname}</div></div>
-      <div class="status-badge ${p.kehadiran ? "done" : "valid"}">${p.kehadiran ? "✓ Sudah Check-in" : "⏱ Belum Check-in"}</div>
+      ${statusBadge(raw)}
     </div>
     <div class="perf"></div>
     <div class="ticket-details">
+      <div class="detail-row">📅 <strong>${daysLabel(raw)}</strong></div>
       <div class="detail-row">✉️ <strong>${p.email}</strong></div>
       <div class="detail-row">📞 <strong>${p.phone}</strong></div>
       <div class="detail-row">🌍 <strong>${p.country}</strong></div>
@@ -501,15 +578,9 @@ function renderTicket(p) {
       <div class="detail-row">🏷️ <strong>${p.jobtitle}</strong></div>
       <div class="detail-row">🎬 <strong>${segmentLabel(p)}</strong></div>
     </div>
-    <div class="ticket-footer">
-      ${
-        p.kehadiran
-          ? `<div class="timestamp">⏱ Check-in pukul ${timeShort(p.waktu_checkin)} oleh ${p.checkin_oleh}</div>`
-          : `<div></div><button class="btn btn-primary" id="confirmCheckinBtn">✓ Check-in Sekarang</button>`
-      }
-    </div>`;
-  if (!p.kehadiran) {
-    el("confirmCheckinBtn").addEventListener("click", () => doCheckIn(p));
+    <div class="ticket-footer">${footer}</div>`;
+  if (registered && !p.kehadiran) {
+    el("confirmCheckinBtn").addEventListener("click", () => doCheckIn(raw));
   }
 }
 
@@ -519,25 +590,26 @@ async function doCheckIn(p) {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ qrToken: p.qrToken }),
+      body: JSON.stringify({ qrToken: p.qrToken, day: Number(checkinDay) }),
     });
-    if (!res.ok) throw new Error("checkin failed");
-    const data = await res.json();
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok && !data.participant)
+      throw new Error(data.error || "checkin failed");
     const updated = data.participant;
     participants = participants.map((x) => (x.id === updated.id ? updated : x));
-    checkinLog.unshift({
-      id: updated.id,
-      nama: updated.fullname,
-      time: updated.waktu_checkin,
-      staff: staffName,
-    });
+    if (res.ok) {
+      checkinLog.unshift({
+        id: updated.id,
+        nama: `${updated.fullname} (Day ${checkinDay})`,
+        time: checkinOn(updated, checkinDay).time,
+        staff: staffName,
+      });
+      renderLog();
+    }
     renderTicket(updated);
-    renderLog();
     renderAll();
   } catch (e) {
-    alert(
-      "Gagal check-in. Cek koneksi ke backend.\n\n(Backend belum terhubung — lihat jfs-api-reference.md)",
-    );
+    alert("Gagal check-in. Cek koneksi ke server.\n\n" + (e.message || ""));
     console.error(e);
   }
 }
@@ -564,13 +636,21 @@ function renderLog() {
 el("dashboardRefreshBtn").addEventListener("click", fetchData);
 
 function renderDashboard() {
-  const total = participants.length;
-  const hadir = participants.filter((p) => p.kehadiran).length;
+  const list = forDay(dashDay);
+  const total = list.length;
+  const hadir = list.filter((p) => p.kehadiran).length;
   const miss = total - hadir;
   const rate = total ? Math.round((hadir / total) * 100) : 0;
+  const dayInfo = (settings.days || []).find(
+    (d) => String(d.day) === String(dashDay),
+  );
+  const quotaNote =
+    dayInfo && dayInfo.quota != null
+      ? ` · kuota ${dayInfo.taken}/${dayInfo.quota}`
+      : "";
 
   el("dashboardSyncLabel").textContent =
-    "Sync " + timeShort(new Date().toISOString());
+    `Day ${dashDay}${quotaNote} · Sync ` + timeShort(new Date().toISOString());
   el("valTotal").textContent = total;
   el("valHadir").textContent = hadir;
   el("valMiss").textContent = miss;
@@ -582,8 +662,8 @@ function renderDashboard() {
     : "Belum ada data";
 
   renderDonut(total, hadir, miss, rate);
-  renderTimeline(participants);
-  renderNegaraBreakdown(participants);
+  renderTimeline(list);
+  renderNegaraBreakdown(list);
 }
 
 function renderDonut(total, hadir, miss, rate) {
@@ -749,7 +829,7 @@ function populateSegmentFilter() {
 
 function getFilteredPeserta() {
   const q = el("pesertaSearchInput").value.trim().toLowerCase();
-  return participants
+  return forDay(pesertaDay)
     .filter((p) =>
       pesertaStatusFilter === "in"
         ? p.kehadiran
@@ -777,8 +857,9 @@ function getFilteredPeserta() {
 function renderPeserta() {
   populateSegmentFilter();
   const filtered = getFilteredPeserta();
+  const base = forDay(pesertaDay).length;
   el("pesertaMetaLabel").textContent =
-    `Menampilkan ${filtered.length} dari ${participants.length} peserta`;
+    `Menampilkan ${filtered.length} dari ${base} peserta`;
   el("pesertaEmptyState").classList.toggle("hidden", filtered.length !== 0);
 
   el("pesertaTableBody").innerHTML = filtered
@@ -792,9 +873,11 @@ function renderPeserta() {
       <td>${p.company || "—"}</td>
       <td>${p.jobtitle || "—"}</td>
       <td>${segmentLabel(p) || "—"}</td>
+      <td>${(p.days || []).map((d) => `<span class="day-chip">Day ${d}</span>`).join("") || "—"}</td>
       <td class="mono sub">${p.id}</td>
       <td><span class="badge ${p.kehadiran ? "in" : "out"}">${p.kehadiran ? "Hadir" : "Belum Hadir"}</span></td>
       <td>${p.waktu_checkin ? timeFull(p.waktu_checkin) : "—"}</td>
+      <td class="no-print"><button class="mini-btn" data-edit-days="${p.id}">Ubah hari</button></td>
     </tr>`,
     )
     .join("");
@@ -806,9 +889,79 @@ function renderPeserta() {
       timeStyle: "short",
     });
   el("printStats").innerHTML = `
-    <div>Total ditampilkan: ${filtered.length} dari ${participants.length} peserta</div>
+    <div>Hari: ${pesertaDay === "all" ? "Semua" : "Day " + pesertaDay} · Total ditampilkan: ${filtered.length} dari ${base} peserta</div>
     <div>Sudah absen: ${filtered.filter((p) => p.kehadiran).length}</div>`;
 }
+
+el("dayFilter").addEventListener("change", (e) => {
+  pesertaDay = e.target.value;
+  renderPeserta();
+});
+
+// ---- committee edits a participant's days ----
+let editingId = null;
+el("pesertaTableBody").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-edit-days]");
+  if (!btn) return;
+  const p = participants.find((x) => x.id === btn.dataset.editDays);
+  if (!p) return;
+  editingId = p.id;
+  el("daysDialogName").textContent = `${p.fullname} · ${p.id}`;
+  el("daysDialogError").textContent = "";
+  document
+    .querySelectorAll('#daysDialog input[name="editDay"]')
+    .forEach((i) => (i.checked = registeredOn(p, i.value)));
+  el("daysDialog").showModal();
+});
+el("daysDialogCancel").addEventListener("click", () =>
+  el("daysDialog").close(),
+);
+el("daysDialogSave").addEventListener("click", async () => {
+  const days = [
+    ...document.querySelectorAll('#daysDialog input[name="editDay"]:checked'),
+  ].map((i) => Number(i.value));
+  if (!days.length) {
+    el("daysDialogError").textContent = "Pilih minimal satu hari.";
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE}/participants/days`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: editingId, days }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      el("daysDialogError").textContent = data.error || "Gagal menyimpan.";
+      return;
+    }
+    el("daysDialog").close();
+    fetchData();
+  } catch (err) {
+    el("daysDialogError").textContent = "Tidak bisa menghubungi server.";
+  }
+});
+
+// ---- day selectors (check-in & dashboard) ----
+initDayFilters(
+  "checkinDayFilters",
+  () => checkinDay,
+  (d) => {
+    checkinDay = d;
+    el("resultTicket").classList.add("hidden");
+    el("notFoundCard").classList.add("hidden");
+    el("checkinSearchInput").dispatchEvent(new Event("input"));
+  },
+);
+initDayFilters(
+  "dashDayFilters",
+  () => dashDay,
+  (d) => {
+    dashDay = d;
+    renderDashboard();
+  },
+);
 
 // =================================================================
 // View: Settings (quota / deadline)
@@ -818,62 +971,77 @@ el("deadlineInput").addEventListener("input", (e) => {
   e.target.dataset.touched = "1";
 });
 
+[1, 2, 3].forEach((n) =>
+  el("quotaInput" + n).addEventListener(
+    "input",
+    (e) => (e.target.dataset.touched = "1"),
+  ),
+);
+
 function renderSettings() {
-  el("quotaInput").value =
-    settings.quota != null ? settings.quota : el("quotaInput").value;
-  el("quotaCurrentHint").textContent =
-    `Saat ini: ${participants.length} peserta terdaftar`;
+  const days = settings.days || [];
+  days.forEach((d) => {
+    const input = el("quotaInput" + d.day);
+    if (!input.dataset.touched) input.value = d.quota != null ? d.quota : "";
+    el("quotaHint" + d.day).textContent =
+      `Terdaftar: ${d.taken}` +
+      (d.quota != null ? ` / ${d.quota}` : " (tanpa batas)");
+  });
   if (settings.deadline && !el("deadlineInput").dataset.touched) {
-    el("deadlineInput").value = settings.deadline.slice(0, 16);
+    el("deadlineInput").value = settings.deadline
+      .slice(0, 16)
+      .replace(" ", "T");
   }
 
-  const total = participants.length;
-  const quota = settings.quota;
-  const deadline = settings.deadline;
-  const quotaReached = quota != null && total >= quota;
-  const deadlinePassed = deadline != null && new Date() > new Date(deadline);
-  const closed = quotaReached || deadlinePassed;
+  const full = (d) => d.quota != null && d.taken >= d.quota;
+  const allFull = days.length > 0 && days.every(full);
+  const deadlinePassed =
+    settings.deadline != null &&
+    new Date(settings.deadline.replace(" ", "T")) < new Date();
+  const closed = allFull || deadlinePassed;
 
   let html = `<div class="status-pill ${closed ? "closed" : "open"}">${closed ? "Pendaftaran TERTUTUP" : "Pendaftaran TERBUKA"}</div>`;
-  if (closed)
-    html += `<p class="settings-hint" style="margin-top:10px;">${quotaReached ? "Alasan: kuota sudah terpenuhi." : "Alasan: sudah melewati batas tanggal pendaftaran."}</p>`;
-  if (quota != null)
-    html += `<p class="settings-hint" style="margin-top:8px;">Kuota: ${total} / ${quota}</p>`;
-  if (deadline)
-    html += `<p class="settings-hint" style="margin-top:4px;">Batas waktu: ${new Date(deadline).toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" })}</p>`;
-  if (quota == null && !deadline)
-    html += `<p class="settings-hint" style="margin-top:8px;">Belum ada kuota atau batas tanggal yang diset — pendaftaran terbuka tanpa batas.</p>`;
+  if (closed) {
+    html += `<p class="settings-hint" style="margin-top:10px;">${allFull ? "Alasan: kuota semua hari sudah penuh." : "Alasan: sudah melewati batas waktu pendaftaran."}</p>`;
+  }
+  days.forEach((d) => {
+    html += `<p class="settings-hint" style="margin-top:8px;">Day ${d.day}: ${d.taken}${d.quota != null ? " / " + d.quota : ""} peserta — ${full(d) ? "PENUH" : "masih tersedia"}</p>`;
+  });
+  if (settings.deadline) {
+    html += `<p class="settings-hint" style="margin-top:8px;">Batas waktu: ${new Date(settings.deadline.replace(" ", "T")).toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" })}</p>`;
+  }
   el("statusPillWrap").innerHTML = html;
 }
 
 async function saveSettings() {
   const btn = el("saveSettingsBtn");
   btn.disabled = true;
-  const quotaVal = el("quotaInput").value.trim();
-  const nextSettings = {
-    quota: quotaVal === "" ? null : Math.max(0, parseInt(quotaVal, 10) || 0),
-    deadline: el("deadlineInput").value || null,
-  };
+  const quotas = {};
+  [1, 2, 3].forEach((n) => {
+    const v = el("quotaInput" + n).value.trim();
+    quotas[n] = v === "" ? null : Math.max(0, parseInt(v, 10) || 0);
+  });
   try {
     const res = await fetch(`${API_BASE}/settings`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(nextSettings),
+      body: JSON.stringify({
+        quotas,
+        deadline: el("deadlineInput").value || null,
+      }),
     });
     if (!res.ok) throw new Error("save failed");
     settings = await res.json();
+    [1, 2, 3].forEach((n) => delete el("quotaInput" + n).dataset.touched);
     renderSettings();
   } catch (e) {
-    alert(
-      "Gagal menyimpan pengaturan. Cek koneksi ke backend.\n\n(Backend belum terhubung — lihat jfs-api-reference.md)",
-    );
+    alert("Gagal menyimpan pengaturan. Cek koneksi ke server.");
     console.error(e);
   } finally {
     btn.disabled = false;
   }
 }
-
 
 // =================================================================
 // View: Gallery (frontend prototype)
@@ -897,7 +1065,10 @@ function initGalleryView() {
 
   openBtn?.addEventListener("click", () => {
     panel?.classList.remove("hidden");
-    setTimeout(() => panel?.scrollIntoView({ behavior: "smooth", block: "start" }), 30);
+    setTimeout(
+      () => panel?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      30,
+    );
   });
   closeBtn?.addEventListener("click", () => panel?.classList.add("hidden"));
   input?.addEventListener("change", (e) => setGalleryFiles(e.target.files));
@@ -907,7 +1078,9 @@ function initGalleryView() {
   });
   document.querySelectorAll("[data-gallery-filter]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-gallery-filter]").forEach((b) => b.classList.remove("active"));
+      document
+        .querySelectorAll("[data-gallery-filter]")
+        .forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       galleryFilter = btn.dataset.galleryFilter;
       renderGalleryLibrary();
@@ -926,7 +1099,9 @@ function initGalleryView() {
       dropzone.classList.remove("dragover");
     });
   });
-  dropzone?.addEventListener("drop", (e) => setGalleryFiles(e.dataTransfer.files));
+  dropzone?.addEventListener("drop", (e) =>
+    setGalleryFiles(e.dataTransfer.files),
+  );
   publishBtn?.addEventListener("click", publishGalleryFiles);
   renderGalleryLibrary();
   updateGalleryStats();
@@ -934,15 +1109,19 @@ function initGalleryView() {
 
 function setGalleryFiles(fileList) {
   const files = Array.from(fileList || []).filter((file) =>
-    /^(image\/(jpeg|png|webp)|video\/(mp4|quicktime))$/i.test(file.type)
+    /^(image\/(jpeg|png|webp)|video\/(mp4|quicktime))$/i.test(file.type),
   );
   if (!files.length) return;
   const queue = el("galleryUploadQueue");
-  queue.innerHTML = files.map((file, i) => `
+  queue.innerHTML = files
+    .map(
+      (file, i) => `
     <div class="gallery-queue-item">
       <span class="gallery-queue-index">${i + 1}</span>
       <div><strong>${escapeGalleryText(file.name)}</strong><small>${formatGalleryBytes(file.size)}</small></div>
-    </div>`).join("");
+    </div>`,
+    )
+    .join("");
   queue.dataset.count = String(files.length);
   queue._files = files;
 }
@@ -959,7 +1138,9 @@ function publishGalleryFiles() {
   const caption = el("galleryCaptionInput").value.trim();
   files.forEach((file) => {
     galleryMedia.unshift({
-      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+      id: crypto.randomUUID
+        ? crypto.randomUUID()
+        : String(Date.now() + Math.random()),
       file,
       url: URL.createObjectURL(file),
       type: file.type.startsWith("video/") ? "video" : "photo",
@@ -983,9 +1164,10 @@ function publishGalleryFiles() {
 function renderGalleryLibrary() {
   const wrap = el("galleryLibrary");
   if (!wrap) return;
-  const list = galleryMedia.filter((item) =>
-    (galleryFilter === "all" || item.type === galleryFilter) &&
-    (galleryDayFilter === "all" || item.day === galleryDayFilter)
+  const list = galleryMedia.filter(
+    (item) =>
+      (galleryFilter === "all" || item.type === galleryFilter) &&
+      (galleryDayFilter === "all" || item.day === galleryDayFilter),
   );
   el("galleryLibraryLabel").textContent = `${list.length} media ditampilkan`;
   el("galleryTotalLabel").textContent = `${galleryMedia.length} media`;
@@ -993,12 +1175,16 @@ function renderGalleryLibrary() {
     wrap.innerHTML = `<div class="gallery-empty"><div class="gallery-empty-icon">▧</div><strong>Belum ada media</strong><p>Upload foto atau video dokumentasi untuk mulai mengisi Gallery.</p><button class="btn btn-primary" type="button" onclick="document.getElementById('galleryOpenUploadBtn').click()">＋ Upload Media</button></div>`;
     return;
   }
-  wrap.innerHTML = list.map((item) => `
+  wrap.innerHTML = list
+    .map(
+      (item) => `
     <article class="gallery-media-card">
       <div class="gallery-media-preview">
-        ${item.type === "video"
-          ? `<video src="${item.url}" muted preload="metadata"></video><span class="media-type">VIDEO</span>`
-          : `<img src="${item.url}" alt="${escapeGalleryText(item.caption || item.file.name)}" loading="lazy"><span class="media-type">PHOTO</span>`}
+        ${
+          item.type === "video"
+            ? `<video src="${item.url}" muted preload="metadata"></video><span class="media-type">VIDEO</span>`
+            : `<img src="${item.url}" alt="${escapeGalleryText(item.caption || item.file.name)}" loading="lazy"><span class="media-type">PHOTO</span>`
+        }
         <button class="gallery-delete" type="button" data-gallery-delete="${item.id}" aria-label="Hapus media">×</button>
       </div>
       <div class="gallery-media-info">
@@ -1006,12 +1192,16 @@ function renderGalleryLibrary() {
         <h3>${escapeGalleryText(item.caption || item.file.name)}</h3>
         <div class="gallery-media-bottom"><span>${formatGalleryBytes(item.file.size)}</span><span class="published-dot">● Published</span></div>
       </div>
-    </article>`).join("");
+    </article>`,
+    )
+    .join("");
   wrap.querySelectorAll("[data-gallery-delete]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const item = galleryMedia.find((x) => x.id === btn.dataset.galleryDelete);
       if (item?.url) URL.revokeObjectURL(item.url);
-      galleryMedia = galleryMedia.filter((x) => x.id !== btn.dataset.galleryDelete);
+      galleryMedia = galleryMedia.filter(
+        (x) => x.id !== btn.dataset.galleryDelete,
+      );
       renderGalleryLibrary();
       updateGalleryStats();
     });
@@ -1025,22 +1215,35 @@ function updateGalleryStats() {
   const days = new Set(galleryMedia.map((x) => x.day)).size;
   if (el("galleryPhotoCount")) el("galleryPhotoCount").textContent = photos;
   if (el("galleryVideoCount")) el("galleryVideoCount").textContent = videos;
-  if (el("galleryPublishedCount")) el("galleryPublishedCount").textContent = published;
+  if (el("galleryPublishedCount"))
+    el("galleryPublishedCount").textContent = published;
   if (el("galleryDayCount")) el("galleryDayCount").textContent = days;
-  if (el("galleryTotalLabel")) el("galleryTotalLabel").textContent = `${galleryMedia.length} media`;
+  if (el("galleryTotalLabel"))
+    el("galleryTotalLabel").textContent = `${galleryMedia.length} media`;
 }
 
 function formatGalleryBytes(bytes) {
   if (!bytes) return "0 B";
   const units = ["B", "KB", "MB", "GB"];
-  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const i = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1,
+  );
   return `${(bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0)} ${units[i]}`;
 }
 
 function escapeGalleryText(value) {
-  return String(value ?? "").replace(/[&<>'"]/g, (char) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
-  }[char]));
+  return String(value ?? "").replace(
+    /[&<>'"]/g,
+    (char) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;",
+      })[char],
+  );
 }
 
 // Initialise Gallery only after the DOM exists. Other admin views keep their original flow.

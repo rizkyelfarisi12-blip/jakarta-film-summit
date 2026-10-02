@@ -61,6 +61,8 @@
           <div class="live"><span class="dot"></span><span id="scanTotalLabel">0 peserta terdaftar</span></div>
         </div>
 
+        <div class="day-bar-admin"><span>Hari check-in</span><div class="filters" id="checkinDayFilters"><button class="filter-btn" data-day="1">Day 1</button><button class="filter-btn" data-day="2">Day 2</button><button class="filter-btn" data-day="3">Day 3</button></div></div>
+
         <div class="tabs">
           <button class="tab active" data-mode="scan">📷 Scan QR</button>
           <button class="tab" data-mode="search">🔍 Cari Manual</button>
@@ -122,6 +124,8 @@
           <button class="icon-btn" id="dashboardRefreshBtn">↻ Refresh</button>
         </div>
 
+        <div class="day-bar-admin"><span>Tampilkan hari</span><div class="filters" id="dashDayFilters"><button class="filter-btn" data-day="1">Day 1</button><button class="filter-btn" data-day="2">Day 2</button><button class="filter-btn" data-day="3">Day 3</button></div></div>
+
         <div class="headline">
           <div class="hcard total">
             <div class="label">👥 Jumlah Terdaftar</div>
@@ -182,6 +186,12 @@
             <button class="filter-btn" data-status="in">Sudah Absen</button>
             <button class="filter-btn" data-status="out">Belum Absen</button>
           </div>
+          <select id="dayFilter">
+            <option value="all">Semua Hari</option>
+            <option value="1">Day 1</option>
+            <option value="2">Day 2</option>
+            <option value="3">Day 3</option>
+          </select>
           <select id="segmentFilter">
             <option value="all">Semua Segment</option>
           </select>
@@ -203,9 +213,11 @@
                 <th>Perusahaan</th>
                 <th>Jabatan</th>
                 <th>Segment</th>
+                <th>Hari</th>
                 <th>ID</th>
                 <th>Status</th>
                 <th>Waktu Absen</th>
+                <th class="no-print">Aksi</th>
               </tr>
             </thead>
             <tbody id="pesertaTableBody"></tbody>
@@ -305,15 +317,25 @@
         <div class="page-head">
           <div>
             <h1 class="display">Pengaturan Pendaftaran</h1>
-            <p>Atur kuota dan/atau batas tanggal — pendaftaran otomatis tertutup kalau salah satu tercapai.</p>
+            <p>Atur kuota tiap hari dan batas waktu pendaftaran — pendaftaran otomatis tertutup kalau semua hari penuh atau batas waktu lewat.</p>
           </div>
         </div>
 
         <div class="panel">
           <div class="settings-field">
-            <label>👥 Kuota Peserta</label>
-            <input type="number" min="0" id="quotaInput" placeholder="Kosongkan untuk tanpa batas" />
-            <span class="settings-hint" id="quotaCurrentHint"></span>
+            <label>👥 Kuota Day 1 <small class="sub">(19 Nov)</small></label>
+            <input type="number" min="0" id="quotaInput1" placeholder="Kosongkan untuk tanpa batas" />
+            <span class="settings-hint" id="quotaHint1"></span>
+          </div>
+          <div class="settings-field">
+            <label>👥 Kuota Day 2 <small class="sub">(20 Nov)</small></label>
+            <input type="number" min="0" id="quotaInput2" placeholder="Kosongkan untuk tanpa batas" />
+            <span class="settings-hint" id="quotaHint2"></span>
+          </div>
+          <div class="settings-field">
+            <label>👥 Kuota Day 3 <small class="sub">(21 Nov)</small></label>
+            <input type="number" min="0" id="quotaInput3" placeholder="Kosongkan untuk tanpa batas" />
+            <span class="settings-hint" id="quotaHint3"></span>
           </div>
           <div class="settings-field">
             <label>📅 Batas Waktu Pendaftaran</label>
@@ -332,6 +354,21 @@
 
     </div>
   </div>
+
+  <dialog id="daysDialog" class="days-dialog">
+    <h3>Ubah hari kehadiran</h3>
+    <p class="settings-hint" id="daysDialogName"></p>
+    <div class="days-dialog-checks">
+      <label><input type="checkbox" name="editDay" value="1"> Day 1 <small class="sub">19 Nov</small></label>
+      <label><input type="checkbox" name="editDay" value="2"> Day 2 <small class="sub">20 Nov</small></label>
+      <label><input type="checkbox" name="editDay" value="3"> Day 3 <small class="sub">21 Nov</small></label>
+    </div>
+    <div class="settings-hint" id="daysDialogError" style="color:#B34A00;"></div>
+    <div class="days-dialog-actions">
+      <button type="button" class="btn btn-ghost" id="daysDialogCancel">Batal</button>
+      <button type="button" class="btn btn-primary" id="daysDialogSave">Simpan</button>
+    </div>
+  </dialog>
 
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script src="../assets/js/admin.js"></script>

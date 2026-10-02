@@ -11,7 +11,8 @@
  *   GET  /api/me                (staff)
  *   GET  /api/participants               (staff only)
  *   GET  /api/participants/search?q=...  (staff only)
- *   POST /api/checkin                    (staff only)
+ *   POST /api/participants/days          (staff only) change a participant's days
+ *   POST /api/checkin                    (staff only) {qrToken, day}
  *   GET  /api/settings                   (staff only)
  *   POST /api/settings                   (staff only)
  */
@@ -48,6 +49,8 @@ try {
         handle_me();
     } elseif ($route === 'participants' && $sub === 'search' && $method === 'GET') {
         handle_search_participants($pdo);
+    } elseif ($route === 'participants' && $sub === 'days' && $method === 'POST') {
+        handle_update_days($pdo);
     } elseif ($route === 'participants' && $method === 'GET') {
         handle_list_participants($pdo);
     } elseif ($route === 'checkin' && $method === 'POST') {
@@ -71,8 +74,22 @@ try {
 
 function handle_status(PDO $pdo): void
 {
-    $status = evaluate_registration_status($pdo);
-    json_response($status);
+    // Public endpoint: only expose labels, never raw quota numbers.
+    $s = evaluate_registration_status($pdo);
+    $days = array_map(function ($d) {
+        $o = ['day' => $d['day'], 'status' => $d['status'], 'open' => $d['open']];
+        if ($d['status'] === 'low')
+            $o['remaining'] = $d['remaining'];
+        return $o;
+    }, $s['days']);
+    json_response([
+        'open' => $s['open'],
+        'reason' => $s['reason'],
+        'quota' => null,
+        'deadline' => $s['deadline'],
+        'total' => $s['total'],
+        'days' => $days,
+    ]);
 }
 
 // -----------------------------------------------------------------
@@ -144,18 +161,19 @@ function handle_register(PDO $pdo): void
     $experience = trim($body['experience'] ?? '');
     $goals = is_array($body['goals'] ?? null) ? $body['goals'] : [];
     $access = trim($body['access'] ?? '');
+    $days = normalize_days($body['days'] ?? []);
     $marketing = !empty($body['marketing']);
     $thirdparty = !empty($body['thirdparty']);
     $terms = !empty($body['terms']);
 
-    // Required fields — mirrors the `required` attributes in registration.html.
-    // phone, company, jobtitle, segment and experience are optional per the
-    // current form (experience no longer even has a field in the UI).
     if (!$fullname || !$email || !$country) {
         json_error('All required fields must be filled.', 422);
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         json_error('Invalid email format.', 422);
+    }
+    if (!$days) {
+        json_error('Please select at least one day to attend.', 422);
     }
     if ($segment === 'Others' && !$segmentOther) {
         json_error('Please specify your segment.', 422);
@@ -167,10 +185,9 @@ function handle_register(PDO $pdo): void
         json_error('You must accept the Terms & Conditions.', 422);
     }
 
-    // Re-check status server-side — never trust the client's earlier /status check.
     $status = evaluate_registration_status($pdo);
     if (!$status['open']) {
-        json_response($status, 423); // Locked
+        json_response($status, 423);
     }
 
     // Duplicate email? Return the existing ticket instead of creating a new one.
@@ -178,11 +195,27 @@ function handle_register(PDO $pdo): void
     $stmt->execute([$email]);
     $existing = $stmt->fetch();
     if ($existing) {
-        json_response(['participant' => map_participant($existing)], 409);
+        json_response(['participant' => participant_json($pdo, $existing)], 409);
     }
 
     $pdo->beginTransaction();
     try {
+        // Lock the per-day quota rows so simultaneous sign-ups cannot exceed a quota.
+        $pdo->query("SELECT day FROM day_settings FOR UPDATE")->fetchAll();
+        $quotas = day_quotas($pdo);
+        $fullDays = [];
+        foreach ($days as $d) {
+            if ($quotas[$d] !== null && day_taken($pdo, $d) >= $quotas[$d])
+                $fullDays[] = $d;
+        }
+        if ($fullDays) {
+            $pdo->rollBack();
+            json_response([
+                'error' => 'Quota is full for Day ' . implode(', Day ', $fullDays) . '.',
+                'fullDays' => $fullDays,
+            ], 422);
+        }
+
         $id = next_participant_id($pdo);
         $qrToken = generate_qr_token();
 
@@ -190,9 +223,9 @@ function handle_register(PDO $pdo): void
             "INSERT INTO peserta
                 (id, fullname, email, phone, country, company, jobtitle, segment, segment_other,
                  industry, industry_other, experience, goals, access_needs,
-                 marketing_consent, thirdparty_consent, terms_accepted, qr_token, kehadiran)
+                 marketing_consent, thirdparty_consent, terms_accepted, qr_token, kehadiran, days)
              VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE)"
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, ?)"
         );
         $insert->execute([
             $id,
@@ -213,25 +246,26 @@ function handle_register(PDO $pdo): void
             $thirdparty ? 1 : 0,
             $terms ? 1 : 0,
             $qrToken,
+            implode(',', $days),
         ]);
         $pdo->commit();
     } catch (Throwable $e) {
-        $pdo->rollBack();
+        if ($pdo->inTransaction())
+            $pdo->rollBack();
         throw $e;
     }
 
     $stmt = $pdo->prepare("SELECT * FROM peserta WHERE id = ?");
     $stmt->execute([$id]);
-    $row = $stmt->fetch();
-
-    json_response(['participant' => map_participant($row)], 201);
+    json_response(['participant' => participant_json($pdo, $stmt->fetch())], 201);
 }
 
 function handle_list_participants(PDO $pdo): void
 {
     require_auth();
     $rows = $pdo->query("SELECT * FROM peserta ORDER BY fullname ASC")->fetchAll();
-    json_response(array_map('map_participant', $rows));
+    $ck = load_checkins($pdo);
+    json_response(array_map(fn($r) => map_participant($r, $ck[$r['id']] ?? []), $rows));
 }
 
 function handle_search_participants(PDO $pdo): void
@@ -243,12 +277,12 @@ function handle_search_participants(PDO $pdo): void
     }
     $like = '%' . $q . '%';
     $stmt = $pdo->prepare(
-        "SELECT * FROM peserta
-         WHERE fullname LIKE ? OR email LIKE ? OR id LIKE ?
-         ORDER BY fullname ASC"
+        "SELECT * FROM peserta WHERE fullname LIKE ? OR email LIKE ? OR id LIKE ? ORDER BY fullname ASC"
     );
     $stmt->execute([$like, $like, $like]);
-    json_response(array_map('map_participant', $stmt->fetchAll()));
+    $rows = $stmt->fetchAll();
+    $ck = load_checkins($pdo, array_column($rows, 'id'));
+    json_response(array_map(fn($r) => map_participant($r, $ck[$r['id']] ?? []), $rows));
 }
 
 function handle_checkin(PDO $pdo): void
@@ -256,70 +290,50 @@ function handle_checkin(PDO $pdo): void
     $staff = require_auth();
     $body = read_json_body();
     $qrToken = trim($body['qrToken'] ?? '');
-    $staffName = $staff['nama']; // trust the logged-in session, not client input
+    $day = (int) ($body['day'] ?? 0);
 
-    if (!$qrToken) {
+    if (!$qrToken)
         json_error('qrToken is required.', 422);
-    }
+    if (!in_array($day, EVENT_DAYS, true))
+        json_error('A valid day (1-3) is required.', 422);
 
     $stmt = $pdo->prepare("SELECT * FROM peserta WHERE qr_token = ?");
     $stmt->execute([$qrToken]);
     $row = $stmt->fetch();
-
-    if (!$row) {
+    if (!$row)
         json_error('QR token not found.', 404);
-    }
-    if ((bool) $row['kehadiran']) {
+
+    // Only days the participant registered for can be checked in.
+    if (!in_array($day, normalize_days($row['days'] ?? ''), true)) {
         json_response([
-            'error' => 'Already checked in.',
-            'participant' => map_participant($row),
-        ], 409);
+            'error' => "Not registered for Day $day.",
+            'participant' => participant_json($pdo, $row),
+        ], 403);
     }
 
-    $pdo->beginTransaction();
     try {
-        $update = $pdo->prepare(
-            "UPDATE peserta
-             SET kehadiran = TRUE, waktu_checkin = NOW(), checkin_oleh = ?
-             WHERE qr_token = ? AND kehadiran = FALSE"
-        );
-        $update->execute([$staffName, $qrToken]);
-
-        if ($update->rowCount() === 0) {
-            // Someone else checked this participant in a split second earlier.
-            $pdo->rollBack();
-            $stmt->execute([$qrToken]);
+        $ins = $pdo->prepare("INSERT INTO checkin_day (peserta_id, day, waktu_checkin, checkin_oleh) VALUES (?, ?, NOW(), ?)");
+        $ins->execute([$row['id'], $day, $staff['nama']]); // staff name comes from the session, not the client
+    } catch (PDOException $e) {
+        if ($e->getCode() === '23000') { // unique (peserta_id, day) -> already checked in that day
             json_response([
-                'error' => 'Already checked in.',
-                'participant' => map_participant($stmt->fetch()),
+                'error' => "Already checked in for Day $day.",
+                'participant' => participant_json($pdo, $row),
             ], 409);
         }
-
-        $log = $pdo->prepare(
-            "INSERT INTO checkin_log (peserta_id, staff_name) VALUES (?, ?)"
-        );
-        $log->execute([$row['id'], $staffName]);
-
-        $pdo->commit();
-    } catch (Throwable $e) {
-        $pdo->rollBack();
         throw $e;
     }
 
-    $stmt->execute([$qrToken]);
-    json_response(['participant' => map_participant($stmt->fetch())]);
+    json_response(['participant' => participant_json($pdo, $row)]);
 }
 
 function handle_get_settings(PDO $pdo): void
 {
     require_auth();
-    $row = $pdo->query("SELECT quota, deadline, force_closed FROM registration_settings WHERE id = 1")->fetch();
-    if (!$row) {
-        json_response(['quota' => null, 'deadline' => null]);
-    }
+    $s = evaluate_registration_status($pdo);
     json_response([
-        'quota' => $row['quota'] !== null ? (int) $row['quota'] : null,
-        'deadline' => $row['deadline'],
+        'deadline' => $s['deadline'],
+        'days' => array_map(fn($d) => ['day' => $d['day'], 'quota' => $d['quota'], 'taken' => $d['taken']], $s['days']),
     ]);
 }
 
@@ -327,13 +341,74 @@ function handle_save_settings(PDO $pdo): void
 {
     require_auth();
     $body = read_json_body();
-    $quota = array_key_exists('quota', $body) && $body['quota'] !== null ? max(0, (int) $body['quota']) : null;
     $deadline = !empty($body['deadline']) ? $body['deadline'] : null;
+    $quotas = is_array($body['quotas'] ?? null) ? $body['quotas'] : [];
 
-    $stmt = $pdo->prepare(
-        "UPDATE registration_settings SET quota = ?, deadline = ?, updated_at = NOW() WHERE id = 1"
-    );
-    $stmt->execute([$quota, $deadline]);
+    $pdo->beginTransaction();
+    try {
+        $up = $pdo->prepare("INSERT INTO day_settings (day, quota) VALUES (?, ?) ON DUPLICATE KEY UPDATE quota = VALUES(quota)");
+        foreach (EVENT_DAYS as $d) {
+            if (!array_key_exists((string) $d, $quotas))
+                continue;
+            $q = $quotas[(string) $d];
+            $up->execute([$d, ($q === null || $q === '') ? null : max(0, (int) $q)]);
+        }
+        $pdo->prepare("UPDATE registration_settings SET deadline = ?, updated_at = NOW() WHERE id = 1")->execute([$deadline]);
+        $pdo->commit();
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction())
+            $pdo->rollBack();
+        throw $e;
+    }
+    handle_get_settings($pdo);
+}
 
-    json_response(['quota' => $quota, 'deadline' => $deadline]);
+/** Committee changes which days a participant attends. */
+function handle_update_days(PDO $pdo): void
+{
+    require_auth();
+    $body = read_json_body();
+    $id = trim($body['id'] ?? '');
+    $days = normalize_days($body['days'] ?? []);
+    if ($id === '' || !$days)
+        json_error('id and at least one day are required.', 422);
+
+    $pdo->beginTransaction();
+    try {
+        $pdo->query("SELECT day FROM day_settings FOR UPDATE")->fetchAll();
+        $st = $pdo->prepare("SELECT * FROM peserta WHERE id = ? FOR UPDATE");
+        $st->execute([$id]);
+        $row = $st->fetch();
+        if (!$row) {
+            $pdo->rollBack();
+            json_error('Participant not found.', 404);
+        }
+
+        $old = normalize_days($row['days'] ?? '');
+        $ck = load_checkins($pdo, [$id])[$id] ?? [];
+        $blocked = array_values(array_diff(array_keys($ck), $days));
+        if ($blocked) {
+            $pdo->rollBack();
+            json_error('Cannot remove Day ' . implode(', Day ', $blocked) . ': participant already checked in.', 409);
+        }
+        $quotas = day_quotas($pdo);
+        foreach (array_diff($days, $old) as $d) {
+            if ($quotas[$d] !== null && day_taken($pdo, $d) >= $quotas[$d]) {
+                $pdo->rollBack();
+                json_error("Quota is full for Day $d.", 409);
+            }
+        }
+        if ($days !== $old) {
+            // printed_at reset: the nametag needs reprinting when the days change.
+            $pdo->prepare("UPDATE peserta SET days = ?, printed_at = NULL WHERE id = ?")->execute([implode(',', $days), $id]);
+        }
+        $pdo->commit();
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction())
+            $pdo->rollBack();
+        throw $e;
+    }
+    $st = $pdo->prepare("SELECT * FROM peserta WHERE id = ?");
+    $st->execute([$id]);
+    json_response(['participant' => participant_json($pdo, $st->fetch())]);
 }

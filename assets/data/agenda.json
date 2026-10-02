@@ -3,127 +3,372 @@
     {
       "id": "day-1",
       "label": "Day 1",
-      "title": "Opening & Policy",
-      "date": "19 November 2026",
+      "title": "Opening & Panel Session",
+      "date": "20 October 2026",
       "sessions": [
         {
-          "time": "09.00 — 10.00",
+          "time": "07:30 — 08:40",
+          "type": "Registration",
+          "room": "Main Hall",
+          "title": "Registration",
+          "description": ""
+        },
+        {
+          "time": "08:40 — 08:45",
+          "type": "Performance",
+          "room": "Main Hall",
+          "title": "Tari Tradisional",
+          "description": ""
+        },
+        {
+          "time": "08:45 — 08:50",
           "type": "Opening",
           "room": "Main Hall",
-          "title": "Opening Ceremony & Keynote",
-          "description": "Pembukaan Jakarta Film Summit 2026 dan pengantar mengenai arah masa depan ekosistem perfilman Indonesia.",
-          "speakers": ["speaker-001"]
+          "title": "MC Opening",
+          "description": "MC\n1. MEMBUKA ACARA\n2. GREETING VIP/SPONSORS\n3. GREETING UNDANGAN"
         },
         {
-          "kind": "break",
-          "time": "10.00 — 10.30",
-          "title": "Welcome Coffee & Networking"
+          "time": "08:50 — 08:55",
+          "type": "Ceremony",
+          "room": "Main Hall",
+          "title": "Lagu Kebangsaan Indonesia Raya",
+          "description": ""
         },
         {
-          "time": "10.30 — 12.00",
+          "time": "08:55 — 09:00",
+          "type": "Opening",
+          "room": "Main Hall",
+          "title": "Welcoming Remarks from Jakarta Film Commission",
+          "description": ""
+        },
+        {
+          "time": "09:00 — 09:10",
+          "type": "Keynote",
+          "room": "Main Hall",
+          "title": "Keynote session from Governor of DKI Jakarta",
+          "description": "Topic:\nJakarta Shaping the Future of Film\n\nKeynote: Gubernur DKI Jakarta",
+          "speakers": [
+            "speaker-001"
+          ]
+        },
+        {
+          "time": "09:10 — 09:15",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "09:15 — 10:15",
           "type": "Talkshow",
           "room": "Main Hall",
-          "title": "Building a Film-Friendly Government",
-          "description": "Membahas bagaimana kebijakan publik dapat menciptakan lingkungan yang lebih kondusif bagi produksi dan pertumbuhan industri film.",
-          "speakers": ["speaker-002", "speaker-003"]
+          "title": "Session 1 — Regional Mayors & Governors Forum",
+          "description": "Topic:\nBuilding Film-Friendly Cities\n\nRegional Mayors & Governors Forum\n\nKey Topics:\n- Strong & effective Film Commission\n- Streamlined government support\n- Local incentives & facilitation\n- Public–private industry collaboration\n- Regional cooperation for film growth\n\nPanelis:\n1. Pramono Anung - Governor of Jakarta\n2. Joy Belmonte - Mayor of Quezon\n3. Chadchart Sittipunt - Governor of Bangkok\n4. Josephine Teo - Minister for Digital Development & Information\n5. Chun Jae-Soo - Mayor of Busan",
+          "speakers": [
+            "speaker-001",
+            "speaker-002",
+            "speaker-003",
+            "speaker-004",
+            "speaker-005"
+          ]
         },
         {
-          "time": "13.30 — 15.00",
-          "type": "Talkshow",
+          "time": "10:15 — 10:30",
+          "type": "Transition",
           "room": "Main Hall",
-          "title": "From Regulation to Incentives",
-          "description": "Percakapan tentang regulasi, insentif, dan dukungan produksi yang dapat membuka peluang baru bagi industri film di Indonesia.",
-          "speakers": ["speaker-004", "speaker-005"]
+          "title": "Transition",
+          "description": ""
         },
         {
-          "time": "15.30 — 17.00",
+          "time": "10:30 — 12:00",
           "type": "Talkshow",
           "room": "Main Hall",
-          "title": "Regional Production & Multiplier Effect",
-          "description": "Melihat bagaimana dukungan produksi daerah dapat menciptakan dampak ekonomi yang lebih luas bagi kota dan daerah.",
-          "speakers": ["speaker-006", "speaker-007"]
+          "title": "Session 2 — From Policy to Production",
+          "description": "Topic:\nFrom Policy to Production\n\nPolicy for a Thriving Film Industry\n\nKey Topics:\n- Film-friendly regulatory framework\n- Competitive incentives & tax mechanisms\n- Simplified permits & production services\n- Investment certainty for the screen industry\n- Enabling sustainable industry growth\n\nPanelis:\n1. Rano Karno - Vice Governor of Jakarta\n2. Teuku Riefki Harsya - Minister of Creative Economy\n3. Fadli Zon - Minister of Culture\n4. Juda Agung - Deputy Minister of Finance\n5. Bima Arya - Deputy Minister of House Affairs",
+          "speakers": [
+            "speaker-006",
+            "speaker-007",
+            "speaker-008",
+            "speaker-009",
+            "speaker-010"
+          ]
+        },
+        {
+          "time": "12:00 — 13:00",
+          "type": "Break",
+          "room": "Main Hall",
+          "title": "Break Session (Lunch)",
+          "description": "",
+          "kind": "break"
+        },
+        {
+          "time": "13:00 — 14:30",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Session 3 — Film Build Cities",
+          "description": "Topic:\nFilm Build Cities\n\nReimagining Film Policy in Indonesia\n\nKey Topics:\n- Create a Future Ready Film Policy\n- Tax Rebate & Production Incentives\n- Making Indonesia a Production-Friendly Destination\n- Enabling Indonesia’s Next Screen Economy\n\nPanelis:\n1. Suharini Eliawati - Assistant for Economy and Finance of the Regional Secretary of Jakarta Province\n2. Hasto Wardoyo - Mayor of Yogyakarta\n3. Deidre Brennan - CEO of Screen Australia\n4. Dr. Wilfred Wong Ying-wai - Hong Kong Film Development Council",
+          "speakers": [
+            "speaker-011",
+            "speaker-012",
+            "speaker-013",
+            "speaker-014"
+          ]
+        },
+        {
+          "time": "14:30 — 14:45",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "14:45 — 15:45",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Session 4 — Building Jakarta's Infrastructure for Growth",
+          "description": "Topic:\nBuilding Jakarta's Infrastructure for Growth\n\nTurning City Assets into Production Opportunities\n\nKey Topics:\n- Unlocking City-Owned Assets for Film Production\n- Streamlining Access to Government & BUMD Assets\n- Investment Opportunities in Film Infrastructure\n- Public–Private Partnership for Production Facilities\n- Connecting City Assets with Domestic & International Productions\n\nPanelis:\n1. Yustinus Prastowo - Deputy Coordinator of the Special Staff to the Governor of Jakarta\n2. Ezrin Kartika - Head of Jakarta Investment Center (JIC/DPMPTSP DKI)\n3. Muhammad Sofwan Syahputra - Head of Jakarta Asset Management Center\n4. Rayhan Islamy - General Manager of Jakarta Film Commission",
+          "speakers": [
+            "speaker-019",
+            "speaker-020",
+            "speaker-021",
+            "speaker-022"
+          ]
+        },
+        {
+          "time": "15:45 — 16:00",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "16:00 — 17:30",
+          "type": "Forum",
+          "room": "Main Hall",
+          "title": "Session 5 — AFAN (ASIAN Film Alliance Network)",
+          "description": "Topic:\nAFAN (ASIAN Film Alliance Network)\n\nThe Multiple Roles of the Government in the Film Ecosystem\n\nKey Topics:\n- Understanding the Roles of Film Agencies, Film Commissions & Ministries\n- Strengthening Talent, Financing & Production Infrastructure\n- Building Regional Co-Production & Co-Financing Pathways\n- Connecting Government Agencies & Industry Partners Across Asia\n- Bringing Asian Stories to the Global Stage\n\nPanelis:\n1. Fauzan Zidni - Chairperson of Badan Perfilman Indonesia\n2. Jose Javier Reyes - Chairperson/CEO of Film Development Council of the Philippines\n3. Han Sanjung - Chairperson, Korean Film Council (KOFIC)\n4. Fahmi Fazil - CEO, National Film Development Corporation Malaysia (FINAS)",
+          "speakers": [
+            "speaker-015",
+            "speaker-016",
+            "speaker-017",
+            "speaker-018"
+          ]
+        },
+        {
+          "time": "17:30 — 17:35",
+          "type": "Closing",
+          "room": "Main Hall",
+          "title": "Closing - VO MC",
+          "description": ""
+        },
+        {
+          "time": "19:00 — 21:00",
+          "type": "Gala Dinner",
+          "room": "Main Hall",
+          "title": "Gala Dinner",
+          "description": "Invitation Only or Official Delegation"
         }
       ]
     },
     {
       "id": "day-2",
       "label": "Day 2",
-      "title": "Investment & Financing",
-      "date": "20 November 2026",
+      "title": "Panel Session",
+      "date": "21 October 2026",
       "sessions": [
         {
-          "time": "09.30 — 11.00",
-          "type": "Talkshow",
+          "time": "08:00 — 09:00",
+          "type": "Registration",
           "room": "Main Hall",
-          "title": "Unlocking Investment for the Film Industry",
-          "description": "Mempertemukan perspektif industri, investor, dan lembaga keuangan untuk membahas akses modal bagi proyek film.",
-          "speakers": ["speaker-008", "speaker-009"]
-        },
-        { "kind": "break", "time": "11.00 — 11.30", "title": "Coffee Break" },
-        {
-          "time": "11.30 — 13.00",
-          "type": "Talkshow",
-          "room": "Main Hall",
-          "title": "Financing the Next Indonesian Film",
-          "description": "Membahas berbagai struktur pembiayaan dan pendekatan investasi yang dapat mendukung keberlanjutan produksi film.",
-          "speakers": ["speaker-010", "speaker-011"]
+          "title": "Registration",
+          "description": ""
         },
         {
-          "time": "14.00 — 15.30",
-          "type": "Case Study",
-          "room": "Studio A",
-          "title": "Jakarta as a Screen Production Ecosystem",
-          "description": "Studi kasus mengenai peluang Jakarta dalam memperkuat ekosistem produksi, layanan, talenta, dan investasi film.",
-          "speakers": ["speaker-012", "speaker-013"]
+          "time": "09:00 — 09:05",
+          "type": "Opening",
+          "room": "Main Hall",
+          "title": "MC Opening",
+          "description": ""
         },
         {
-          "time": "16.00 — 17.30",
+          "time": "09:00 — 10:15",
           "type": "Talkshow",
           "room": "Main Hall",
-          "title": "The Future of Film Investment",
-          "description": "Percakapan tentang perubahan lanskap investasi dan bagaimana industri film Indonesia dapat mempersiapkan diri.",
-          "speakers": ["speaker-014", "speaker-015"]
+          "title": "Session 1 — Who's Betting On Indonesian Film?",
+          "description": "Topic:\nWho's Betting On Indonesian Film?\n\nInside the Investment Decisions Behind Successful Productions\n\nKey Topics:\n- Why Investors Say Yes to a Film\n- How Investors Evaluate Film Budgets & Business Plans\n- Understanding Investment Risks & Returns\n- Lessons from Investment Decisions That Didn't Go as Planned\n\nPanelis:\n1. FX Iwan - CEO Jagartha\n2. Ahmad Izham Omar - CEO Komet\n3. Trivet Sembel - CEO Navvaros\n4. Arvin Sutedja - CEO Astana Capital",
+          "speakers": [
+            "speaker-023",
+            "speaker-024",
+            "speaker-025",
+            "speaker-026"
+          ]
+        },
+        {
+          "time": "10:15 — 10:30",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "10:30 — 12:00",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Session 2 — How capital can make indonesian film bankable",
+          "description": "Topic:\nHow capital can make indonesian film bankable\n\nWhy isn't film yet a mainstream investment asset in Indonesia?\n\nKey Topics:\n- Understanding Film Financing: Debt, Equity & Guarantees\n- The Role of Banks, Private Equity & Family Offices\n- Making Film Projects Investment-Ready\n- Addressing Risk & Building Investor Confidence\n\nPanelis:\n1. Edwin Nurhadi - Head of OJK Jabodebek\n2. Agus Haryoto Widodo - President Director of Bank Jakarta\n3. Agus Supriadi - President Director of Jamkrida Jakarta\n4. Iwan Setiawan - Head of Bank Indonesia Representative DKI Jakarta",
+          "speakers": [
+            "speaker-027",
+            "speaker-028",
+            "speaker-029",
+            "speaker-030"
+          ]
+        },
+        {
+          "time": "12:00 — 13:00",
+          "type": "Break",
+          "room": "Main Hall",
+          "title": "Break Session (Lunch)",
+          "description": "",
+          "kind": "break"
+        },
+        {
+          "time": "13:00 — 14:15",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Session 3 — Film Finance 101",
+          "description": "Topic:\nFilm Finance 101\n\nMaking Indonesian Productions Investment-Ready\n\nKey Topics:\n- Building a Professional Film Budget\n- Building an International Financing Structure\n- How International Productions Work\n\nPanelis:\n1. Sheila Timothy - CEO Lifelike Pictures\n2. Andi Boediman - CEO Ideasource\n3. TBC\n4. TBC",
+          "speakers": [
+            "speaker-031",
+            "speaker-032",
+            "speaker-033",
+            "speaker-034"
+          ]
+        },
+        {
+          "time": "14:15 — 14:30",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "14:30 — 15:15",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Session 4 - Sponsor Slot — The Data Behind The Screen",
+          "description": "Topic:\nThe Data Behind The Screen\n\nCan We Make Film Investment Less Of A Guest\n\nKey Topics:\n- Understanding Audience Demand & Genre Performance\n- Using Box Office & Streaming Data to Assess Market Potential\n- Evaluating IP Potential & Audience Reach\n- Measuring Investment Risk Through Data\n- Balancing Data-Driven Decisions with Creative Instinct\n\nPanelis:\n1. Sigit Prabowo - CEO & Founder, Cinepoint\n2. Manoj Punjabi - CEO MD Entertainment\n3. Vivek Couto - CEO, Media Partners Asia\n4. Aileen Yap - Adlink Media",
+          "speakers": [
+            "speaker-035",
+            "speaker-036",
+            "speaker-037",
+            "speaker-038"
+          ]
+        },
+        {
+          "time": "15:15 — 15:30",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "15:30 — 16:45",
+          "type": "Talkshow",
+          "room": "Main Hall",
+          "title": "Session 5",
+          "description": ""
+        },
+        {
+          "time": "16:45 — 17:00",
+          "type": "Transition",
+          "room": "Main Hall",
+          "title": "Transition",
+          "description": ""
+        },
+        {
+          "time": "17:00 — 18:00",
+          "type": "Closing",
+          "room": "Main Hall",
+          "title": "Closing Ceremony",
+          "description": "Key Points:\n- Strategic recommendations, partnerships, and commitments developed throughout the Jakarta Film Summit\n- Advancing the regional screen economy through collaboration, policy, investment, and production.\n\nSpeaker: Vice Governor of Jakarta",
+          "speakers": [
+            "speaker-039"
+          ]
+        },
+        {
+          "time": "18:00 — 18:05",
+          "type": "Closing",
+          "room": "Main Hall",
+          "title": "Closing - VO MC",
+          "description": ""
         }
       ]
     },
     {
       "id": "day-3",
       "label": "Day 3",
-      "title": "Future & Global Film Commissions",
-      "date": "21 November 2026",
+      "title": "Jakarta Strolling Tour",
+      "date": "22 October 2026",
+      "groups": [
+        {
+          "id": "group-a",
+          "label": "Group A",
+          "title": "Culture & Community"
+        },
+        {
+          "id": "group-b",
+          "label": "Group B",
+          "title": "Urban & Creative"
+        }
+      ],
       "sessions": [
         {
-          "time": "09.30 — 11.00",
-          "type": "Talkshow",
-          "room": "Main Hall",
-          "title": "Innovation Across the Screen Economy",
-          "description": "Melihat perubahan model bisnis, teknologi, dan peluang kolaborasi yang membentuk masa depan industri layar.",
-          "speakers": ["speaker-016", "speaker-017"]
-        },
-        { "kind": "break", "time": "11.00 — 11.30", "title": "Coffee Break" },
-        {
-          "time": "11.30 — 13.00",
-          "type": "Talkshow",
-          "room": "Main Hall",
-          "title": "Building a Competitive Production Destination",
-          "description": "Membahas faktor kebijakan, infrastruktur, talenta, dan layanan yang membentuk daya saing sebuah destinasi produksi.",
-          "speakers": ["speaker-018", "speaker-019"]
+          "time": "08:00 — 08:30",
+          "type": "Registration",
+          "room": "Meeting Point — TBC",
+          "title": "Registration",
+          "description": "Meeting point: TBC",
+          "group": "Group A"
         },
         {
-          "time": "14.00 — 15.30",
-          "type": "Forum",
-          "room": "Main Hall",
-          "title": "Global Film Commission Forum",
-          "description": "Film commissions dari berbagai wilayah berbagi pengalaman mengenai kebijakan, insentif, investasi, dan arah masa depan industri.",
-          "speakers": ["speaker-020", "speaker-021", "speaker-022"]
+          "time": "08:30 — 12:00",
+          "type": "Tour",
+          "room": "Jakarta",
+          "title": "Jakarta Strolling Tour",
+          "description": "Part 1: Culture & Community\nTaman Bendera Pusaka, Lapangan Banteng, Istiqlal, Cathedral, Kota Tua, Muara Angke, Ancol",
+          "group": "Group A"
         },
         {
-          "time": "16.00 — 17.00",
-          "type": "Closing",
-          "room": "Main Hall",
-          "title": "What Comes Next",
-          "description": "Rangkuman gagasan utama Jakarta Film Summit 2026 dan percakapan mengenai langkah berikutnya bagi ekosistem film Indonesia.",
-          "speakers": ["speaker-023"]
+          "time": "12:00 — 13:30",
+          "type": "Break",
+          "room": "TBC",
+          "title": "Lunch Time",
+          "description": "",
+          "group": "Group A"
+        },
+        {
+          "time": "08:00 — 08:30",
+          "type": "Registration",
+          "room": "Meeting Point — TBC",
+          "title": "Registration",
+          "description": "Meeting point: TBC",
+          "group": "Group B"
+        },
+        {
+          "time": "08:30 — 12:00",
+          "type": "Tour",
+          "room": "Jakarta",
+          "title": "Jakarta Strolling Tour",
+          "description": "Part 2: Urban & Creative\nJakarta International Stadium, SCBD, Sudirman, Blok M, Pasar Rumput, Jaksinema",
+          "group": "Group B"
+        },
+        {
+          "time": "12:00 — 13:30",
+          "type": "Break",
+          "room": "TBC",
+          "title": "Lunch Time",
+          "description": "Opsi: Tugu Kunstkring Paleis, Plataran Menteng, Bandar Djakarta Ancol, Kembang Goela",
+          "group": "Group B"
         }
       ]
     }
@@ -131,187 +376,315 @@
   "speakers": [
     {
       "id": "speaker-001",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Pramono Anung",
+      "position": "Governor of Jakarta",
+      "institution": "Provincial Government of Jakarta",
       "photo": "assets/image/speakers/speaker-001.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-002",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Joy Belmonte",
+      "position": "Mayor of Quezon",
+      "institution": "Quezon City Government",
       "photo": "assets/image/speakers/speaker-002.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-003",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Chadchart Sittipunt",
+      "position": "Governor of Bangkok",
+      "institution": "Bangkok Metropolitan Administration",
       "photo": "assets/image/speakers/speaker-003.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-004",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Josephine Teo",
+      "position": "Minister for Digital Development & Information",
+      "institution": "Singapore",
       "photo": "assets/image/speakers/speaker-004.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-005",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Chun Jae-Soo",
+      "position": "Mayor of Busan",
+      "institution": "Busan Metropolitan City",
       "photo": "assets/image/speakers/speaker-005.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-006",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Rano Karno",
+      "position": "Vice Governor of Jakarta",
+      "institution": "Provincial Government of Jakarta",
       "photo": "assets/image/speakers/speaker-006.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-007",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Teuku Riefki Harsya",
+      "position": "Minister of Creative Economy",
+      "institution": "Government of Indonesia",
       "photo": "assets/image/speakers/speaker-007.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-008",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Fadli Zon",
+      "position": "Minister of Culture",
+      "institution": "Government of Indonesia",
       "photo": "assets/image/speakers/speaker-008.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-009",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Juda Agung",
+      "position": "Deputy Minister of Finance",
+      "institution": "Government of Indonesia",
       "photo": "assets/image/speakers/speaker-009.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-010",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Bima Arya",
+      "position": "Deputy Minister of House Affairs",
+      "institution": "Government of Indonesia",
       "photo": "assets/image/speakers/speaker-010.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-011",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Suharini Eliawati",
+      "position": "Assistant for Economy and Finance of the Regional Secretary of Jakarta Province",
+      "institution": "Provincial Government of Jakarta",
       "photo": "assets/image/speakers/speaker-011.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-012",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Hasto Wardoyo",
+      "position": "Mayor of Yogyakarta",
+      "institution": "Yogyakarta City Government",
       "photo": "assets/image/speakers/speaker-012.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-013",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Deidre Brennan",
+      "position": "CEO",
+      "institution": "Screen Australia",
       "photo": "assets/image/speakers/speaker-013.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-014",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Dr. Wilfred Wong Ying-wai",
+      "position": "Member / Representative",
+      "institution": "Hong Kong Film Development Council",
       "photo": "assets/image/speakers/speaker-014.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-015",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Fauzan Zidni",
+      "position": "Chairperson",
+      "institution": "Badan Perfilman Indonesia",
       "photo": "assets/image/speakers/speaker-015.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-016",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Jose Javier Reyes",
+      "position": "Chairperson/CEO",
+      "institution": "Film Development Council of the Philippines",
       "photo": "assets/image/speakers/speaker-016.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-017",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Han Sanjung",
+      "position": "Chairperson",
+      "institution": "Korean Film Council (KOFIC)",
       "photo": "assets/image/speakers/speaker-017.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-018",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Fahmi Fazil",
+      "position": "CEO",
+      "institution": "National Film Development Corporation Malaysia (FINAS)",
       "photo": "assets/image/speakers/speaker-018.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-019",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Yustinus Prastowo",
+      "position": "Deputy Coordinator of the Special Staff to the Governor of Jakarta",
+      "institution": "Jakarta",
       "photo": "assets/image/speakers/speaker-019.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-020",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Ezrin Kartika",
+      "position": "Head of Jakarta Investment Center (JIC/DPMPTSP DKI)",
+      "institution": "Jakarta Investment Center",
       "photo": "assets/image/speakers/speaker-020.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-021",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Muhammad Sofwan Syahputra",
+      "position": "Head of Jakarta Asset Management Center",
+      "institution": "Jakarta Asset Management Center",
       "photo": "assets/image/speakers/speaker-021.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-022",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "Rayhan Islamy",
+      "position": "General Manager",
+      "institution": "Jakarta Film Commission",
       "photo": "assets/image/speakers/speaker-022.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
     },
     {
       "id": "speaker-023",
-      "name": "Nama Pembicara",
-      "position": "Jabatan / Peran",
-      "institution": "Institusi",
+      "name": "FX Iwan",
+      "position": "CEO",
+      "institution": "Jagartha",
       "photo": "assets/image/speakers/speaker-023.jpg",
-      "bio": "Profil singkat pembicara. Ganti dengan data pembicara final."
+      "bio": ""
+    },
+    {
+      "id": "speaker-024",
+      "name": "Ahmad Izham Omar",
+      "position": "CEO",
+      "institution": "Komet",
+      "photo": "assets/image/speakers/speaker-024.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-025",
+      "name": "Trivet Sembel",
+      "position": "CEO",
+      "institution": "Navvaros",
+      "photo": "assets/image/speakers/speaker-025.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-026",
+      "name": "Arvin Sutedja",
+      "position": "CEO",
+      "institution": "Astana Capital",
+      "photo": "assets/image/speakers/speaker-026.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-027",
+      "name": "Edwin Nurhadi",
+      "position": "Head of OJK Jabodebek",
+      "institution": "OJK",
+      "photo": "assets/image/speakers/speaker-027.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-028",
+      "name": "Agus Haryoto Widodo",
+      "position": "President Director",
+      "institution": "Bank Jakarta",
+      "photo": "assets/image/speakers/speaker-028.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-029",
+      "name": "Agus Supriadi",
+      "position": "President Director",
+      "institution": "Jamkrida Jakarta",
+      "photo": "assets/image/speakers/speaker-029.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-030",
+      "name": "Iwan Setiawan",
+      "position": "Head of Bank Indonesia Representative DKI Jakarta",
+      "institution": "Bank Indonesia",
+      "photo": "assets/image/speakers/speaker-030.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-031",
+      "name": "Sheila Timothy",
+      "position": "CEO",
+      "institution": "Lifelike Pictures",
+      "photo": "assets/image/speakers/speaker-031.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-032",
+      "name": "Andi Boediman",
+      "position": "CEO",
+      "institution": "Ideasource",
+      "photo": "assets/image/speakers/speaker-032.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-033",
+      "name": "TBC",
+      "position": "To Be Confirmed",
+      "institution": "",
+      "photo": "assets/image/speakers/speaker-033.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-034",
+      "name": "TBC",
+      "position": "To Be Confirmed",
+      "institution": "",
+      "photo": "assets/image/speakers/speaker-034.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-035",
+      "name": "Sigit Prabowo",
+      "position": "CEO & Founder",
+      "institution": "Cinepoint",
+      "photo": "assets/image/speakers/speaker-035.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-036",
+      "name": "Manoj Punjabi",
+      "position": "CEO",
+      "institution": "MD Entertainment",
+      "photo": "assets/image/speakers/speaker-036.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-037",
+      "name": "Vivek Couto",
+      "position": "CEO",
+      "institution": "Media Partners Asia",
+      "photo": "assets/image/speakers/speaker-037.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-038",
+      "name": "Aileen Yap",
+      "position": "Representative",
+      "institution": "Adlink Media",
+      "photo": "assets/image/speakers/speaker-038.jpg",
+      "bio": ""
+    },
+    {
+      "id": "speaker-039",
+      "name": "Vice Governor of Jakarta",
+      "position": "Vice Governor",
+      "institution": "Provincial Government of Jakarta",
+      "photo": "assets/image/speakers/speaker-039.jpg",
+      "bio": ""
     }
   ]
 }
