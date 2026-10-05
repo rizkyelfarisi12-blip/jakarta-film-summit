@@ -10,7 +10,7 @@
     {
       "id": "financial-investment",
       "title": "Financial & Investment",
-      "description": "Institusi keuangan dan investor yang mendukung pertumbuhan industri film.",
+      "description": "Financial institutions and investors supporting the growth of the film industry.",
       "partners": [
         {
           "name": "BCA",
@@ -50,7 +50,7 @@
     {
       "id": "bumds",
       "title": "BUMDs",
-      "description": "Perusahaan daerah yang mendukung ekosistem dan aktivitas industri di Jakarta.",
+      "description": "A regional enterprise supporting the industrial ecosystem and activities in Jakarta.",
       "partners": [
         {
           "name": "Jakpro",
@@ -81,8 +81,8 @@
 
     {
       "id": "bumn",
-      "title": "BUMN",
-      "description": "Perusahaan negara yang berkontribusi pada penguatan ekosistem industri dan ekonomi kreatif.",
+      "title": "BUMNs",
+      "description": "State-owned enterprises that contribute to strengthening the industrial and creative economy ecosystem.",
       "partners": [
         {
           "name": "Mandiri",
@@ -122,7 +122,7 @@
     {
       "id": "transportation",
       "title": "Transportation Partner",
-      "description": "Mendukung mobilitas peserta dan konektivitas selama penyelenggaraan Jakarta Film Summit.",
+      "description": "Supporting participant mobility and connectivity during the Jakarta Film Summit.",
       "partners": [
         {
           "name": "Bluebird",
@@ -146,7 +146,7 @@
     {
       "id": "cinemas-otts",
       "title": "Cinemas & OTTs",
-      "description": "Platform pemutaran dan distribusi yang membawa karya kepada penonton global.",
+      "description": "A streaming and distribution platform that brings works to a global audience.",
       "partners": [
         {
           "name": "Cinema XXI",
@@ -174,7 +174,7 @@
     {
       "id": "film-commission",
       "title": "Film Commission",
-      "description": "Lembaga yang mendukung produksi dan promosi film di berbagai negara.",
+      "description": "Organizations that support film production and promotion in various countries.",
       "partners": [
         {
           "name": "Busan Film Commission",
@@ -214,7 +214,7 @@
     {
       "id": "government",
       "title": "Government",
-      "description": "Dukungan kebijakan untuk pengembangan industri film dan ekonomi kreatif.",
+      "description": "Policy support for the development of the film industry and the creative economy.",
       "partners": [
         {
           "name": "EKRAF",
@@ -270,7 +270,7 @@
     {
       "id": "government-abroad",
       "title": "Government Abroad",
-      "description": "Kolaborasi dengan institusi pemerintah dan kota dari berbagai negara.",
+      "description": "Collaboration with government institutions and cities from various countries.",
       "partners": [
         {
           "name": "City Council of Manila",
@@ -298,7 +298,7 @@
     {
       "id": "film-equipment",
       "title": "Film Equipment & Others",
-      "description": "Teknologi dan layanan pendukung kebutuhan produksi film.",
+      "description": "Technology and services supporting film production needs.",
       "partners": [
         {
           "name": "Kodak",
