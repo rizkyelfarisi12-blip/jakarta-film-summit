@@ -7,7 +7,7 @@
 const API_BASE = "api";
 
 function qrImageUrl(token) {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=280x280&margin=10&qzone=1&data=${encodeURIComponent(token)}`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&ecc=Q&margin=0&qzone=4&data=${encodeURIComponent(token)}`;
 }
 
 // =================================================================
@@ -257,15 +257,15 @@ const I18N = {
     "field.jobtitle.hint": "(opsional)",
     "field.segment.label": "Segment / Peran Pekerjaan",
     "field.segment.hint": "(opsional)",
-    "segment.opt1": "Produser / Sutradara / Scriptwriter / Distributor",
+    "segment.opt1":
+      "Produser / EP / Sutradara / Scriptwriter / Distributor / Exhibitor",
     "segment.opt2": "Investor / Financier",
     "segment.opt3": "Film Commission",
-    "segment.opt4": "Student / Academics",
-    "segment.opt5": "Government",
-    "segment.opt6": "Others",
+    "segment.opt4": "Pelajar / Mahasiswa / Akademisi",
+    "segment.opt5": "Pemerintah",
+    "segment.opt6": "Lainnya",
     "field.segmentOther.label": "Sebutkan segment Anda",
     "field.segmentOther.placeholder": "Tuliskan peran pekerjaan Anda",
-    "field.involvement.subheading": "Keterlibatan di Jakarta Film Summit",
     "field.goals.label": "Tujuan menghadiri Jakarta Film Summit",
     "field.goals.hint": "(boleh lebih dari satu)",
     "goals.opt1": "Networking / Memperluas Jaringan",
@@ -275,16 +275,10 @@ const I18N = {
     "field.access.label": "Kebutuhan Aksesibilitas Khusus",
     "field.access.hint": "(opsional)",
     "field.access.placeholder": "cth. Juru Bahasa Isyarat, akses kursi roda",
-    "s3.title": "Persetujuan & Komunikasi",
-    "s3.desc": "Terakhir, beri tahu kami bagaimana boleh menghubungi Anda.",
-    "consent.marketing.bold": "Update & promosi.",
-    "consent.marketing.rest":
-      "Saya ingin menerima kabar acara, program, dan penawaran dari Jakarta Film Summit melalui email.",
-    "consent.thirdparty.bold": "Berbagi dengan mitra.",
-    "consent.thirdparty.rest":
-      "Saya menyetujui data saya dibagikan kepada mitra dan sponsor penyelenggara untuk keperluan acara.",
-    "consent.terms.bold": "Syarat & Ketentuan.",
-    "consent.terms.rest1": "Saya telah membaca dan menyetujui",
+    "s3.title": "Persetujuan",
+    "s3.desc":
+      "Terakhir, setujui syarat dan ketentuan untuk menyelesaikan pendaftaran.",
+    "consent.terms.rest1": "Saya menyetujui",
     "consent.terms.link": "Syarat & Ketentuan",
     "consent.terms.rest2": "pendaftaran.",
     "submit.note":
@@ -307,13 +301,41 @@ const I18N = {
       "Periode pendaftaran untuk Jakarta Film Summit 2026 sudah berakhir.",
     "closed.meta.registered": "terdaftar",
     "closed.meta.closedOn": "Ditutup pada",
+    "segment.placeholder": "Pilih segment / peran…",
+    "goals.placeholder": "Pilih tujuan Anda…",
+    "goals.opt5": "Lainnya",
+    "field.goalsOther.label": "Sebutkan tujuan Anda",
+    "field.goalsOther.placeholder": "Tuliskan tujuan Anda menghadiri acara ini",
+    "ticket.qrAlt": "QR tiket masuk",
+    "closed.title.manual": "Pendaftaran Ditutup",
+    "closed.message.manual":
+      "Pendaftaran untuk Jakarta Film Summit 2026 saat ini ditutup oleh panitia.",
+    "terms.title": "Syarat & Ketentuan",
+    "terms.intro":
+      "Berikut ketentuan pendaftaran Jakarta Film Summit 2026. Anda tetap dapat mencentang persetujuan tanpa membuka halaman ini.",
+    "terms.h1": "1. Data yang dikumpulkan",
+    "terms.p1":
+      "Kami mengumpulkan data yang Anda isi pada formulir (nama, email, nomor telepon, negara, perusahaan, jabatan, segment, tujuan kehadiran, dan kebutuhan aksesibilitas) untuk keperluan pendaftaran dan penyelenggaraan acara.",
+    "terms.h2": "2. Penggunaan data",
+    "terms.p2":
+      "Data digunakan untuk memverifikasi pendaftaran, menerbitkan tiket QR, mengelola check-in, menyusun sesi dan pertemuan, serta menghubungi Anda terkait Jakarta Film Summit 2026.",
+    "terms.h3": "3. Tiket QR & kehadiran",
+    "terms.p3":
+      "Tiket QR bersifat pribadi dan hanya berlaku untuk hari yang Anda pilih. Satu email hanya dapat mendaftar satu kali. Mohon tidak membagikan QR Anda kepada orang lain.",
+    "terms.h4": "4. Perubahan hari kehadiran",
+    "terms.p4":
+      "Pilihan hari tidak dapat diubah sendiri setelah pendaftaran. Hubungi panitia jika perlu mengubahnya; perubahan bergantung pada ketersediaan kuota dan tidak dapat dilakukan untuk hari yang sudah check-in.",
+    "terms.h5": "5. Kuota & perubahan program",
+    "terms.p5":
+      "Pendaftaran dapat ditutup jika kuota penuh atau batas waktu berakhir. Panitia berhak menyesuaikan program, pembicara, dan jadwal bila diperlukan.",
+    "terms.close": "Tutup",
     "footer.text": "Jakarta Film Summit · Formulir Pendaftaran",
   },
   en: {
     "meta.title": "Jakarta Film Summit — Registration Form",
     "hero.headline": "Register for the main stage of the film industry.",
     "hero.lead":
-      "One form to join producers, investors, distributors, and film movers at Jakarta Film Summit.",
+      "One form to join producers, investors, distributors, and film industry professionals at Jakarta Film Summit.",
     "hero.sub": "Four short sections · about 3 minutes to complete",
     "stepnav.s1": "Personal Info",
     "stepnav.s2": "Company & Involvement",
@@ -360,15 +382,15 @@ const I18N = {
     "field.jobtitle.hint": "(optional)",
     "field.segment.label": "Segment / Job Role",
     "field.segment.hint": "(optional)",
-    "segment.opt1": "Producer / Director / Scriptwriter / Distributor",
+    "segment.opt1":
+      "Producer / EP / Director / Scriptwriter / Distributor / Exhibitor",
     "segment.opt2": "Investor / Financier",
     "segment.opt3": "Film Commission",
-    "segment.opt4": "Student / Academics",
+    "segment.opt4": "Student / Academic",
     "segment.opt5": "Government",
     "segment.opt6": "Others",
     "field.segmentOther.label": "Please specify your segment",
     "field.segmentOther.placeholder": "Describe your job role",
-    "field.involvement.subheading": "Involvement in Jakarta Film Summit",
     "field.goals.label": "Goals for attending Jakarta Film Summit",
     "field.goals.hint": "(select all that apply)",
     "goals.opt1": "Networking",
@@ -379,16 +401,10 @@ const I18N = {
     "field.access.hint": "(optional)",
     "field.access.placeholder":
       "e.g. Sign language interpreter, wheelchair access",
-    "s3.title": "Consent & Communication",
-    "s3.desc": "Lastly, let us know how we may contact you.",
-    "consent.marketing.bold": "Updates & promotions.",
-    "consent.marketing.rest":
-      "I'd like to receive event news, programs, and offers from Jakarta Film Summit by email.",
-    "consent.thirdparty.bold": "Sharing with partners.",
-    "consent.thirdparty.rest":
-      "I agree to my data being shared with the organizer's partners and sponsors for event purposes.",
-    "consent.terms.bold": "Terms & Conditions.",
-    "consent.terms.rest1": "I have read and agree to the",
+    "s3.title": "Consent",
+    "s3.desc":
+      "Lastly, agree to the terms and conditions to complete your registration.",
+    "consent.terms.rest1": "I agree to the",
     "consent.terms.link": "Terms & Conditions",
     "consent.terms.rest2": "of registration.",
     "submit.note":
@@ -411,6 +427,34 @@ const I18N = {
       "The registration period for Jakarta Film Summit 2026 has ended.",
     "closed.meta.registered": "registered",
     "closed.meta.closedOn": "Closed on",
+    "segment.placeholder": "Select segment / role…",
+    "goals.placeholder": "Select your goals…",
+    "goals.opt5": "Others",
+    "field.goalsOther.label": "Please specify your goal",
+    "field.goalsOther.placeholder": "Describe why you are attending",
+    "ticket.qrAlt": "Entry ticket QR code",
+    "closed.title.manual": "Registration Closed",
+    "closed.message.manual":
+      "Registration for Jakarta Film Summit 2026 is currently closed by the organizers.",
+    "terms.title": "Terms & Conditions",
+    "terms.intro":
+      "These are the registration terms for Jakarta Film Summit 2026. You can still tick the agreement box without opening this page.",
+    "terms.h1": "1. Data we collect",
+    "terms.p1":
+      "We collect the details you enter in the form (name, email, phone, country, company, job title, segment, goals for attending, and accessibility needs) for registration and event operations.",
+    "terms.h2": "2. How we use your data",
+    "terms.p2":
+      "Your data is used to verify your registration, issue your QR ticket, manage check-in, shape sessions and meetings, and contact you about Jakarta Film Summit 2026.",
+    "terms.h3": "3. QR ticket & attendance",
+    "terms.p3":
+      "Your QR ticket is personal and valid only for the days you selected. One email can register only once. Please do not share your QR code with others.",
+    "terms.h4": "4. Changing your days",
+    "terms.p4":
+      "You cannot change your days yourself after registering. Contact the committee if you need a change; it depends on available quota and is not possible for days you have already checked in.",
+    "terms.h5": "5. Quota & programme changes",
+    "terms.p5":
+      "Registration may close when quota is full or the deadline passes. The organizers may adjust the programme, speakers, and schedule when necessary.",
+    "terms.close": "Close",
     "footer.text": "Jakarta Film Summit · Registration Form",
   },
 };
@@ -442,6 +486,12 @@ function applyLanguage(lang) {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     el.placeholder = t(el.dataset.i18nPlaceholder);
   });
+  document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+    el.alt = t(el.dataset.i18nAlt);
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.dataset.i18nAria));
+  });
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.lang === lang);
   });
@@ -449,6 +499,7 @@ function applyLanguage(lang) {
   populateCountryList();
 
   renderDaySummary();
+  renderGoalsText();
   if (lastClosedData) showClosed(lastClosedData);
   if (lastTicketData)
     renderTicket(lastTicketData.participant, lastTicketData.isDuplicate);
@@ -516,13 +567,15 @@ document.querySelectorAll(".chips").forEach(function (group) {
 });
 
 // ---------- "Others" / "Lainnya" reveal fields ----------
-function toggleOtherField(wrap, input, show) {
+function toggleOtherField(wrap, input, show, focus) {
   wrap.classList.toggle("show", show);
   if (show) {
     input.setAttribute("required", "required");
-    setTimeout(function () {
-      input.focus();
-    }, 220);
+    if (focus !== false) {
+      setTimeout(function () {
+        input.focus();
+      }, 220);
+    }
   } else {
     input.removeAttribute("required");
     input.value = "";
@@ -584,12 +637,15 @@ function showClosed(data) {
   document.getElementById("formStage").style.display = "none";
   document.getElementById("closedStage").style.display = "";
 
-  var isQuota = data.reason === "quota";
-  document.getElementById("closedTitle").textContent = t(
-    isQuota ? "closed.title.quota" : "closed.title.deadline",
-  );
+  var rk =
+    data.reason === "quota"
+      ? "quota"
+      : data.reason === "manual"
+        ? "manual"
+        : "deadline";
+  document.getElementById("closedTitle").textContent = t("closed.title." + rk);
   document.getElementById("closedMessage").textContent = t(
-    isQuota ? "closed.message.quota" : "closed.message.deadline",
+    "closed.message." + rk,
   );
 
   var metaParts = [];
@@ -662,7 +718,12 @@ function collectGoals() {
   return Array.prototype.slice
     .call(form.querySelectorAll('input[name="goals"]:checked'))
     .map(function (el) {
-      return el.value;
+      if (el.value !== "Others") return el.value;
+      var txt = document
+        .getElementById("goalsOther")
+        .value.trim()
+        .replace(/,/g, " /");
+      return txt ? "Others: " + txt : "Others";
     });
 }
 
@@ -679,7 +740,7 @@ form.addEventListener("submit", async function (e) {
   document.getElementById("daysError").classList.toggle("show", !daysOk);
   window.__lastDays = daysPicked;
   var valid = form.checkValidity() && daysOk;
-  var segmentPicked = form.querySelector('input[name="segment"]:checked');
+  var segmentValue = document.getElementById("segment").value;
   if (!valid) {
     form.reportValidity();
     errorBanner.classList.add("show");
@@ -697,7 +758,7 @@ form.addEventListener("submit", async function (e) {
     country: document.getElementById("country").value.trim(),
     company: document.getElementById("company").value.trim(),
     jobtitle: document.getElementById("jobtitle").value.trim(),
-    segment: segmentPicked ? segmentPicked.value : "",
+    segment: segmentValue,
     segmentOther: document.getElementById("segmentOther").value.trim(),
     industry: "", // kolom industri sudah tidak ada di formulir
     industryOther: "",
@@ -705,8 +766,8 @@ form.addEventListener("submit", async function (e) {
     goals: collectGoals(),
     days: daysPicked,
     access: document.getElementById("access").value.trim(),
-    marketing: document.getElementById("marketing").checked,
-    thirdparty: document.getElementById("thirdparty").checked,
+    marketing: false, // persetujuan promosi sudah tidak ada di formulir
+    thirdparty: false, // persetujuan berbagi data ke mitra sudah tidak ada di formulir
     terms: document.getElementById("terms").checked,
   };
 
@@ -775,6 +836,96 @@ document.getElementById("againBtn").addEventListener("click", function () {
   document.querySelector(".step-nav").style.display = "";
   window.scrollTo({ top: 0, behavior: "smooth" });
   requestProgressUpdate();
+});
+
+// ---------- segment dropdown ("Others" reveals a text field) ----------
+document.getElementById("segment").addEventListener("change", function (e) {
+  toggleOtherField(
+    document.getElementById("segmentOtherWrap"),
+    document.getElementById("segmentOther"),
+    e.target.value === "Others",
+  );
+});
+
+// ---------- goals dropdown (multi-select with "Others" text field) ----------
+function renderGoalsText() {
+  var text = document.getElementById("goalsBtnText");
+  var panel = document.getElementById("goalsPanel");
+  if (!text || !panel) return;
+  var labels = Array.prototype.slice
+    .call(panel.querySelectorAll("input:checked"))
+    .map(function (i) {
+      return i.parentNode.querySelector("span").textContent;
+    });
+  text.textContent = labels.length ? labels.join(", ") : t("goals.placeholder");
+  text.classList.toggle("is-placeholder", labels.length === 0);
+}
+function setGoalsOpen(open) {
+  document.getElementById("goalsMulti").classList.toggle("open", open);
+  document
+    .getElementById("goalsBtn")
+    .setAttribute("aria-expanded", String(open));
+}
+document.getElementById("goalsBtn").addEventListener("click", function () {
+  setGoalsOpen(
+    !document.getElementById("goalsMulti").classList.contains("open"),
+  );
+});
+document.addEventListener("click", function (e) {
+  if (!document.getElementById("goalsMulti").contains(e.target))
+    setGoalsOpen(false);
+});
+document.getElementById("goalsPanel").addEventListener("change", function () {
+  var others = document.querySelector(
+    '#goalsPanel input[value="Others"]',
+  ).checked;
+  toggleOtherField(
+    document.getElementById("goalsOtherWrap"),
+    document.getElementById("goalsOther"),
+    others,
+    false,
+  );
+  renderGoalsText();
+  requestProgressUpdate();
+});
+document.getElementById("jfsForm").addEventListener("reset", function () {
+  setTimeout(function () {
+    document.getElementById("segmentOtherWrap").classList.remove("show");
+    document.getElementById("goalsOtherWrap").classList.remove("show");
+    document.getElementById("segmentOther").removeAttribute("required");
+    document.getElementById("goalsOther").removeAttribute("required");
+    setGoalsOpen(false);
+    renderGoalsText();
+  }, 0);
+});
+
+// ---------- Terms & Conditions popup (reading is NOT required to tick the box) ----------
+var termsModal = document.getElementById("termsModal");
+var termsLastFocus = null;
+function openTerms() {
+  termsLastFocus = document.activeElement;
+  termsModal.classList.add("open");
+  termsModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  termsModal.querySelector(".terms-x").focus();
+}
+function closeTerms() {
+  if (!termsModal.classList.contains("open")) return;
+  termsModal.classList.remove("open");
+  termsModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  if (termsLastFocus && termsLastFocus.focus) termsLastFocus.focus();
+}
+document.getElementById("termsLink").addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  openTerms();
+});
+termsModal.querySelectorAll("[data-close-terms]").forEach(function (b) {
+  b.addEventListener("click", closeTerms);
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closeTerms();
 });
 
 applyLanguage(currentLang);

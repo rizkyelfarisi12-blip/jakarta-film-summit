@@ -16,6 +16,9 @@ define('DB_PASS', '');
 date_default_timezone_set('Asia/Jakarta');
 const EVENT_DAYS = [1, 2, 3];
 
+// Kode rahasia untuk layar welcome (display.html?key=...). GANTI sebelum acara.
+const DISPLAY_KEY = 'jfs26';
+
 function db(): PDO
 {
     static $pdo = null;

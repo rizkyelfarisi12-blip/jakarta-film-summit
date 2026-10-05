@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome Screen — Jakarta Film Summit 2026</title>
+    <link rel="icon" type="image/png" href="assets/icon/jfs.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1e1e19;
+            --paper: #f4f4f1;
+            --mauve: #c67188;
+            --gold: #e4c697;
+            --rust: #bf4419;
+            --red: #cc3315;
+            --grad: linear-gradient(120deg, #c67188 0%, #e4c697 45%, #cc3315 100%);
+            --font: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            background: #14130f;
+            color: var(--paper);
+            font-family: var(--font);
+            -webkit-font-smoothing: antialiased;
+            cursor: none;
+        }
+
+        /* drifting colour glow */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -20%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(40vw 40vw at 80% 15%, rgba(198, 113, 136, .30), transparent 70%),
+                radial-gradient(40vw 40vw at 15% 90%, rgba(204, 51, 21, .26), transparent 70%),
+                radial-gradient(30vw 30vw at 50% 50%, rgba(228, 198, 151, .10), transparent 70%);
+            animation: drift 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            to {
+                transform: translate3d(-4%, 3%, 0) rotate(4deg) scale(1.08);
+            }
+        }
+
+        /* film grain / vignette */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .45) 100%);
+        }
+
+        /* ---------- animated film strips ---------- */
+        .film {
+            flex: 0 0 56px;
+            position: relative;
+            z-index: 3;
+            overflow: hidden;
+            background: #0b0a08;
+            border-block: 2px solid #2b2924;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .6);
+        }
+
+        .film .holes,
+        .film .frames {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background-repeat: repeat-x;
+        }
+
+        .film .holes {
+            height: 12px;
+            background-image: linear-gradient(90deg, #f4f4f1 0 22px, transparent 22px 44px);
+            -webkit-mask: linear-gradient(#000, #000);
+            /* placeholder for stacking */
+            background-size: 44px 12px;
+            opacity: .92;
+            border-radius: 2px;
+        }
+
+        .film .holes.a {
+            top: 6px;
+        }
+
+        .film .holes.b {
+            bottom: 6px;
+        }
+
+        .film .frames {
+            top: 22px;
+            height: 12px;
+            background-image: linear-gradient(90deg, rgba(198, 113, 136, .55) 0 80px, transparent 80px 88px, rgba(228, 198, 151, .4) 88px 168px, transparent 168px 176px);
+            background-size: 176px 12px;
+        }
+
+        .film.top .holes,
+        .film.top .frames {
+            animation: slideL 6s linear infinite;
+        }
+
+        .film.bottom .holes,
+        .film.bottom .frames {
+            animation: slideR 6s linear infinite;
+        }
+
+        .film.top .frames {
+            animation-duration: 12s;
+        }
+
+        .film.bottom .frames {
+            animation-duration: 12s;
+        }
+
+        @keyframes slideL {
+            to {
+                background-position-x: -176px;
+            }
+        }
+
+        @keyframes slideR {
+            from {
+                background-position-x: -176px;
+            }
+
+            to {
+                background-position-x: 0;
+            }
+        }
+
+        .film::after {
+            /* moving light sheen */
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, .14) 50%, transparent 65%);
+            background-size: 40% 100%;
+            background-repeat: no-repeat;
+            animation: sheen 5s ease-in-out infinite;
+        }
+
+        @keyframes sheen {
+            from {
+                background-position: -60% 0;
+            }
+
+            to {
+                background-position: 160% 0;
+            }
+        }
+
+        .stage {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            padding: 3vh 5vw;
+        }
+
+        /* ---------- idle ---------- */
+        .idle,
+        .welcome {
+            grid-area: 1 / 1;
+            text-align: center;
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        .idle {
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.4vh;
+        }
+
+        .idle.show {
+            opacity: 1;
+        }
+
+        .idle img {
+            width: min(34vw, 520px);
+            height: auto;
+            animation: float 5s ease-in-out infinite;
+            filter: drop-shadow(0 10px 40px rgba(198, 113, 136, .35));
+        }
+
+        @keyframes float {
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .idle h2 {
+            margin: 0;
+            font-size: clamp(1.6rem, 3.4vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        .idle p {
+            margin: 0;
+            font-size: clamp(1rem, 1.8vw, 1.8rem);
+            color: rgba(244, 244, 241, .7);
+            font-weight: 600;
+        }
+
+        /* ---------- welcome card ---------- */
+        .welcome {
+            opacity: 0;
+            width: min(92vw, 1700px);
+            pointer-events: none;
+            transform: translateY(40px) scale(.94) rotateX(8deg);
+            perspective: 1200px;
+        }
+
+        .welcome.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .beam {
+            /* sweeping spotlight */
+            position: absolute;
+            inset: -30% -10%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: conic-gradient(from 200deg at 50% -10%, transparent 0 40deg, rgba(228, 198, 151, .20) 55deg, transparent 70deg);
+            transform-origin: 50% 0;
+        }
+
+        .welcome.show .beam {
+            opacity: 1;
+            animation: beam 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes beam {
+            from {
+                transform: rotate(-14deg);
+            }
+
+            to {
+                transform: rotate(14deg);
+            }
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            border-radius: 28px;
+            text-align: left;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            gap: clamp(20px, 4vw, 64px);
+            padding: clamp(28px, 5vh, 64px) clamp(28px, 4.5vw, 72px) clamp(36px, 6vh, 76px);
+            background: linear-gradient(145deg, rgba(40, 38, 32, .92), rgba(18, 17, 13, .92));
+            border: 1px solid rgba(228, 198, 151, .35);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .04) inset, 0 0 80px rgba(198, 113, 136, .25);
+        }
+
+        .welcome.show .card {
+            animation: cardGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes cardGlow {
+            to {
+                box-shadow: 0 30px 90px rgba(0, 0, 0, .65), 0 0 0 1px rgba(255, 255, 255, .04) inset, 0 0 130px rgba(228, 198, 151, .38);
+            }
+        }
+
+        /* clapperboard stripes along the top, "clap" on entrance */
+        .clap {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 18px;
+            transform-origin: 0 0;
+            background: repeating-linear-gradient(115deg, var(--paper) 0 34px, var(--ink) 34px 68px);
+        }
+
+        .welcome.show .clap {
+            animation: clap .7s .15s cubic-bezier(.3, 1.6, .5, 1) both;
+        }
+
+        @keyframes clap {
+            from {
+                transform: rotate(-5deg);
+            }
+
+            to {
+                transform: rotate(0);
+            }
+        }
+
+        /* avatar with rotating gradient ring */
+        .avatar {
+            position: relative;
+            width: clamp(130px, 17vw, 300px);
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+        }
+
+        .avatar::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #c67188, #e4c697, #cc3315, #c67188);
+            animation: spin 6s linear infinite;
+            -webkit-mask: radial-gradient(circle, transparent 62%, #000 63%);
+            mask: radial-gradient(circle, transparent 62%, #000 63%);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .avatar span {
+            width: 82%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--grad);
+            color: #fff;
+            font-weight: 900;
+            font-size: clamp(3rem, 7vw, 7rem);
+            letter-spacing: -.04em;
+            text-shadow: 0 3px 16px rgba(0, 0, 0, .35);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, .25);
+        }
+
+        .welcome.show .avatar span {
+            animation: pop .8s .2s cubic-bezier(.2, 1.5, .4, 1) both;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0) rotate(-40deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        .info {
+            min-width: 0;
+        }
+
+        .kicker {
+            margin: 0 0 1.4vh;
+            display: inline-flex;
+            align-items: center;
+            gap: .6em;
+            font-size: clamp(1.1rem, 2.2vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .kicker::before,
+        .kicker::after {
+            content: "";
+            width: 1.6em;
+            height: 3px;
+            border-radius: 3px;
+            background: currentColor;
+            opacity: .7;
+        }
+
+        #wName {
+            margin: 0;
+            font-weight: 900;
+            line-height: 1.04;
+            letter-spacing: -.03em;
+            font-size: clamp(3rem, 8vw, 9rem);
+            text-wrap: balance;
+            overflow-wrap: anywhere;
+            background: linear-gradient(100deg, #fff 0%, #f4e6cd 55%, #e4c697 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 4px 22px rgba(0, 0, 0, .4));
+        }
+
+        #wName .w {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(.5em) rotateX(60deg);
+        }
+
+        .welcome.show #wName .w {
+            animation: word .7s cubic-bezier(.2, .9, .3, 1.2) forwards;
+            animation-delay: calc(.35s + var(--i) * .12s);
+        }
+
+        @keyframes word {
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        #wMeta {
+            margin: 2.2vh 0 0;
+            font-size: clamp(1.2rem, 2.4vw, 2.6rem);
+            font-weight: 600;
+            color: rgba(244, 244, 241, .85);
+        }
+
+        .welcome.show #wMeta,
+        .welcome.show .day-pill {
+            animation: rise .7s .9s ease both;
+        }
+
+        .welcome.show .day-pill {
+            animation-delay: 1.1s;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .day-pill {
+            position: relative;
+            display: inline-block;
+            margin-top: 3vh;
+            padding: .5em 1.5em;
+            border-radius: 999px;
+            overflow: hidden;
+            background: var(--grad);
+            color: #fff;
+            font-weight: 800;
+            font-size: clamp(1rem, 2vw, 2rem);
+            text-shadow: 0 1px 8px rgba(0, 0, 0, .25);
+            letter-spacing: .04em;
+        }
+
+        .day-pill::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .55) 50%, transparent 70%);
+            transform: translateX(-120%);
+            animation: shine 2.4s 1.6s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            to {
+                transform: translateX(120%);
+            }
+        }
+
+        /* countdown bar along the bottom of the card */
+        .timer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 8px;
+            width: 100%;
+            background: var(--grad);
+            transform-origin: 0 50%;
+            transform: scaleX(1);
+        }
+
+        .welcome.show .timer {
+            animation: timer var(--hold, 6s) linear forwards;
+        }
+
+        @keyframes timer {
+            to {
+                transform: scaleX(0);
+            }
+        }
+
+        /* confetti */
+        #fx {
+            position: fixed;
+            inset: 0;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* ---------- recent bar ---------- */
+        .recent {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 14px 3vw;
+            border-top: 1px solid rgba(244, 244, 241, .14);
+            background: rgba(0, 0, 0, .35);
+        }
+
+        .recent-label {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: .6em;
+            font-weight: 800;
+            font-size: clamp(.8rem, 1.2vw, 1.2rem);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .live {
+            width: .7em;
+            height: .7em;
+            border-radius: 50%;
+            background: #ff4d2e;
+            animation: live 1.4s ease-out infinite;
+        }
+
+        @keyframes live {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 77, 46, .7);
+            }
+
+            100% {
+                box-shadow: 0 0 0 .9em rgba(255, 77, 46, 0);
+            }
+        }
+
+        #recentList {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .chip {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 18px 6px 6px;
+            border-radius: 999px;
+            border: 1px solid rgba(244, 244, 241, .2);
+            background: rgba(255, 255, 255, .05);
+            font-size: clamp(.85rem, 1.3vw, 1.3rem);
+            font-weight: 700;
+            white-space: nowrap;
+            animation: chipIn .6s cubic-bezier(.2, 1.3, .4, 1) both;
+        }
+
+        .chip:first-child {
+            border-color: rgba(228, 198, 151, .7);
+            background: rgba(228, 198, 151, .12);
+        }
+
+        .chip i {
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--grad);
+            color: #fff;
+            font-style: normal;
+            font-weight: 900;
+            font-size: .85em;
+        }
+
+        .chip small {
+            font-weight: 600;
+            color: rgba(244, 244, 241, .6);
+            font-size: .8em;
+        }
+
+        @keyframes chipIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px) scale(.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .dot {
+            flex: 0 0 auto;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .dot.ok {
+            background: #59b292;
+        }
+
+        .dot.error {
+            background: #ff6a14;
+        }
+
+        .notice {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: none;
+            place-items: center;
+            background: var(--ink);
+            text-align: center;
+            padding: 24px;
+            font-size: 1.4rem;
+        }
+
+        .notice.show {
+            display: grid;
+        }
+
+        @media (max-aspect-ratio: 1/1) {
+            .card {
+                grid-template-columns: 1fr;
+                text-align: center;
+                justify-items: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            #wName .w {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="film top" aria-hidden="true">
+        <div class="holes a"></div>
+        <div class="frames"></div>
+        <div class="holes b"></div>
+    </div>
+
+    <canvas id="fx"></canvas>
+
+    <main class="stage">
+        <section class="idle show" id="idle">
+            <img src="assets/icon/jfs_logo_color_color.png" alt="Jakarta Film Summit">
+            <h2>Selamat datang di Jakarta Film Summit 2026</h2>
+            <p>19 – 21 November 2026 · Park Hyatt Jakarta</p>
+        </section>
+
+        <section class="welcome" id="welcome" aria-live="polite">
+            <div class="beam"></div>
+            <div class="card">
+                <div class="clap"></div>
+                <div class="avatar"><span id="wInit"></span></div>
+                <div class="info">
+                    <p class="kicker">Selamat datang</p>
+                    <h1 id="wName"></h1>
+                    <p id="wMeta"></p>
+                    <span class="day-pill" id="wDay"></span>
+                </div>
+                <div class="timer" id="wTimer"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="recent">
+        <span class="recent-label"><span class="live"></span>Baru masuk</span>
+        <div id="recentList"></div>
+        <span class="dot" id="statusDot" title="Status koneksi"></span>
+    </footer>
+    <div class="film bottom" aria-hidden="true">
+        <div class="holes a"></div>
+        <div class="frames"></div>
+        <div class="holes b"></div>
+    </div>
+
+    <div class="notice" id="notice"></div>
+
+    <script>
+        const API = "api";
+        const KEY = new URLSearchParams(location.search).get("key") || "";
+        const POLL_MS = 2000;
+        const $ = (id) => document.getElementById(id);
+
+        let lastId = null; // null until the first poll tells us where we are
+        const queue = [];
+        let showing = false;
+
+        function setStatus(s) { $("statusDot").className = "dot " + s; }
+        function showNotice(msg) { $("notice").textContent = msg; $("notice").classList.add("show"); }
+        function hhmm(iso) {
+            const d = new Date(iso);
+            return isNaN(d) ? "" : d.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+        }
+
+        function initials(n) {
+            const p = String(n || "").trim().split(/\s+/).filter(Boolean);
+            return ((p[0] || "")[0] || "").toUpperCase() + (p.length > 1 ? p[p.length - 1][0].toUpperCase() : "");
+        }
+
+        // confetti burst
+        const fx = $("fx"), ctx = fx.getContext("2d");
+        let parts = [], raf = 0;
+        function sizeFx() { fx.width = innerWidth; fx.height = innerHeight; }
+        sizeFx(); addEventListener("resize", sizeFx);
+        function burst() {
+            const cols = ["#c67188", "#e4c697", "#cc3315", "#f4f4f1"];
+            for (let k = 0; k < 140; k++) {
+                const side = k % 2 ? 1 : -1;
+                parts.push({
+                    x: innerWidth / 2 + side * innerWidth * .05, y: innerHeight * .55,
+                    vx: (Math.random() * 14 + 3) * side * (Math.random() > .3 ? 1 : -.4), vy: -(Math.random() * 18 + 6),
+                    w: Math.random() * 10 + 6, h: Math.random() * 6 + 3, r: Math.random() * 6, vr: (Math.random() - .5) * .4,
+                    c: cols[k % cols.length], life: 140 + Math.random() * 60
+                });
+            }
+            if (!raf) raf = requestAnimationFrame(tick);
+        }
+        function tick() {
+            ctx.clearRect(0, 0, fx.width, fx.height);
+            parts = parts.filter((p) => p.life > 0);
+            parts.forEach((p) => {
+                p.vy += .45; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life--;
+                ctx.save(); ctx.globalAlpha = Math.min(1, p.life / 40); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+                ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+            });
+            raf = parts.length ? requestAnimationFrame(tick) : 0;
+            if (!raf) ctx.clearRect(0, 0, fx.width, fx.height);
+        }
+
+        function renderRecent(list) {
+            const box = $("recentList");
+            box.textContent = "";
+            list.forEach((r) => {
+                const chip = document.createElement("span");
+                chip.className = "chip";
+                const i = document.createElement("i"); i.textContent = initials(r.name);
+                const b = document.createElement("b"); b.textContent = r.name;
+                const s = document.createElement("small"); s.textContent = "Day " + r.day + " · " + hhmm(r.time);
+                chip.append(i, b, s);
+                box.appendChild(chip);
+            });
+        }
+
+        // Shrink very long names so they never take more than ~38% of the screen height.
+        function fitName() {
+            const h1 = $("wName");
+            h1.style.fontSize = "";
+            let size = parseFloat(getComputedStyle(h1).fontSize);
+            while (h1.offsetHeight > window.innerHeight * 0.38 && size > 36) {
+                size *= 0.93;
+                h1.style.fontSize = size + "px";
+            }
+        }
+
+        function next() {
+            if (showing || !queue.length) return;
+            showing = true;
+            const item = queue.shift();
+            const nm = $("wName"); nm.textContent = "";
+            String(item.name).split(/\s+/).forEach((w, i) => {
+                const sp = document.createElement("span"); sp.className = "w"; sp.style.setProperty("--i", i); sp.textContent = w;
+                nm.append(sp, " ");
+            });
+            $("wInit").textContent = initials(item.name);
+            $("wMeta").textContent = [item.company, item.jobtitle].filter(Boolean).join(" · ");
+            $("wDay").textContent = "Day " + item.day;
+            $("idle").classList.remove("show");
+            const hold = queue.length >= 3 ? 3500 : 6000; // speed up when many people arrive together
+            $("welcome").style.setProperty("--hold", hold + "ms");
+            $("welcome").classList.remove("show"); void $("welcome").offsetWidth; // restart animations
+            $("welcome").classList.add("show");
+            fitName(); burst();
+            setTimeout(() => {
+                $("welcome").classList.remove("show");
+                setTimeout(() => {
+                    showing = false;
+                    if (queue.length) next(); else $("idle").classList.add("show");
+                }, 650);
+            }, hold);
+        }
+
+        async function poll() {
+            try {
+                const url = `${API}/display/latest?key=${encodeURIComponent(KEY)}` + (lastId !== null ? `&since=${lastId}` : "");
+                const res = await fetch(url, { cache: "no-store" });
+                if (res.status === 403) { showNotice("Kode akses salah. Buka halaman ini dengan alamat yang memuat ?key=… dari panitia."); return; }
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                const data = await res.json();
+                setStatus("ok");
+                renderRecent(data.recent || []);
+                const first = lastId === null;
+                lastId = data.lastId;
+                if (!first) { (data.items || []).forEach((i) => queue.push(i)); next(); }
+            } catch (e) {
+                console.warn(e);
+                setStatus("error");
+            }
+        }
+
+        window.addEventListener("resize", () => { if (showing) fitName(); });
+        window.addEventListener("keydown", (e) => {
+            if (e.key.toLowerCase() === "f") {
+                if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+            }
+        });
+
+        if (!KEY) showNotice("Kode akses belum ada. Buka halaman ini dengan alamat yang memuat ?key=… dari panitia.");
+        else { poll(); setInterval(poll, POLL_MS); }
+    </script>
+</body>
+
+</html>

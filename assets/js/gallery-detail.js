@@ -139,38 +139,30 @@
     });
   }
 
-  function setDay(){
+  function setDay() {
     const id = params.get("day") || "day-1";
 
-    state.day =
-      state.data.days.find(d => d.id === id) ||
-      state.data.days[0];
+    state.day = state.data.days.find((d) => d.id === id) || state.data.days[0];
 
     $("#detailTitle").textContent = state.day.label;
     $("#detailDate").textContent = state.day.date;
     $("#detailIntro").textContent = state.day.intro || "";
 
-    document.title =
-      `${state.day.label} — Gallery — Jakarta Film Summit 2026`;
+    document.title = `${state.day.label} — Gallery — Jakarta Film Summit 2026`;
 
     /*
-    * Hero image:
-    * Ambil foto pertama dari media hari tersebut.
-    * Kalau tidak tersedia, gunakan hero_bg.jpeg.
-    */
-    const heroItem = state.day.media?.find(
-      item => item.image
-    );
+     * Hero image:
+     * Ambil foto pertama dari media hari tersebut.
+     * Kalau tidak tersedia, gunakan hero_bg.jpeg.
+     */
+    const heroItem = state.day.media?.find((item) => item.image);
 
-    const heroImage =
-      heroItem?.image ||
-      "assets/gallery/hero_bg.jpeg";
+    const heroImage = heroItem?.image || "assets/gallery/hero_bg.jpeg";
 
     const hero = $("#detailHeroBg");
 
     if (hero) {
-      hero.style.backgroundImage =
-        `url("${heroImage}")`;
+      hero.style.backgroundImage = `url("${heroImage}")`;
     }
   }
 

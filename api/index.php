@@ -13,6 +13,7 @@
  *   GET  /api/participants/search?q=...  (staff only)
  *   POST /api/participants/days          (staff only) change a participant's days
  *   POST /api/checkin                    (staff only) {qrToken, day}
+ *   GET  /api/display/latest?key=...     (welcome screen, protected by DISPLAY_KEY)
  *   GET  /api/settings                   (staff only)
  *   POST /api/settings                   (staff only)
  */
@@ -55,6 +56,8 @@ try {
         handle_list_participants($pdo);
     } elseif ($route === 'checkin' && $method === 'POST') {
         handle_checkin($pdo);
+    } elseif ($route === 'display' && $sub === 'latest' && $method === 'GET') {
+        handle_display_latest($pdo);
     } elseif ($route === 'settings' && $method === 'GET') {
         handle_get_settings($pdo);
     } elseif ($route === 'settings' && $method === 'POST') {
@@ -411,4 +414,38 @@ function handle_update_days(PDO $pdo): void
     $st = $pdo->prepare("SELECT * FROM peserta WHERE id = ?");
     $st->execute([$id]);
     json_response(['participant' => participant_json($pdo, $st->fetch())]);
+}
+
+/** Feed for the TV welcome screen: latest check-ins (name, company, job title only). */
+function handle_display_latest(PDO $pdo): void
+{
+    if (!hash_equals(DISPLAY_KEY, (string) ($_GET['key'] ?? ''))) {
+        json_error('Forbidden.', 403);
+    }
+    $sel = "SELECT c.id, c.day, c.waktu_checkin, p.fullname, p.company, p.jobtitle
+            FROM checkin_day c JOIN peserta p ON p.id = c.peserta_id";
+    $fmt = fn($r) => [
+        'id' => (int) $r['id'],
+        'day' => (int) $r['day'],
+        'time' => str_replace(' ', 'T', $r['waktu_checkin']),
+        'name' => $r['fullname'],
+        'company' => $r['company'],
+        'jobtitle' => $r['jobtitle'],
+    ];
+    $recent = array_map($fmt, $pdo->query("$sel ORDER BY c.id DESC LIMIT 6")->fetchAll());
+
+    // First call (no "since"): just tell the screen where we are, so old check-ins are not replayed.
+    if (!isset($_GET['since'])) {
+        $max = (int) $pdo->query("SELECT COALESCE(MAX(id), 0) FROM checkin_day")->fetchColumn();
+        json_response(['lastId' => $max, 'items' => [], 'recent' => $recent]);
+    }
+    $since = (int) $_GET['since'];
+    $st = $pdo->prepare("$sel WHERE c.id > ? ORDER BY c.id ASC LIMIT 20");
+    $st->execute([$since]);
+    $items = array_map($fmt, $st->fetchAll());
+    json_response([
+        'lastId' => $items ? end($items)['id'] : $since,
+        'items' => $items,
+        'recent' => $recent,
+    ]);
 }

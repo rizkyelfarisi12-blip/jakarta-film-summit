@@ -41,6 +41,13 @@ function segmentLabel(participant) {
 function el(id) {
   return document.getElementById(id);
 }
+// Data peserta berasal dari form publik -> selalu di-escape sebelum masuk innerHTML.
+function esc(v) {
+  return String(v ?? "").replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+  );
+}
 function timeShort(iso) {
   if (!iso) return "";
   return new Date(iso).toLocaleTimeString("id-ID", {
@@ -155,120 +162,188 @@ if (stopScannerBtn) {
   stopScannerBtn.addEventListener("click", stopQrScanner);
 }
 
+function makeQrScanner() {
+  return new Html5Qrcode("qr-reader", {
+    formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE],
+    experimentalFeatures: { useBarCodeDetectorIfSupported: true },
+    verbose: false,
+  });
+}
+
 async function startQrScanner() {
   if (scannerRunning) return;
 
   if (typeof Html5Qrcode === "undefined") {
     scannerStatus.textContent =
-      "QR scanner belum berhasil dimuat. Pastikan komputer terhubung ke internet.";
+      "QR scanner belum berhasil dimuat. Pastikan perangkat terhubung ke internet lalu muat ulang halaman.";
+    return;
+  }
+  if (!window.isSecureContext || !navigator.mediaDevices) {
+    scannerStatus.textContent =
+      "Kamera hanya bisa dibuka lewat HTTPS (atau localhost). Buka halaman admin dengan alamat https://…";
     return;
   }
 
   scannerStatus.textContent = "Meminta akses kamera...";
+  startScannerBtn.disabled = true;
 
+  const scanConfig = {
+    fps: 12,
+    // Kotak baca persegi, 75% sisi terpendek area kamera
+    qrbox: (w, h) => {
+      const m = Math.min(w, h);
+      const side = Math.min(m, Math.max(150, Math.floor(m * 0.75)));
+      return { width: side, height: side };
+    },
+  };
+
+  let started = false;
+  let lastError = null;
+
+  // Cara 1: pilih kamera belakang dari daftar perangkat
   try {
-    qrScanner = new Html5Qrcode("qr-reader");
-
     const cameras = await Html5Qrcode.getCameras();
-
-    if (!cameras || cameras.length === 0) {
-      throw new Error("Tidak ada kamera yang ditemukan.");
+    if (cameras && cameras.length) {
+      const back = cameras.find((c) =>
+        /back|rear|environment|belakang/i.test(c.label),
+      );
+      const cam = back || cameras[cameras.length - 1];
+      qrScanner = makeQrScanner();
+      await qrScanner.start(cam.id, scanConfig, onQrCodeSuccess, onQrCodeError);
+      started = true;
     }
-
-    // Pilih kamera belakang jika tersedia,
-    // kalau tidak gunakan kamera pertama.
-    let cameraId = cameras[0].id;
-
-    const backCamera = cameras.find((camera) =>
-      /back|rear|environment/i.test(camera.label),
-    );
-
-    if (backCamera) {
-      cameraId = backCamera.id;
-    }
-
-    await qrScanner.start(
-      cameraId,
-      {
-        fps: 10,
-        qrbox: {
-          width: 250,
-          height: 250,
-        },
-      },
-      onQrCodeSuccess,
-      onQrCodeError,
-    );
-
-    scannerRunning = true;
-
-    startScannerBtn.style.display = "none";
-    stopScannerBtn.style.display = "inline-flex";
-
-    scannerStatus.textContent =
-      "Kamera aktif. Arahkan kamera ke QR tiket peserta.";
-  } catch (error) {
-    console.error("QR scanner error:", error);
-
-    scannerStatus.textContent =
-      "Kamera tidak dapat dibuka: " + getCameraErrorMessage(error);
-
-    scannerRunning = false;
+  } catch (e) {
+    lastError = e;
+    console.warn("Start via deviceId gagal:", e);
+    try { if (qrScanner) await qrScanner.clear(); } catch (_) {}
+    qrScanner = null;
   }
-}
 
-function onQrCodeSuccess(decodedText) {
-  console.log("QR terbaca:", decodedText);
+  // Cara 2 (cadangan): minta kamera belakang lewat facingMode
+  if (!started) {
+    try {
+      qrScanner = makeQrScanner();
+      await qrScanner.start(
+        { facingMode: "environment" },
+        scanConfig,
+        onQrCodeSuccess,
+        onQrCodeError,
+      );
+      started = true;
+    } catch (e) {
+      lastError = e;
+      console.warn("Start via facingMode gagal:", e);
+      try { if (qrScanner) await qrScanner.clear(); } catch (_) {}
+      qrScanner = null;
+    }
+  }
 
-  if (!decodedText) return;
+  startScannerBtn.disabled = false;
 
-  // QR peserta dari sistem kita berisi qrToken.
-  // Coba langsung cari sebagai token.
-  const token = decodedText.trim();
-
-  const found = participants.find(
-    (p) => p.qrToken && p.qrToken.toUpperCase() === token.toUpperCase(),
-  );
-
-  if (found) {
-    stopQrScanner();
-
-    scannerStatus.textContent = "QR berhasil dibaca: " + found.id;
-
-    renderTicket(found);
-
+  if (!started) {
+    scannerRunning = false;
+    scannerStatus.textContent =
+      "Kamera tidak dapat dibuka: " +
+      getCameraErrorMessage(lastError || new Error("Tidak ada kamera yang ditemukan."));
     return;
   }
 
-  // Kalau QR berisi URL atau format lain,
-  // coba ambil token dari URL.
+  scannerRunning = true;
+
+  // Fokus otomatis kontinu (tidak fatal kalau tidak didukung)
   try {
-    const url = new URL(token);
-    const possibleToken =
-      url.searchParams.get("qrToken") || url.searchParams.get("token");
+    await qrScanner.applyVideoConstraints({ advanced: [{ focusMode: "continuous" }] });
+  } catch (e) { /* abaikan */ }
 
-    if (possibleToken) {
-      const participant = participants.find(
-        (p) =>
-          p.qrToken && p.qrToken.toUpperCase() === possibleToken.toUpperCase(),
-      );
-
-      if (participant) {
-        stopQrScanner();
-        scannerStatus.textContent = "QR berhasil dibaca: " + participant.id;
-        renderTicket(participant);
-        return;
-      }
+  // Tombol senter (hanya muncul jika kamera mendukung)
+  try {
+    const torch = qrScanner.getRunningTrackCameraCapabilities().torchFeature();
+    const torchBtn = el("torchBtn");
+    if (torch.isSupported() && torchBtn) {
+      let on = false;
+      torchBtn.textContent = "🔦 Nyalakan Senter";
+      torchBtn.style.display = "inline-flex";
+      torchBtn.onclick = async () => {
+        try {
+          on = !on;
+          await torch.apply(on);
+          torchBtn.textContent = on ? "🔦 Matikan Senter" : "🔦 Nyalakan Senter";
+        } catch (e) { on = !on; }
+      };
     }
+  } catch (e) { /* senter tidak didukung — abaikan */ }
+
+  startScannerBtn.style.display = "none";
+  stopScannerBtn.style.display = "inline-flex";
+  scannerStatus.textContent =
+    "Kamera aktif. Arahkan QR tiket ke dalam kotak, jaga jarak sekitar 15–25 cm.";
+}
+
+let lastScan = { text: "", at: 0 };
+
+function beep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    osc.frequency.value = 880;
+    osc.connect(ctx.destination);
+    osc.start();
+    setTimeout(() => {
+      osc.stop();
+      ctx.close();
+    }, 120);
   } catch (e) {
-    // Bukan URL — tidak masalah.
+    /* bunyi bersifat opsional */
+  }
+}
+
+function findByToken(text) {
+  const direct = participants.find(
+    (p) => p.qrToken && p.qrToken.toUpperCase() === text.toUpperCase(),
+  );
+  if (direct) return direct;
+  try {
+    // QR berisi URL, misalnya ...?token=XXXX
+    const url = new URL(text);
+    const t = url.searchParams.get("qrToken") || url.searchParams.get("token");
+    if (t)
+      return participants.find(
+        (p) => p.qrToken && p.qrToken.toUpperCase() === t.toUpperCase(),
+      );
+  } catch (e) {
+    /* bukan URL */
+  }
+  return null;
+}
+
+async function onQrCodeSuccess(decodedText) {
+  const token = (decodedText || "").trim();
+  if (!token) return;
+
+  // QR yang sama masih di depan kamera — abaikan pembacaan ulang selama 3 detik.
+  const now = Date.now();
+  if (token === lastScan.text && now - lastScan.at < 3000) return;
+  lastScan = { text: token, at: now };
+
+  let found = findByToken(token);
+  if (!found) {
+    // Mungkin peserta baru saja mendaftar: muat ulang daftar sekali lalu coba lagi.
+    await fetchData();
+    found = findByToken(token);
   }
 
-  stopQrScanner();
+  beep();
+  el("resultTicket").classList.add("hidden");
+  el("notFoundCard").classList.add("hidden");
 
-  scannerStatus.textContent = "QR terbaca, tetapi peserta tidak ditemukan.";
-
-  el("notFoundCard").classList.remove("hidden");
+  if (found) {
+    scannerStatus.textContent = "QR berhasil dibaca: " + found.id;
+    renderTicket(found);
+  } else {
+    scannerStatus.textContent = "QR terbaca, tetapi peserta tidak ditemukan.";
+    el("notFoundCard").classList.remove("hidden");
+  }
+  // Kamera sengaja tetap menyala supaya peserta berikutnya bisa langsung di-scan.
 }
 
 function onQrCodeError(errorMessage) {
@@ -299,6 +374,7 @@ async function stopQrScanner() {
   startScannerBtn.style.display = "inline-flex";
   stopScannerBtn.style.display = "none";
 
+  if (el("torchBtn")) el("torchBtn").style.display = "none";
   scannerStatus.textContent = 'Tekan "Buka Kamera" untuk mulai scan QR.';
 }
 
@@ -428,6 +504,7 @@ document.querySelectorAll(".nav-item").forEach((btn) => {
       el("view-" + v).classList.add("hidden"),
     );
     el("view-" + btn.dataset.view).classList.remove("hidden");
+    if (btn.dataset.view !== "scan") stopQrScanner();
   });
 });
 
@@ -491,6 +568,7 @@ document.querySelectorAll(".tab").forEach((btn) => {
       .forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     currentMode = btn.dataset.mode;
+    if (currentMode !== "scan") stopQrScanner();
     el("modeScanPanel").classList.toggle("hidden", currentMode !== "scan");
     el("modeSearchPanel").classList.toggle("hidden", currentMode !== "search");
     el("resultTicket").classList.add("hidden");
@@ -536,7 +614,7 @@ el("checkinSearchInput").addEventListener("input", (e) => {
     .map(
       (p) => `
     <div class="matchrow" data-id="${p.id}">
-      <div><div class="name">${p.fullname}</div><div class="meta">${p.email} · ${p.id}</div></div>
+      <div><div class="name">${esc(p.fullname)}</div><div class="meta">${esc(p.email)} · ${esc(p.id)}</div></div>
       ${statusBadge(p)}
     </div>`,
     )
@@ -551,37 +629,80 @@ el("checkinSearchInput").addEventListener("input", (e) => {
     });
 });
 
-function renderTicket(raw) {
+function renderTicket(raw, opts) {
+  opts = opts || {};
   const p = viewFor(raw, checkinDay);
   const registered = registeredOn(raw, checkinDay);
-  let footer;
+  const ck = checkinOn(raw, checkinDay);
+
+  // Verdict besar: yang paling penting dilihat petugas = terdaftar di hari ini atau tidak.
+  let state, icon, title, sub;
   if (!registered) {
-    footer = `<div class="timestamp">Terdaftar hanya untuk ${daysLabel(raw)} — tidak bisa check-in di Day ${checkinDay}.</div>`;
-  } else if (p.kehadiran) {
-    footer = `<div class="timestamp">⏱ Check-in Day ${checkinDay} pukul ${timeShort(p.waktu_checkin)} oleh ${p.checkin_oleh}</div>`;
+    state = "no";
+    icon = "✕";
+    title = `TIDAK TERDAFTAR DAY ${checkinDay}`;
+    sub = `Peserta ini hanya terdaftar untuk ${esc(daysLabel(raw))}. Tidak bisa check-in hari ini.`;
+  } else if (opts.justDone && ck) {
+    state = "ok";
+    icon = "✓";
+    title = `CHECK-IN DAY ${checkinDay} BERHASIL`;
+    sub = `Tercatat pukul ${timeShort(ck.time)}.`;
+  } else if (ck) {
+    state = "done";
+    icon = "!";
+    title = `SUDAH CHECK-IN DAY ${checkinDay}`;
+    sub = `Pukul ${timeShort(ck.time)} oleh ${esc(ck.by || "-")}.`;
   } else {
-    footer = `<div></div><button class="btn btn-primary" id="confirmCheckinBtn">✓ Check-in Day ${checkinDay} Sekarang</button>`;
+    state = "ok";
+    icon = "✓";
+    title = `TERDAFTAR DAY ${checkinDay}`;
+    sub = "Belum check-in. Konfirmasi di bawah untuk mencatat kehadiran.";
   }
-  el("resultTicket").classList.remove("hidden");
-  el("resultTicket").innerHTML = `
-    <div class="ticket-head">
-      <div><div class="ticket-id mono">${p.id}</div><div class="ticket-name">${p.fullname}</div></div>
-      ${statusBadge(raw)}
+
+  // Ringkasan Day 1-3: terdaftar / sudah check-in jam berapa
+  const strip = [1, 2, 3]
+    .map((d) => {
+      const reg = registeredOn(raw, d);
+      const c = checkinOn(raw, d);
+      const cls = !reg ? "none" : c ? "in" : "out";
+      const txt = !reg ? "Tidak terdaftar" : c ? "✓ " + timeShort(c.time) : "Belum check-in";
+      return `<div class="day-pill ${cls}${String(d) === String(checkinDay) ? " current" : ""}">
+        <span class="dp-day">Day ${d}</span><span class="dp-state">${txt}</span></div>`;
+    })
+    .join("");
+
+  let footer;
+  if (registered && !ck) {
+    footer = `<div></div><button class="btn btn-primary btn-lg" id="confirmCheckinBtn">✓ Check-in Day ${checkinDay} Sekarang</button>`;
+  } else {
+    footer = "";
+  }
+
+  const box = el("resultTicket");
+  box.className = "ticket state-" + state;
+  box.innerHTML = `
+    <div class="verdict verdict-${state}">
+      <div class="verdict-icon" aria-hidden="true">${icon}</div>
+      <div class="verdict-text"><div class="verdict-title">${title}</div><div class="verdict-sub">${sub}</div></div>
     </div>
+    <div class="ticket-head">
+      <div><div class="ticket-id mono">${esc(p.id)}</div><div class="ticket-name">${esc(p.fullname)}</div></div>
+    </div>
+    <div class="day-strip">${strip}</div>
     <div class="perf"></div>
     <div class="ticket-details">
-      <div class="detail-row">📅 <strong>${daysLabel(raw)}</strong></div>
-      <div class="detail-row">✉️ <strong>${p.email}</strong></div>
-      <div class="detail-row">📞 <strong>${p.phone}</strong></div>
-      <div class="detail-row">🌍 <strong>${p.country}</strong></div>
-      <div class="detail-row">🏢 <strong>${p.company}</strong></div>
-      <div class="detail-row">🏷️ <strong>${p.jobtitle}</strong></div>
-      <div class="detail-row">🎬 <strong>${segmentLabel(p)}</strong></div>
+      <div class="detail-row">✉️ <strong>${esc(p.email)}</strong></div>
+      <div class="detail-row">📞 <strong>${esc(p.phone || "—")}</strong></div>
+      <div class="detail-row">🌍 <strong>${esc(p.country || "—")}</strong></div>
+      <div class="detail-row">🏢 <strong>${esc(p.company || "—")}</strong></div>
+      <div class="detail-row">🏷️ <strong>${esc(p.jobtitle || "—")}</strong></div>
+      <div class="detail-row">🎬 <strong>${esc(segmentLabel(p))}</strong></div>
     </div>
-    <div class="ticket-footer">${footer}</div>`;
-  if (registered && !p.kehadiran) {
+    ${footer ? `<div class="ticket-footer">${footer}</div>` : ""}`;
+  if (registered && !ck) {
     el("confirmCheckinBtn").addEventListener("click", () => doCheckIn(raw));
   }
+  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 async function doCheckIn(p) {
@@ -606,7 +727,7 @@ async function doCheckIn(p) {
       });
       renderLog();
     }
-    renderTicket(updated);
+    renderTicket(updated, { justDone: res.ok });
     renderAll();
   } catch (e) {
     alert("Gagal check-in. Cek koneksi ke server.\n\n" + (e.message || ""));
@@ -624,7 +745,7 @@ function renderLog() {
     .slice(0, 20)
     .map(
       (e) => `
-    <div class="log-row"><span>${e.nama}</span><span class="who">${timeShort(e.time)} · ${e.staff}</span></div>
+    <div class="log-row"><span>${esc(e.nama)}</span><span class="who">${timeShort(e.time)} · ${esc(e.staff)}</span></div>
   `,
     )
     .join("");
@@ -854,7 +975,24 @@ function getFilteredPeserta() {
     .sort((a, b) => a.fullname.localeCompare(b.fullname));
 }
 
+// Sel per hari: terdaftar? sudah check-in jam berapa?
+function dayCell(p, d) {
+  if (!registeredOn(p, d))
+    return `<span class="dcell none" title="Tidak terdaftar Day ${d}">—</span>`;
+  const c = checkinOn(p, d);
+  if (c)
+    return `<span class="dcell in" title="Check-in Day ${d}: ${esc(timeFull(c.time))}"><b>✓ ${timeShort(c.time)}</b><small>${esc(c.by || "")}</small></span>`;
+  return `<span class="dcell out" title="Terdaftar, belum check-in">Belum</span>`;
+}
+
+const PESERTA_HEAD = `<th>No</th><th>Peserta</th><th>Telepon</th><th>Negara</th><th>Perusahaan</th><th>Jabatan</th><th>Segment</th><th class="th-day">Day 1</th><th class="th-day">Day 2</th><th class="th-day">Day 3</th><th>ID</th><th class="no-print">Aksi</th>`;
+
 function renderPeserta() {
+  const headRow = document.querySelector("#view-peserta thead tr");
+  if (headRow && headRow.dataset.v !== "3") {
+    headRow.innerHTML = PESERTA_HEAD;
+    headRow.dataset.v = "3";
+  }
   populateSegmentFilter();
   const filtered = getFilteredPeserta();
   const base = forDay(pesertaDay).length;
@@ -866,18 +1004,18 @@ function renderPeserta() {
     .map(
       (p, i) => `
     <tr>
-      <td class="sub">${i + 1}</td>
-      <td><div class="name-cell">${p.fullname}</div><div class="sub">${p.email}</div></td>
-      <td class="sub">${p.phone || "—"}</td>
-      <td>${p.country || "—"}</td>
-      <td>${p.company || "—"}</td>
-      <td>${p.jobtitle || "—"}</td>
-      <td>${segmentLabel(p) || "—"}</td>
-      <td>${(p.days || []).map((d) => `<span class="day-chip">Day ${d}</span>`).join("") || "—"}</td>
-      <td class="mono sub">${p.id}</td>
-      <td><span class="badge ${p.kehadiran ? "in" : "out"}">${p.kehadiran ? "Hadir" : "Belum Hadir"}</span></td>
-      <td>${p.waktu_checkin ? timeFull(p.waktu_checkin) : "—"}</td>
-      <td class="no-print"><button class="mini-btn" data-edit-days="${p.id}">Ubah hari</button></td>
+      <td class="sub c-no">${i + 1}</td>
+      <td class="c-name"><div class="name-cell">${esc(p.fullname)}</div><div class="sub">${esc(p.email)}</div></td>
+      <td class="sub c-info" data-label="Telepon">${esc(p.phone || "—")}</td>
+      <td class="c-info" data-label="Negara">${esc(p.country || "—")}</td>
+      <td class="c-info" data-label="Perusahaan">${esc(p.company || "—")}</td>
+      <td class="c-info" data-label="Jabatan">${esc(p.jobtitle || "—")}</td>
+      <td class="c-info" data-label="Segment">${esc(segmentLabel(p) || "—")}</td>
+      <td class="day-td" data-label="Day 1">${dayCell(p, 1)}</td>
+      <td class="day-td" data-label="Day 2">${dayCell(p, 2)}</td>
+      <td class="day-td" data-label="Day 3">${dayCell(p, 3)}</td>
+      <td class="mono sub c-info" data-label="ID">${esc(p.id)}</td>
+      <td class="no-print c-act"><button class="mini-btn" data-edit-days="${esc(p.id)}">Ubah hari</button></td>
     </tr>`,
     )
     .join("");
