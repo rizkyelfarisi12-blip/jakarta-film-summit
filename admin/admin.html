@@ -61,7 +61,10 @@
           <div class="live"><span class="dot"></span><span id="scanTotalLabel">0 peserta terdaftar</span></div>
         </div>
 
-        <div class="day-bar-admin"><span>Hari check-in</span><div class="filters" id="checkinDayFilters"><button class="filter-btn" data-day="1">Day 1</button><button class="filter-btn" data-day="2">Day 2</button><button class="filter-btn" data-day="3">Day 3</button></div></div>
+        <div class="day-bar-admin"><span>Hari check-in</span>
+          <div class="filters" id="checkinDayFilters"><button class="filter-btn" data-day="1">Day 1</button><button
+              class="filter-btn" data-day="2">Day 2</button><button class="filter-btn" data-day="3">Day 3</button></div>
+        </div>
 
         <div class="tabs">
           <button class="tab active" data-mode="scan">📷 Scan QR</button>
@@ -124,7 +127,10 @@
           <button class="icon-btn" id="dashboardRefreshBtn">↻ Refresh</button>
         </div>
 
-        <div class="day-bar-admin"><span>Tampilkan hari</span><div class="filters" id="dashDayFilters"><button class="filter-btn" data-day="1">Day 1</button><button class="filter-btn" data-day="2">Day 2</button><button class="filter-btn" data-day="3">Day 3</button></div></div>
+        <div class="day-bar-admin"><span>Tampilkan hari</span>
+          <div class="filters" id="dashDayFilters"><button class="filter-btn" data-day="1">Day 1</button><button
+              class="filter-btn" data-day="2">Day 2</button><button class="filter-btn" data-day="3">Day 3</button></div>
+        </div>
 
         <div class="headline">
           <div class="hcard total">
@@ -173,9 +179,12 @@
         <div class="page-head no-print">
           <div>
             <h1 class="display">Daftar Peserta</h1>
-            <p>Filter, cari, dan export ke PDF.</p>
+            <p>Filter, cari, export ke PDF, atau unduh QR peserta.</p>
           </div>
-          <button class="btn btn-primary" id="exportPdfBtn">🖨 Export PDF</button>
+          <div class="head-actions">
+            <button class="btn btn-ghost" id="exportQrZipBtn" type="button">⬇ Unduh Semua QR</button>
+            <button class="btn btn-primary" id="exportPdfBtn" type="button">🖨 Export PDF</button>
+          </div>
         </div>
 
         <div class="controls no-print">
@@ -271,7 +280,8 @@
                 <span>atau tarik file ke area ini</span>
                 <small>JPG · PNG · WEBP · MP4 · MOV</small>
               </label>
-              <input id="galleryFileInput" type="file" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime" multiple hidden>
+              <input id="galleryFileInput" type="file"
+                accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime" multiple hidden>
               <div id="galleryUploadQueue" class="gallery-upload-queue"></div>
             </div>
 
@@ -288,11 +298,14 @@
                   <input id="gallerySessionInput" type="text" placeholder="Contoh: Opening Ceremony" autocomplete="off">
                 </label>
                 <label class="full">Caption / Keterangan
-                  <textarea id="galleryCaptionInput" rows="4" placeholder="Contoh: Suasana opening ceremony Jakarta Film Summit 2026."></textarea>
+                  <textarea id="galleryCaptionInput" rows="4"
+                    placeholder="Contoh: Suasana opening ceremony Jakarta Film Summit 2026."></textarea>
                 </label>
               </div>
-              <button class="btn btn-primary gallery-publish-btn" id="galleryPublishBtn" type="button">Publish Media</button>
-              <p class="gallery-note">Preview saat ini tersimpan di browser. Penyimpanan permanen akan dihubungkan ke API Gallery setelah UI final.</p>
+              <button class="btn btn-primary gallery-publish-btn" id="galleryPublishBtn" type="button">Publish
+                Media</button>
+              <p class="gallery-note">Preview saat ini tersimpan di browser. Penyimpanan permanen akan dihubungkan ke
+                API Gallery setelah UI final.</p>
             </div>
           </div>
         </div>
@@ -317,7 +330,8 @@
         <div class="page-head">
           <div>
             <h1 class="display">Pengaturan Pendaftaran</h1>
-            <p>Atur kuota tiap hari dan batas waktu pendaftaran — pendaftaran otomatis tertutup kalau semua hari penuh atau batas waktu lewat.</p>
+            <p>Atur kuota tiap hari dan batas waktu pendaftaran — pendaftaran otomatis tertutup kalau semua hari penuh
+              atau batas waktu lewat.</p>
           </div>
         </div>
 
@@ -370,9 +384,23 @@
     </div>
   </dialog>
 
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" type="text/javascript"></script>
-  <script src="../assets/js/admin.js"></script>
+  <dialog id="qrDialog" class="days-dialog qr-dialog">
+    <h3 id="qrDialogName"></h3>
+    <p class="settings-hint" id="qrDialogMeta"></p>
+    <div class="qr-dialog-img"><img id="qrDialogImg" alt="QR tiket peserta" src=""></div>
+    <div class="mono qr-dialog-token" id="qrDialogToken"></div>
+    <div class="days-dialog-actions">
+      <button type="button" class="btn btn-ghost" id="qrDialogClose">Tutup</button>
+      <button type="button" class="btn btn-primary" id="qrDialogDownload">Unduh QR</button>
+    </div>
+  </dialog>
 
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+  <script src="../assets/js/admin.js"></script>
+  <script src="../assets/js/admin-gallery.js"></script>
+  <script src="../assets/js/admin-agenda.js"></script>
 </body>
 
 </html>

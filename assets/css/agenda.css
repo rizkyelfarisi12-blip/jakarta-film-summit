@@ -681,3 +681,46 @@ body.modal-open {
     transition: none;
   }
 }
+
+/* =======================================================
+   SUB-AGENDA (grup) dalam satu hari
+   ======================================================= */
+.session-description {
+  white-space: pre-line;
+}
+.agenda-group {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 2px solid var(--ink);
+}
+.agenda-group:first-of-type {
+  margin-top: 8px;
+}
+.timeline + .agenda-group {
+  margin-top: 56px;
+}
+.agenda-group-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 32px;
+}
+.agenda-group-label {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.agenda-group-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}

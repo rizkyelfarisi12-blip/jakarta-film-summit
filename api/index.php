@@ -19,6 +19,8 @@
  */
 
 require __DIR__ . '/config.php';
+require __DIR__ . '/gallery.php';
+require __DIR__ . '/agenda.php';   
 
 apply_cors();
 
@@ -34,6 +36,7 @@ if ($apiPos !== false) {
 $segments = $path === '' ? [] : explode('/', $path);
 $route = $segments[0] ?? '';
 $sub = $segments[1] ?? '';
+$sub2 = $segments[2] ?? '';
 
 try {
     $pdo = db();
@@ -62,6 +65,10 @@ try {
         handle_get_settings($pdo);
     } elseif ($route === 'settings' && $method === 'POST') {
         handle_save_settings($pdo);
+    } elseif ($route === 'gallery') {
+        handle_gallery($pdo, $method, $sub);
+    } elseif ($route === 'agenda') {      
+    handle_agenda($pdo, $method, $sub, $sub2);
     } else {
         json_error('Not found: ' . $method . ' /' . $path, 404);
     }

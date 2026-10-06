@@ -45,7 +45,10 @@ function el(id) {
 function esc(v) {
   return String(v ?? "").replace(
     /[&<>"']/g,
-    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
   );
 }
 function timeShort(iso) {
@@ -215,7 +218,9 @@ async function startQrScanner() {
   } catch (e) {
     lastError = e;
     console.warn("Start via deviceId gagal:", e);
-    try { if (qrScanner) await qrScanner.clear(); } catch (_) {}
+    try {
+      if (qrScanner) await qrScanner.clear();
+    } catch (_) {}
     qrScanner = null;
   }
 
@@ -233,7 +238,9 @@ async function startQrScanner() {
     } catch (e) {
       lastError = e;
       console.warn("Start via facingMode gagal:", e);
-      try { if (qrScanner) await qrScanner.clear(); } catch (_) {}
+      try {
+        if (qrScanner) await qrScanner.clear();
+      } catch (_) {}
       qrScanner = null;
     }
   }
@@ -244,7 +251,9 @@ async function startQrScanner() {
     scannerRunning = false;
     scannerStatus.textContent =
       "Kamera tidak dapat dibuka: " +
-      getCameraErrorMessage(lastError || new Error("Tidak ada kamera yang ditemukan."));
+      getCameraErrorMessage(
+        lastError || new Error("Tidak ada kamera yang ditemukan."),
+      );
     return;
   }
 
@@ -252,8 +261,12 @@ async function startQrScanner() {
 
   // Fokus otomatis kontinu (tidak fatal kalau tidak didukung)
   try {
-    await qrScanner.applyVideoConstraints({ advanced: [{ focusMode: "continuous" }] });
-  } catch (e) { /* abaikan */ }
+    await qrScanner.applyVideoConstraints({
+      advanced: [{ focusMode: "continuous" }],
+    });
+  } catch (e) {
+    /* abaikan */
+  }
 
   // Tombol senter (hanya muncul jika kamera mendukung)
   try {
@@ -267,11 +280,17 @@ async function startQrScanner() {
         try {
           on = !on;
           await torch.apply(on);
-          torchBtn.textContent = on ? "🔦 Matikan Senter" : "🔦 Nyalakan Senter";
-        } catch (e) { on = !on; }
+          torchBtn.textContent = on
+            ? "🔦 Matikan Senter"
+            : "🔦 Nyalakan Senter";
+        } catch (e) {
+          on = !on;
+        }
       };
     }
-  } catch (e) { /* senter tidak didukung — abaikan */ }
+  } catch (e) {
+    /* senter tidak didukung — abaikan */
+  }
 
   startScannerBtn.style.display = "none";
   stopScannerBtn.style.display = "inline-flex";
@@ -665,7 +684,11 @@ function renderTicket(raw, opts) {
       const reg = registeredOn(raw, d);
       const c = checkinOn(raw, d);
       const cls = !reg ? "none" : c ? "in" : "out";
-      const txt = !reg ? "Tidak terdaftar" : c ? "✓ " + timeShort(c.time) : "Belum check-in";
+      const txt = !reg
+        ? "Tidak terdaftar"
+        : c
+          ? "✓ " + timeShort(c.time)
+          : "Belum check-in";
       return `<div class="day-pill ${cls}${String(d) === String(checkinDay) ? " current" : ""}">
         <span class="dp-day">Day ${d}</span><span class="dp-state">${txt}</span></div>`;
     })
@@ -934,6 +957,40 @@ el("segmentFilter").addEventListener("change", (e) => {
 });
 el("pesertaSearchInput").addEventListener("input", renderPeserta);
 el("pesertaRefreshBtn").addEventListener("click", fetchData);
+// ---- export PDF: info cetak diisi tepat sebelum dialog print muncul ----
+function preparePrint() {
+  const filtered = getFilteredPeserta();
+  const base = forDay(pesertaDay).length;
+  const statusLabel =
+    { all: "Semua", in: "Sudah absen", out: "Belum absen" }[
+      pesertaStatusFilter
+    ] || "Semua";
+  const dayLabel = pesertaDay === "all" ? "Semua hari" : "Day " + pesertaDay;
+  const segLabel =
+    pesertaSegmentFilter === "all" ? "Semua segment" : pesertaSegmentFilter;
+  const q = el("pesertaSearchInput").value.trim();
+
+  el("printDate").textContent =
+    "Dicetak " +
+    new Date().toLocaleString("id-ID", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
+  el("printStats").innerHTML = `
+    <div>${esc(dayLabel)} · ${esc(statusLabel)} · ${esc(segLabel)}${q ? ` · "${esc(q)}"` : ""}</div>
+    <div>Ditampilkan ${filtered.length} dari ${base} peserta · Sudah absen: ${filtered.filter((p) => p.kehadiran).length}</div>`;
+
+  // Nama file default di dialog "Save as PDF"
+  window.__oldTitle = document.title;
+  document.title =
+    "Daftar-Peserta-JFS-2026-" +
+    (pesertaDay === "all" ? "Semua-Hari" : "Day" + pesertaDay);
+}
+
+window.addEventListener("beforeprint", preparePrint);
+window.addEventListener("afterprint", () => {
+  if (window.__oldTitle) document.title = window.__oldTitle;
+});
 el("exportPdfBtn").addEventListener("click", () => window.print());
 
 function populateSegmentFilter() {
@@ -944,7 +1001,9 @@ function populateSegmentFilter() {
   ).sort();
   select.innerHTML =
     `<option value="all">Semua Segment</option>` +
-    segments.map((c) => `<option value="${c}">${c}</option>`).join("");
+    segments
+      .map((c) => `<option value="${esc(c)}">${esc(c)}</option>`)
+      .join("");
   select.value = segments.includes(current) ? current : "all";
 }
 
@@ -1015,20 +1074,13 @@ function renderPeserta() {
       <td class="day-td" data-label="Day 2">${dayCell(p, 2)}</td>
       <td class="day-td" data-label="Day 3">${dayCell(p, 3)}</td>
       <td class="mono sub c-info" data-label="ID">${esc(p.id)}</td>
-      <td class="no-print c-act"><button class="mini-btn" data-edit-days="${esc(p.id)}">Ubah hari</button></td>
+      <td class="no-print c-act">
+        <button class="mini-btn" data-show-qr="${esc(p.id)}">QR</button>
+        <button class="mini-btn" data-edit-days="${esc(p.id)}">Ubah hari</button>
+      </td>
     </tr>`,
     )
     .join("");
-
-  el("printDate").textContent =
-    "Dicetak " +
-    new Date().toLocaleString("id-ID", {
-      dateStyle: "long",
-      timeStyle: "short",
-    });
-  el("printStats").innerHTML = `
-    <div>Hari: ${pesertaDay === "all" ? "Semua" : "Day " + pesertaDay} · Total ditampilkan: ${filtered.length} dari ${base} peserta</div>
-    <div>Sudah absen: ${filtered.filter((p) => p.kehadiran).length}</div>`;
 }
 
 el("dayFilter").addEventListener("change", (e) => {
@@ -1080,6 +1132,223 @@ el("daysDialogSave").addEventListener("click", async () => {
     el("daysDialogError").textContent = "Tidak bisa menghubungi server.";
   }
 });
+
+// =================================================================
+// QR peserta (popup + unduh satu per satu)
+// =================================================================
+function qrImageUrl(token) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&ecc=Q&margin=0&qzone=4&data=${encodeURIComponent(token)}`;
+}
+
+let qrShown = null;
+
+function openQrDialog(p) {
+  qrShown = p;
+  el("qrDialogName").textContent = p.fullname;
+  el("qrDialogMeta").textContent = `${p.id} · ${daysLabel(p)}`;
+  el("qrDialogToken").textContent = p.qrToken;
+  el("qrDialogImg").src = qrImageUrl(p.qrToken);
+  el("qrDialog").showModal();
+}
+
+async function downloadParticipantQr(p) {
+  const url = qrImageUrl(p.qrToken);
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("fetch failed");
+    const objUrl = URL.createObjectURL(await res.blob());
+    const a = document.createElement("a");
+    a.href = objUrl;
+    a.download = `QR-${p.id}.png`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(objUrl);
+  } catch (e) {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+}
+
+el("pesertaTableBody").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-show-qr]");
+  if (!btn) return;
+  const p = participants.find((x) => x.id === btn.dataset.showQr);
+  if (p) openQrDialog(p);
+});
+el("qrDialogClose").addEventListener("click", () => el("qrDialog").close());
+el("qrDialogDownload").addEventListener("click", () => {
+  if (qrShown) downloadParticipantQr(qrShown);
+});
+// klik di luar dialog = tutup
+el("qrDialog").addEventListener("click", (e) => {
+  if (e.target === el("qrDialog")) el("qrDialog").close();
+});
+
+// =================================================================
+// Unduh semua QR (ZIP) — sesuai filter yang sedang tampil di tabel
+// =================================================================
+function safeFileName(s) {
+  return String(s || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+}
+
+// Buat PNG QR lewat canvas (library: qrcode-generator, global `qrcode`)
+function qrPngDataUrl(text, size = 600, quiet = 4) {
+  const qr = qrcode(0, "Q");
+  qr.addData(String(text));
+  qr.make();
+  const n = qr.getModuleCount();
+  const cell = Math.max(1, Math.floor(size / (n + quiet * 2)));
+  const px = cell * (n + quiet * 2);
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = px;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, px, px);
+  ctx.fillStyle = "#000000";
+  for (let r = 0; r < n; r++)
+    for (let c = 0; c < n; c++)
+      if (qr.isDark(r, c))
+        ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, cell, cell);
+  return canvas.toDataURL("image/png");
+}
+
+// Muat library saat dibutuhkan (cadangan kalau <script> di HTML gagal/ter-cache)
+const _libLoads = {};
+function loadScriptOnce(urls) {
+  const key = urls.join("|");
+  if (_libLoads[key]) return _libLoads[key];
+  _libLoads[key] = (async () => {
+    for (const url of urls) {
+      try {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src = url;
+          s.onload = resolve;
+          s.onerror = () => reject(new Error("gagal: " + url));
+          document.head.appendChild(s);
+        });
+        return;
+      } catch (e) {
+        console.warn(e.message);
+      }
+    }
+    throw new Error("Tidak bisa memuat " + urls[0]);
+  })();
+  _libLoads[key].catch(() => delete _libLoads[key]);
+  return _libLoads[key];
+}
+
+async function ensureZipLibs() {
+  if (typeof JSZip === "undefined")
+    await loadScriptOnce([
+      "https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js",
+      "https://unpkg.com/jszip@3.10.1/dist/jszip.min.js",
+    ]);
+  if (typeof qrcode === "undefined")
+    await loadScriptOnce([
+      "https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js",
+      "https://unpkg.com/qrcode-generator@1.4.4/qrcode.js",
+    ]);
+}
+
+function csvCell(v) {
+  return '"' + String(v ?? "").replace(/"/g, '""') + '"';
+}
+
+async function downloadAllQrZip() {
+  const btn = el("exportQrZipBtn");
+
+  const list = getFilteredPeserta().filter((p) => p.qrToken);
+  if (!list.length) {
+    alert("Tidak ada peserta pada tampilan saat ini.");
+    return;
+  }
+  if (
+    !confirm(
+      `Unduh ${list.length} QR peserta sesuai filter yang sedang tampil sebagai file ZIP?`,
+    )
+  )
+    return;
+
+  const oldLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Memuat library…";
+
+  try {
+    await ensureZipLibs();
+    const zip = new JSZip();
+    const folder = zip.folder("QR");
+    const rows = [
+      [
+        "ID",
+        "Nama",
+        "Email",
+        "Perusahaan",
+        "Jabatan",
+        "Hari",
+        "Token QR",
+        "File",
+      ],
+    ];
+
+    for (let i = 0; i < list.length; i++) {
+      const p = list[i];
+      btn.textContent = `Memproses ${i + 1}/${list.length}…`;
+
+      const dataUrl = qrPngDataUrl(p.qrToken, 600, 4);
+
+      const fileName = `${p.id}_${safeFileName(p.fullname)}.png`;
+      folder.file(fileName, dataUrl.split(",")[1], { base64: true });
+
+      rows.push([
+        p.id,
+        p.fullname,
+        p.email,
+        p.company || "",
+        p.jobtitle || "",
+        (p.days || []).map((d) => "Day " + d).join(" + "),
+        p.qrToken,
+        fileName,
+      ]);
+
+      // beri napas ke browser tiap 20 QR supaya tombol tetap responsif
+      if (i % 20 === 19) await new Promise((r) => setTimeout(r, 0));
+    }
+
+    const csv =
+      "\ufeff" + rows.map((r) => r.map(csvCell).join(",")).join("\r\n");
+    zip.file("daftar-peserta.csv", csv);
+
+    btn.textContent = "Membuat ZIP…";
+    const blob = await zip.generateAsync({
+      type: "blob",
+      compression: "STORE",
+    });
+
+    const dayPart = pesertaDay === "all" ? "Semua-Hari" : "Day" + pesertaDay;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `QR-JFS-2026-${dayPart}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  } catch (e) {
+    console.error(e);
+    alert("Gagal membuat ZIP QR: " + (e.message || e));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = oldLabel;
+  }
+}
+
+el("exportQrZipBtn").addEventListener("click", downloadAllQrZip);
 
 // ---- day selectors (check-in & dashboard) ----
 initDayFilters(

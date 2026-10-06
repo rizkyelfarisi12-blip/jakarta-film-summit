@@ -17,24 +17,34 @@
     );
   const params = new URLSearchParams(location.search);
 
+  // Data gallery dari database lewat API (hanya media yang berstatus published).
   async function load() {
-    const res = await fetch("assets/data/gallery.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("gallery.json tidak dapat dimuat");
+    const res = await fetch("api/gallery", { cache: "no-store" });
+    if (!res.ok)
+      throw new Error("API gallery tidak dapat dimuat (" + res.status + ")");
     return res.json();
   }
 
   function image(item) {
     return item.image || "assets/gallery/hero_bg.jpeg";
   }
+  function fileName(url, fallback) {
+    const n = String(url || "")
+      .split("?")[0]
+      .split("/")
+      .pop();
+    return n || fallback;
+  }
   function visible() {
     let items = state.day.media.filter(
       (m) => state.filter === "all" || m.type === state.filter,
     );
     const sort = $("#sortSelect")?.value || "newest";
+    // takenAt = ISO (YYYY-MM-DDTHH:mm:ss) sehingga bisa dibandingkan sebagai string
     items = [...items].sort((a, b) =>
       sort === "newest"
-        ? String(b.timestamp).localeCompare(String(a.timestamp))
-        : String(a.timestamp).localeCompare(String(b.timestamp)),
+        ? String(b.takenAt).localeCompare(String(a.takenAt))
+        : String(a.takenAt).localeCompare(String(b.takenAt)),
     );
     state.items = items;
     return items;
@@ -85,9 +95,10 @@
         v.src = item.src;
         media.appendChild(v);
         download.href = item.src;
+        download.setAttribute("download", fileName(item.src, "jfs-video.mp4"));
         download.removeAttribute("hidden");
       } else {
-        media.innerHTML = `<div class="video-empty">Video belum memiliki file atau URL. Nanti admin dapat mengisi sumber video dari sistem Gallery.</div>`;
+        media.innerHTML = `<div class="video-empty">Video belum memiliki file atau URL.</div>`;
         download.setAttribute("hidden", "hidden");
       }
     } else {
@@ -96,7 +107,10 @@
       im.alt = item.title || "Gallery";
       media.appendChild(im);
       download.href = image(item);
-      download.download = "jfs-gallery.jpg";
+      download.setAttribute(
+        "download",
+        fileName(image(item), "jfs-gallery.jpg"),
+      );
       download.removeAttribute("hidden");
     }
     box.classList.add("open");
@@ -143,6 +157,7 @@
     const id = params.get("day") || "day-1";
 
     state.day = state.data.days.find((d) => d.id === id) || state.data.days[0];
+    if (!state.day) throw new Error("Belum ada data hari di database.");
 
     $("#detailTitle").textContent = state.day.label;
     $("#detailDate").textContent = state.day.date;
@@ -150,19 +165,14 @@
 
     document.title = `${state.day.label} — Gallery — Jakarta Film Summit 2026`;
 
-    /*
-     * Hero image:
-     * Ambil foto pertama dari media hari tersebut.
-     * Kalau tidak tersedia, gunakan hero_bg.jpeg.
-     */
-    const heroItem = state.day.media?.find((item) => item.image);
-
+    // Hero: foto terbaru hari tersebut (fallback hero_bg.jpeg).
+    const heroItem =
+      state.day.media?.find((item) => item.type === "photo" && item.image) ||
+      state.day.media?.find((item) => item.image);
     const heroImage = heroItem?.image || "assets/gallery/hero_bg.jpeg";
-
     const hero = $("#detailHeroBg");
-
     if (hero) {
-      hero.style.backgroundImage = `url("${heroImage}")`;
+      hero.style.backgroundImage = `url("${encodeURI(heroImage)}")`;
     }
   }
 
@@ -175,7 +185,7 @@
     } catch (err) {
       console.error(err);
       $("#detailGrid").innerHTML =
-        '<div class="gallery-empty" style="grid-column:1/-1">Gallery belum dapat dimuat. Pastikan assets/data/gallery.json tersedia.</div>';
+        '<div class="gallery-empty" style="grid-column:1/-1">Gallery belum dapat dimuat. Pastikan server dan database aktif.</div>';
     }
   }
   init();

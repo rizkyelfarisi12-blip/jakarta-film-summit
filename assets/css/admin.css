@@ -623,11 +623,18 @@ textarea {
   background: #11120f;
   border-radius: 14px;
 }
-#qr-reader video { display: block; }
+#qr-reader video {
+  display: block;
+}
 .qr-scanner-box .btn,
-.qr-scanner-box #torchBtn { width: 100%; max-width: 460px; }
-.qr-scanner-box .empty-note { margin: 0; text-align: center; }
-
+.qr-scanner-box #torchBtn {
+  width: 100%;
+  max-width: 460px;
+}
+.qr-scanner-box .empty-note {
+  margin: 0;
+  text-align: center;
+}
 
 /* =========================================================
    08. TICKET / CHECK-IN RESULT
@@ -1691,7 +1698,7 @@ tbody tr:last-child td {
 }
 
 /* =========================================================
-   15. PRINT
+   15. PRINT (Export PDF daftar peserta)
    ========================================================= */
 .print-head {
   display: none;
@@ -1699,68 +1706,111 @@ tbody tr:last-child td {
 
 @media print {
   @page {
-    margin: 16mm 12mm;
+    size: A4 landscape;
+    margin: 12mm 10mm;
   }
 
-  body * {
-    visibility: hidden;
-  }
-
-  #view-peserta,
-  #view-peserta * {
-    visibility: visible;
-  }
-
+  html,
   body {
+    width: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
     background: #fff !important;
     color: #111 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
+  /* Buang semua yang bukan daftar peserta (display:none, bukan visibility,
+     supaya tidak ada ruang kosong / halaman tambahan) */
+  #loginScreen,
   .sidebar,
-  .no-print {
+  .no-print,
+  #daysDialog,
+  #qrDialog,
+  .main > div:not(#view-peserta) {
     display: none !important;
   }
 
-  #view-peserta {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin: 0;
+  .shell {
+    display: block;
+    min-height: 0;
     padding: 0;
   }
 
+  .main {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .main > #view-peserta {
+    display: block !important;
+    max-width: none;
+    margin: 0;
+  }
+
+  /* Kop laporan */
   .print-head {
     display: flex !important;
     align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
+    gap: 16px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 2px solid #111;
   }
 
   .print-head h2 {
     margin: 0;
+    font-size: 16px;
     color: #111;
-    font-size: 18px;
   }
 
   .print-head p {
     margin: 2px 0 0;
+    font-size: 10px;
     color: #444;
-    font-size: 11px;
   }
 
   .print-head .stats {
+    font-size: 10px;
     color: #444;
-    font-size: 11px;
     text-align: right;
+    line-height: 1.5;
   }
 
+  /* Tabel: muat satu lebar halaman, tanpa scroll/potongan */
   .table-wrap {
+    overflow: visible !important;
+    background: none !important;
     border: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+  }
+
+  table {
+    display: table !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    border-collapse: collapse;
+    table-layout: auto;
+    font-size: 10px;
+  }
+
+  thead {
+    display: table-header-group !important; /* header berulang tiap halaman */
+  }
+
+  tbody {
+    display: table-row-group !important;
+  }
+
+  tr {
+    display: table-row !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   thead tr {
@@ -1769,24 +1819,58 @@ tbody tr:last-child td {
 
   th,
   td {
-    padding: 6px 8px !important;
-    border-color: #ccc !important;
+    display: table-cell !important;
+    padding: 4px 6px !important;
+    border: 1px solid #ccc !important;
     color: #111 !important;
-    font-size: 11px !important;
+    font-size: 10px !important;
+    vertical-align: top;
+    overflow-wrap: anywhere;
   }
 
-  .badge.in {
+  th {
+    white-space: nowrap;
+  }
+
+  td.c-info::before,
+  td.day-td::before {
+    content: none !important;
+  }
+
+  .sub {
+    font-size: 9px !important;
+    color: #555 !important;
+  }
+
+  .th-day,
+  .day-td {
+    text-align: center;
+  }
+
+  /* Sel Day 1-3 */
+  .dcell {
+    min-width: 0;
+    padding: 2px 5px;
+    font-size: 10px;
+  }
+
+  .dcell small {
+    max-width: none;
+    font-size: 8.5px;
+  }
+
+  .dcell.in {
     background: #e4f3ea !important;
     color: #2f7a4f !important;
   }
 
-  .badge.out {
+  .dcell.out {
     background: #fff3d9 !important;
     color: #8a6415 !important;
   }
 
-  tr {
-    break-inside: avoid;
+  .dcell.none {
+    color: #999 !important;
   }
 }
 
@@ -1995,7 +2079,6 @@ tbody tr:last-child td {
   .scanbox .btn {
     width: 100%;
   }
-
 
   .ticket {
     padding: 16px;
@@ -2407,13 +2490,18 @@ select#dayFilter {
   }
 }
 
-
 /* =========================================================
    21. SCAN RESULT — verdict hari + ringkasan Day 1-3
    ========================================================= */
-.ticket.state-no { border: 2px solid var(--accent); }
-.ticket.state-ok { border: 2px solid #2f7a5f; }
-.ticket.state-done { border: 2px solid #c8a56a; }
+.ticket.state-no {
+  border: 2px solid var(--accent);
+}
+.ticket.state-ok {
+  border: 2px solid #2f7a5f;
+}
+.ticket.state-done {
+  border: 2px solid #c8a56a;
+}
 
 .verdict {
   display: flex;
@@ -2446,10 +2534,21 @@ select#dayFilter {
   font-weight: 600;
   line-height: 1.4;
 }
-.verdict-no { background: var(--accent); color: #fff; }
-.verdict-ok { background: #2f7a5f; color: #fff; }
-.verdict-done { background: #f1dfb4; color: #4d3a0c; }
-.verdict-done .verdict-icon { background: rgba(77, 58, 12, 0.14); }
+.verdict-no {
+  background: var(--accent);
+  color: #fff;
+}
+.verdict-ok {
+  background: #2f7a5f;
+  color: #fff;
+}
+.verdict-done {
+  background: #f1dfb4;
+  color: #4d3a0c;
+}
+.verdict-done .verdict-icon {
+  background: rgba(77, 58, 12, 0.14);
+}
 
 .day-strip {
   display: grid;
@@ -2466,54 +2565,145 @@ select#dayFilter {
   border-radius: 11px;
   background: var(--surface-soft);
 }
-.day-pill .dp-day { font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
-.day-pill .dp-state { font-size: 13px; font-weight: 700; }
-.day-pill.in { background: var(--success-bg); border-color: rgba(77, 155, 125, 0.4); color: #2b6b52; }
-.day-pill.out { background: var(--warning-bg); border-color: rgba(200, 165, 106, 0.5); color: #6e5520; }
-.day-pill.none { background: transparent; border-style: dashed; color: #8b8a82; }
-.day-pill.none .dp-state { font-weight: 600; }
-.day-pill.current { box-shadow: 0 0 0 2px var(--text); }
+.day-pill .dp-day {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.day-pill .dp-state {
+  font-size: 13px;
+  font-weight: 700;
+}
+.day-pill.in {
+  background: var(--success-bg);
+  border-color: rgba(77, 155, 125, 0.4);
+  color: #2b6b52;
+}
+.day-pill.out {
+  background: var(--warning-bg);
+  border-color: rgba(200, 165, 106, 0.5);
+  color: #6e5520;
+}
+.day-pill.none {
+  background: transparent;
+  border-style: dashed;
+  color: #8b8a82;
+}
+.day-pill.none .dp-state {
+  font-weight: 600;
+}
+.day-pill.current {
+  box-shadow: 0 0 0 2px var(--text);
+}
 
-.ticket-head .ticket-name { font-size: 24px; }
-.ticket-details { font-size: 12.5px; }
-.btn-lg { min-height: 52px; padding: 13px 22px; font-size: 15px; }
+.ticket-head .ticket-name {
+  font-size: 24px;
+}
+.ticket-details {
+  font-size: 12.5px;
+}
+.btn-lg {
+  min-height: 52px;
+  padding: 13px 22px;
+  font-size: 15px;
+}
 
 /* =========================================================
    22. TABEL PESERTA — kolom per hari
    ========================================================= */
-.th-day, .day-td { text-align: center; white-space: nowrap; }
-.dcell { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; min-width: 66px; padding: 4px 9px; border-radius: 9px; font-size: 12px; font-weight: 700; line-height: 1.25; }
-.dcell small { max-width: 90px; overflow: hidden; text-overflow: ellipsis; font-size: 10px; font-weight: 600; opacity: 0.8; }
-.dcell.in { background: var(--success-bg); color: #2b6b52; }
-.dcell.out { background: var(--warning-bg); color: #6e5520; }
-.dcell.none { color: #b0aea5; font-weight: 600; }
+.th-day,
+.day-td {
+  text-align: center;
+  white-space: nowrap;
+}
+.dcell {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 66px;
+  padding: 4px 9px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.dcell small {
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+.dcell.in {
+  background: var(--success-bg);
+  color: #2b6b52;
+}
+.dcell.out {
+  background: var(--warning-bg);
+  color: #6e5520;
+}
+.dcell.none {
+  color: #b0aea5;
+  font-weight: 600;
+}
 
 @media (max-width: 680px) {
-  .verdict { margin: -16px -16px 16px; padding: 20px 18px; gap: 14px; }
-  .verdict-icon { width: 48px; height: 48px; flex-basis: 48px; font-size: 26px; }
-  .verdict-sub { font-size: 12.5px; }
-  .day-strip { gap: 6px; }
-  .day-pill { padding: 8px 8px; }
-  .day-pill .dp-state { font-size: 11.5px; }
-  .ticket-head .ticket-name { font-size: 21px; }
-  table { min-width: 940px; }
+  .verdict {
+    margin: -16px -16px 16px;
+    padding: 20px 18px;
+    gap: 14px;
+  }
+  .verdict-icon {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+    font-size: 26px;
+  }
+  .verdict-sub {
+    font-size: 12.5px;
+  }
+  .day-strip {
+    gap: 6px;
+  }
+  .day-pill {
+    padding: 8px 8px;
+  }
+  .day-pill .dp-state {
+    font-size: 11.5px;
+  }
+  .ticket-head .ticket-name {
+    font-size: 21px;
+  }
+  table {
+    min-width: 940px;
+  }
 }
-
-@media print {
-  .dcell.in { background: #e4f3ea !important; color: #2f7a4f !important; }
-  .dcell.out { background: #fff3d9 !important; color: #8a6415 !important; }
-  .dcell.none { color: #999 !important; }
-}
-
 
 /* =========================================================
    23. MOBILE — tabel peserta menjadi kartu
    ========================================================= */
 @media screen and (max-width: 680px) {
-  .table-wrap { overflow: visible; background: transparent; border: 0; box-shadow: none; }
-  table { display: block; min-width: 0; }
-  thead { display: none; }
-  tbody { display: flex; flex-direction: column; gap: 10px; }
+  .table-wrap {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  table {
+    display: block;
+    min-width: 0;
+  }
+  thead {
+    display: none;
+  }
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   tbody tr {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2524,11 +2714,27 @@ select#dayFilter {
     border-radius: 14px;
     box-shadow: var(--shadow-sm);
   }
-  tbody td { display: block; padding: 0; border: 0; min-width: 0; }
-  tbody tr:last-child td { border-bottom: 0; }
-  td.c-no { display: none; }
-  td.c-name { grid-column: 1 / -1; padding-bottom: 8px; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
-  td.day-td { text-align: left; }
+  tbody td {
+    display: block;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  td.c-no {
+    display: none;
+  }
+  td.c-name {
+    grid-column: 1 / -1;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    overflow-wrap: anywhere;
+  }
+  td.day-td {
+    text-align: left;
+  }
   td.day-td::before {
     content: attr(data-label);
     display: block;
@@ -2539,7 +2745,11 @@ select#dayFilter {
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
-  td.day-td .dcell { display: flex; width: 100%; min-width: 0; }
+  td.day-td .dcell {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+  }
   td.c-info {
     grid-column: 1 / -1;
     display: flex;
@@ -2556,6 +2766,87 @@ select#dayFilter {
     font-weight: 700;
     text-align: left;
   }
-  td.c-act { grid-column: 1 / -1; }
-  td.c-act .mini-btn { width: 100%; min-height: 40px; }
+  td.c-act {
+    grid-column: 1 / -1;
+  }
+  td.c-act .mini-btn {
+    width: 100%;
+    min-height: 40px;
+  }
+}
+
+/* =========================================================
+   24. QR PESERTA
+   ========================================================= */
+.qr-dialog {
+  text-align: center;
+}
+
+.qr-dialog-img img {
+  display: block;
+  width: 230px;
+  height: 230px;
+  margin: 14px auto 10px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.qr-dialog-token {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.qr-dialog .days-dialog-actions {
+  justify-content: center;
+}
+
+.c-act {
+  white-space: nowrap;
+}
+
+.c-act .mini-btn + .mini-btn {
+  margin-left: 6px;
+}
+
+@media (max-width: 680px) {
+  td.c-act {
+    display: flex;
+    gap: 8px;
+  }
+
+  td.c-act .mini-btn {
+    flex: 1;
+    width: auto;
+    margin: 0;
+  }
+}
+
+/* =========================================================
+   25. TOMBOL AKSI HEADER (Peserta)
+   ========================================================= */
+.head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 680px) {
+  .head-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .head-actions .btn {
+    width: 100%;
+  }
 }

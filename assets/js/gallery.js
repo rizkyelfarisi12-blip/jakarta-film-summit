@@ -16,9 +16,11 @@
         })[c],
     );
 
+  // Data gallery dari database lewat API (hanya media yang berstatus published).
   async function load() {
-    const res = await fetch("assets/data/gallery.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("gallery.json tidak dapat dimuat");
+    const res = await fetch("api/gallery", { cache: "no-store" });
+    if (!res.ok)
+      throw new Error("API gallery tidak dapat dimuat (" + res.status + ")");
     return res.json();
   }
 
@@ -48,7 +50,7 @@
           <div class="day-preview-grid">
             ${preview
               .map(
-                (item, i) => `
+                (item) => `
               <a class="preview-card" href="gallery-detail.html?day=${encodeURIComponent(day.id)}" aria-label="Lihat semua gallery ${esc(day.label)}">
                 <img src="${esc(img(item))}" alt="${esc(item.title)}" loading="lazy">
                 ${item.type === "video" ? `<span class="media-badge"><span class="play-dot"></span>Video</span>` : ""}
@@ -86,7 +88,7 @@
     } catch (err) {
       console.error(err);
       $("#daySections").innerHTML =
-        '<div class="gallery-empty">Gallery belum dapat dimuat. Pastikan assets/data/gallery.json tersedia.</div>';
+        '<div class="gallery-empty">Gallery belum dapat dimuat. Pastikan server dan database aktif.</div>';
     }
   }
   init();

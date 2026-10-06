@@ -92,12 +92,9 @@
 
   async function init() {
     try {
-      const [agenda, speakerData] = await Promise.all([
-        load("assets/data/agenda.json"),
-        load("assets/data/speakers.json").catch(() => null),
-      ]);
+      const agenda = await load("api/agenda");
       state.agenda = agenda;
-      state.speakers = pickSpeakers(speakerData, agenda);
+      state.speakers = pickSpeakers(null, agenda);
 
       bindDays();
       bindSpeakerClicks();
@@ -138,7 +135,37 @@
         <h3 class="agenda-day-title">${esc(day.title || day.label || "Day")}</h3>
         <div class="agenda-day-date">${esc(day.date || "")}</div>
       </div>
-      <div class="timeline">${(day.sessions || []).map(sessionHtml).join("")}</div>`;
+      ${dayBodyHtml(day)}`;
+  }
+
+  // Hari dengan sub-agenda (grup) tampil sebagai blok terpisah, masing-masing punya timeline sendiri.
+  function dayBodyHtml(day) {
+    const sessions = day.sessions || [];
+    const groups = day.groups || [];
+    if (!groups.length) {
+      return `<div class="timeline">${sessions.map(sessionHtml).join("")}</div>`;
+    }
+    const known = new Set(groups.map((g) => g.label));
+    const loose = sessions.filter((s) => !s.group || !known.has(s.group));
+    const blocks = groups
+      .map((g) => {
+        const items = sessions.filter((s) => s.group === g.label);
+        if (!items.length) return "";
+        return `
+      <section class="agenda-group">
+        <div class="agenda-group-head">
+          <span class="agenda-group-label">${esc(g.label)}</span>
+          ${g.title ? `<h4 class="agenda-group-title">${esc(g.title)}</h4>` : ""}
+        </div>
+        <div class="timeline">${items.map(sessionHtml).join("")}</div>
+      </section>`;
+      })
+      .join("");
+    return (
+      (loose.length
+        ? `<div class="timeline">${loose.map(sessionHtml).join("")}</div>`
+        : "") + blocks
+    );
   }
 
   function sessionHtml(s) {
