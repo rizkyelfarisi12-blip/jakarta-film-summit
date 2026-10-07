@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /uploads/
+Disallow: /display.html
+Disallow: /create-admin.php
+Disallow: /config.php
+
+Sitemap: https://jakartafilmsummit.com/sitemap.xml

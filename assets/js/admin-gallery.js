@@ -192,64 +192,78 @@
 
   // Poster video dibuat di browser (frame ±1 detik); null kalau codec tidak didukung.
   function videoThumb(file) {
-  return new Promise((resolve) => {
-    const url = URL.createObjectURL(file);
-    const v = document.createElement("video");
-    v.muted = true;
-    v.preload = "auto";
-    v.playsInline = true;
-    let done = false, times = [], idx = 0, best = null, bestLum = -1;
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(file);
+      const v = document.createElement("video");
+      v.muted = true;
+      v.preload = "auto";
+      v.playsInline = true;
+      let done = false,
+        times = [],
+        idx = 0,
+        best = null,
+        bestLum = -1;
 
-    const finish = (b) => {
-      if (done) return;
-      done = true;
-      clearTimeout(timer);
-      URL.revokeObjectURL(url);
-      resolve(b);
-    };
-    const timer = setTimeout(() => finish(best), 12000);
+      const finish = (b) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        URL.revokeObjectURL(url);
+        resolve(b);
+      };
+      const timer = setTimeout(() => finish(best), 12000);
 
-    const next = () => {
-      if (bestLum > 30 || idx >= times.length) return finish(best);
-      v.currentTime = times[idx++];
-    };
+      const next = () => {
+        if (bestLum > 30 || idx >= times.length) return finish(best);
+        v.currentTime = times[idx++];
+      };
 
-    v.onloadedmetadata = () => {
-      const d = v.duration || 1;
-      times = [0.1, 0.25, 0.5, 0.75].map((f) => Math.max(0.05, Math.min(d * f, d - 0.1)));
-      next();
-    };
-
-    v.onseeked = () => {
-      try {
-        if (!v.videoWidth) return finish(best);
-        const s = Math.min(1, 960 / v.videoWidth);
-        const c = document.createElement("canvas");
-        c.width = Math.round(v.videoWidth * s);
-        c.height = Math.round(v.videoHeight * s);
-        const ctx = c.getContext("2d");
-        ctx.drawImage(v, 0, 0, c.width, c.height);
-        // ukur kecerahan frame (sampling)
-        const px = ctx.getImageData(0, 0, c.width, c.height).data;
-        let sum = 0, n = 0;
-        for (let i = 0; i < px.length; i += 200) {
-          sum += px[i] * 0.299 + px[i + 1] * 0.587 + px[i + 2] * 0.114;
-          n++;
-        }
-        const lum = sum / n;
-        c.toBlob((b) => {
-          if (b && lum > bestLum) { best = b; bestLum = lum; }
-          next();
-        }, "image/jpeg", 0.82);
-      } catch (_) {
+      v.onloadedmetadata = () => {
+        const d = v.duration || 1;
+        times = [0.1, 0.25, 0.5, 0.75].map((f) =>
+          Math.max(0.05, Math.min(d * f, d - 0.1)),
+        );
         next();
-      }
-    };
+      };
 
-    v.onerror = () => finish(null);
-    v.src = url;
-  });
-}
+      v.onseeked = () => {
+        try {
+          if (!v.videoWidth) return finish(best);
+          const s = Math.min(1, 960 / v.videoWidth);
+          const c = document.createElement("canvas");
+          c.width = Math.round(v.videoWidth * s);
+          c.height = Math.round(v.videoHeight * s);
+          const ctx = c.getContext("2d");
+          ctx.drawImage(v, 0, 0, c.width, c.height);
+          // ukur kecerahan frame (sampling)
+          const px = ctx.getImageData(0, 0, c.width, c.height).data;
+          let sum = 0,
+            n = 0;
+          for (let i = 0; i < px.length; i += 200) {
+            sum += px[i] * 0.299 + px[i + 1] * 0.587 + px[i + 2] * 0.114;
+            n++;
+          }
+          const lum = sum / n;
+          c.toBlob(
+            (b) => {
+              if (b && lum > bestLum) {
+                best = b;
+                bestLum = lum;
+              }
+              next();
+            },
+            "image/jpeg",
+            0.82,
+          );
+        } catch (_) {
+          next();
+        }
+      };
+
+      v.onerror = () => finish(null);
+      v.src = url;
+    });
+  }
 
   async function publish() {
     if (S.busy) return;

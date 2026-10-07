@@ -103,11 +103,12 @@ h1.headline {
 }
 
 /* Presenting logo */
-
 .partner-presenting-logo {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px 56px;
 
   padding: 24px 40px;
 }
@@ -116,7 +117,7 @@ h1.headline {
   display: block;
 
   width: auto;
-  max-width: 300px;
+  max-width: 240px;
   max-height: 80px;
 
   object-fit: contain;

@@ -67,24 +67,24 @@ function renderPresentingPartner(container, partners) {
     return;
   }
 
-  const partner = partners[0];
+  partners.forEach(function (partner) {
+    if (partner.logo) {
+      const img = document.createElement("img");
 
-  if (partner.logo) {
-    const img = document.createElement("img");
+      img.src = partner.logo;
+      img.alt = partner.name || "Presenting Partner";
+      img.loading = "lazy";
 
-    img.src = partner.logo;
-    img.alt = partner.name || "Presenting Partner";
-    img.loading = "lazy";
+      container.appendChild(img);
+    } else {
+      const text = document.createElement("span");
 
-    container.appendChild(img);
-  } else {
-    const text = document.createElement("span");
+      text.className = "wordmark";
+      text.textContent = partner.name || "";
 
-    text.className = "wordmark";
-    text.textContent = partner.name || "";
-
-    container.appendChild(text);
-  }
+      container.appendChild(text);
+    }
+  });
 }
 
 /* =====================================================

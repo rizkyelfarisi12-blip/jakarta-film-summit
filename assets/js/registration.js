@@ -751,7 +751,7 @@ form.addEventListener("submit", async function (e) {
     return;
   }
 
-  var payload = {
+  const payload = {
     fullname: document.getElementById("fullname").value.trim(),
     email: document.getElementById("email").value.trim(),
     phone: document.getElementById("phone").value.trim(),
@@ -760,14 +760,9 @@ form.addEventListener("submit", async function (e) {
     jobtitle: document.getElementById("jobtitle").value.trim(),
     segment: segmentValue,
     segmentOther: document.getElementById("segmentOther").value.trim(),
-    industry: "", // kolom industri sudah tidak ada di formulir
-    industryOther: "",
-    experience: "", // kolom pengalaman sudah tidak ada di formulir
     goals: collectGoals(),
     days: daysPicked,
     access: document.getElementById("access").value.trim(),
-    marketing: false, // persetujuan promosi sudah tidak ada di formulir
-    thirdparty: false, // persetujuan berbagi data ke mitra sudah tidak ada di formulir
     terms: document.getElementById("terms").checked,
   };
 
