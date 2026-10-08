@@ -739,7 +739,7 @@ button {
   isolation: isolate;
   background: var(--grad);
   background-size: 220% 220%;
-  animation: heroGlow 16s ease-in-out infinite alternate;
+  animation: heroGlow 5s ease-in-out infinite alternate;
 }
 .hero::before {
   content: "";
@@ -1111,7 +1111,7 @@ p.block-desc {
   position: relative;
   background: var(--grad);
   background-size: 220% 220%;
-  animation: heroGlow 16s ease-in-out infinite alternate-reverse;
+  animation: heroGlow 5s ease-in-out infinite alternate-reverse;
   padding: 84px 0;
   text-align: center;
   overflow: hidden;

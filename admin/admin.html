@@ -27,7 +27,7 @@
       <input type="password" id="staffPasswordInput" placeholder="Password" autocomplete="current-password" />
       <div id="loginError" class="settings-hint" style="color:#B34A00; display:none; margin-bottom:10px;"></div>
       <button class="login-btn" id="loginBtn">Masuk</button>
-      <p class="login-note">Butuh akun? Minta admin jalankan <span class="mono">php create-admin.php</span> di server.
+      <p class="login-note">Butuh akun? Minta admin
       </p>
     </div>
   </div>
@@ -185,8 +185,19 @@
             <p>Filter, cari, export ke PDF, atau unduh QR peserta.</p>
           </div>
           <div class="head-actions">
-            <button class="btn btn-ghost" id="exportQrZipBtn" type="button">⬇ Unduh Semua QR</button>
-            <button class="btn btn-primary" id="exportPdfBtn" type="button">🖨 Export PDF</button>
+
+            <button class="btn btn-ghost" id="exportQrZipBtn" type="button">
+              ⬇ Unduh Semua QR
+            </button>
+
+            <button class="btn btn-ghost" id="exportEmailBtn" type="button">
+              ✉ Export Email
+            </button>
+
+            <button class="btn btn-primary" id="exportPdfBtn" type="button">
+              🖨 Export PDF
+            </button>
+
           </div>
         </div>
 

@@ -732,9 +732,6 @@ form.addEventListener("submit", async function (e) {
   errorBanner.classList.remove("show");
   serverErrorBanner.classList.remove("show");
 
-  // Validitas native (fullname, email, country, terms) — segment & goals
-  // sengaja tidak diwajibkan lagi, jadi tidak ada lagi pengecekan manual
-  // untuk keduanya di sini.
   var daysPicked = collectDays();
   var daysOk = daysPicked.length > 0;
   document.getElementById("daysError").classList.toggle("show", !daysOk);

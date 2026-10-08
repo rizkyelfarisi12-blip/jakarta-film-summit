@@ -422,17 +422,21 @@
         }
 
         #wName .w {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(.5em) rotateX(60deg);
+            display: inline;
+            opacity: 1;
+            transform: none;
         }
 
         .welcome.show #wName .w {
-            animation: word .7s cubic-bezier(.2, .9, .3, 1.2) forwards;
-            animation-delay: calc(.35s + var(--i) * .12s);
+            animation: none;
         }
 
         @keyframes word {
+            from {
+                opacity: 0;
+                transform: translateY(.35em) rotateX(25deg);
+            }
+
             to {
                 opacity: 1;
                 transform: none;
@@ -659,6 +663,11 @@
             display: grid;
         }
 
+        .chip { max-width: 30vw; min-width: 0; }
+        .chip b { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+        .chip i, .chip small { flex: 0 0 auto; }
+        .welcome.long .avatar { width: clamp(90px, 11vw, 190px); }
+        .welcome.long #wName  { font-size: clamp(2.4rem, 5.2vw, 6rem); }
         @media (max-aspect-ratio: 1/1) {
             .card {
                 grid-template-columns: 1fr;
@@ -782,6 +791,7 @@
         }
 
         function renderRecent(list) {
+            list = [...list].sort((a, b) => b.id - a.id);
             const box = $("recentList");
             box.textContent = "";
             list.forEach((r) => {
@@ -798,10 +808,11 @@
         // Shrink very long names so they never take more than ~38% of the screen height.
         function fitName() {
             const h1 = $("wName");
+            const maxH = window.innerHeight * 0.46;
             h1.style.fontSize = "";
             let size = parseFloat(getComputedStyle(h1).fontSize);
-            while (h1.offsetHeight > window.innerHeight * 0.38 && size > 36) {
-                size *= 0.93;
+            while ((h1.offsetHeight > maxH || h1.scrollWidth > h1.clientWidth + 1) && size > 28) {
+                size *= 0.94;
                 h1.style.fontSize = size + "px";
             }
         }
@@ -822,6 +833,7 @@
             const hold = queue.length >= 3 ? 3500 : 6000; // speed up when many people arrive together
             $("welcome").style.setProperty("--hold", hold + "ms");
             $("welcome").classList.remove("show"); void $("welcome").offsetWidth; // restart animations
+            $("welcome").classList.toggle("long", String(item.name).length > 24);
             $("welcome").classList.add("show");
             fitName(); burst();
             setTimeout(() => {
@@ -833,9 +845,17 @@
             }, hold);
         }
 
+        const seen = new Set();
+        let polling = false;
+
         async function poll() {
+            if (polling) return;
+            polling = true;
             try {
-                const url = `${API}/display/latest?key=${encodeURIComponent(KEY)}` + (lastId !== null ? `&since=${lastId}` : "");
+                const url = `${API}/display/latest?key=${encodeURIComponent(KEY)}`
+                + (lastId !== null ? `&since=${lastId}` : "")
+                + `&_=${Date.now()}`;
+
                 const res = await fetch(url, { cache: "no-store" });
                 if (res.status === 403) { showNotice("Kode akses salah. Buka halaman ini dengan alamat yang memuat ?key=… dari panitia."); return; }
                 if (!res.ok) throw new Error("HTTP " + res.status);
@@ -844,17 +864,31 @@
                 renderRecent(data.recent || []);
                 const first = lastId === null;
                 lastId = data.lastId;
-                if (!first) { (data.items || []).forEach((i) => queue.push(i)); next(); }
+                if (!first) {
+                (data.items || []).forEach((i) => {
+                    if (!seen.has(i.id)) { seen.add(i.id); queue.push(i); }
+                });
+                next();
+                }
             } catch (e) {
                 console.warn(e);
                 setStatus("error");
+            } finally {
+                polling = false;
             }
         }
+        
 
         window.addEventListener("resize", () => { if (showing) fitName(); });
         window.addEventListener("keydown", (e) => {
-            if (e.key.toLowerCase() === "f") {
-                if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+        const k = e.key.toLowerCase();
+            if (k === "f") {
+                if (document.fullscreenElement) document.exitFullscreen();
+                else document.documentElement.requestFullscreen();
+            }
+            if (k === "t") {
+                queue.push({ name: "Nama Peserta Uji Yang Sangat Panjang Sekali", company: "Perusahaan", jobtitle: "Jabatan", day: 1 });
+                next();
             }
         });
 

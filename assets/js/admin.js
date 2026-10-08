@@ -11,6 +11,8 @@
  * ============================================================ */
 const API_BASE = "../api";
 const POLL_MS = 5000;
+// JFS Admin JS — participant export/render fix
+const ADMIN_JS_FIX_VERSION = "2026-10-08-r1";
 
 function segmentLabel(participant) {
   if (!participant) return "-";
@@ -991,7 +993,240 @@ window.addEventListener("beforeprint", preparePrint);
 window.addEventListener("afterprint", () => {
   if (window.__oldTitle) document.title = window.__oldTitle;
 });
+
+// ---------------------------------------------------------------
+// Export controls
+// PDF tetap memakai print browser, tetapi layout diatur khusus oleh CSS print.
+// Email export dibuat sebagai XLSX agar siap dipakai tim/email platform.
+// ---------------------------------------------------------------
+function ensureParticipantExportButtons() {
+  const pdfBtn = el("exportPdfBtn");
+  if (!pdfBtn || !pdfBtn.parentElement) return;
+
+  /*
+   * Jangan memindahkan PDF/QR ke wrapper baru.
+   * Versi sebelumnya menggunakan insertBefore() terhadap parent yang
+   * berbeda sehingga bisa memicu NotFoundError dan menghentikan seluruh
+   * admin.js sebelum PESERTA_HEAD selesai diinisialisasi.
+   *
+   * Kita cukup menambahkan tombol Email ke parent yang memang memiliki
+   * tombol PDF. Tombol QR dibiarkan di posisi HTML aslinya.
+   */
+  const parent = pdfBtn.parentElement;
+
+  let emailBtn = el("exportEmailBtn");
+  if (!emailBtn) {
+    emailBtn = document.createElement("button");
+    emailBtn.type = "button";
+    emailBtn.id = "exportEmailBtn";
+    emailBtn.className = "btn btn-ghost";
+    emailBtn.textContent = "✉ Export Email";
+  }
+
+  // Pastikan tombol Email berada di container yang sama dengan PDF.
+  if (emailBtn.parentElement !== parent) {
+    parent.insertBefore(emailBtn, pdfBtn);
+  } else if (emailBtn !== pdfBtn && emailBtn.nextElementSibling !== pdfBtn) {
+    parent.insertBefore(emailBtn, pdfBtn);
+  }
+}
+
+async function ensureXlsxLib() {
+  if (window.XLSX) return window.XLSX;
+  await loadScriptOnce([
+    "https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js",
+    "https://unpkg.com/xlsx-js-style@1.2.0/dist/xlsx.bundle.js",
+  ]);
+  if (!window.XLSX) throw new Error("Library Excel tidak berhasil dimuat.");
+  return window.XLSX;
+}
+
+function participantDaysForExport(p) {
+  return [1, 2, 3]
+    .filter((d) => registeredOn(p, d))
+    .map((d) => "Day " + d)
+    .join(" + ");
+}
+
+function goalsForExport(p) {
+  if (Array.isArray(p.goals)) return p.goals.filter(Boolean).join(", ");
+  return p.goals ? String(p.goals) : "";
+}
+
+function buildEmailExportRows(list) {
+  return list.map((p, index) => ({
+    No: index + 1,
+    Nama: p.fullname || "",
+    Email: p.email || "",
+    Perusahaan: p.company || "",
+    Jabatan: p.jobtitle || "",
+    Negara: p.country || "",
+    Segment: segmentLabel(p) || "",
+    "Tujuan Menghadiri": goalsForExport(p),
+    "Kebutuhan Aksesibilitas": p.access || "",
+    Hari: participantDaysForExport(p),
+    "Marketing Consent": p.marketing ? "Ya" : "Tidak",
+    "Sudah Check-in": p.kehadiran ? "Ya" : "Tidak",
+    ID: p.id || "",
+  }));
+}
+
+function styleEmailWorkbook(XLSX, ws, titleRow, headerRow, lastRow, lastCol) {
+  const border = {
+    top: { style: "thin", color: { rgb: "D9D5CB" } },
+    bottom: { style: "thin", color: { rgb: "D9D5CB" } },
+    left: { style: "thin", color: { rgb: "D9D5CB" } },
+    right: { style: "thin", color: { rgb: "D9D5CB" } },
+  };
+  const headerFill = { fgColor: { rgb: "1E1E19" } };
+  const accentFill = { fgColor: { rgb: "F3F1EB" } };
+
+  for (let c = 0; c <= lastCol; c++) {
+    const h = ws[XLSX.utils.encode_cell({ r: headerRow, c })];
+    if (h) {
+      h.s = {
+        fill: headerFill,
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        alignment: { vertical: "center", wrapText: true },
+        border,
+      };
+    }
+  }
+  for (let r = headerRow + 1; r <= lastRow; r++) {
+    for (let c = 0; c <= lastCol; c++) {
+      const cell = ws[XLSX.utils.encode_cell({ r, c })];
+      if (!cell) continue;
+      cell.s = {
+        fill: r % 2 === 0 ? accentFill : { fgColor: { rgb: "FFFFFF" } },
+        alignment: { vertical: "top", wrapText: true },
+        border,
+      };
+    }
+  }
+
+  ws["A1"].s = { font: { bold: true, sz: 15, color: { rgb: "1E1E19" } } };
+  ws["A2"].s = { font: { color: { rgb: "6F7069" }, italic: true } };
+  ws["A1"].s.alignment = { vertical: "center" };
+  ws["A2"].s.alignment = { vertical: "center" };
+  ws["A1"].s.border = border;
+  ws["A2"].s.border = border;
+
+  ws["!freeze"] = { xSplit: 0, ySplit: headerRow + 1 };
+  ws["!autofilter"] = {
+    ref: XLSX.utils.encode_range({
+      s: { r: headerRow, c: 0 },
+      e: { r: lastRow, c: lastCol },
+    }),
+  };
+}
+
+async function exportEmailXlsx() {
+  const btn = el("exportEmailBtn");
+  const list = getFilteredPeserta();
+  if (!list.length) {
+    alert("Tidak ada peserta pada tampilan saat ini.");
+    return;
+  }
+
+  const oldLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Menyiapkan Excel…";
+
+  try {
+    const XLSX = await ensureXlsxLib();
+    const rows = buildEmailExportRows(list);
+    const marketingRows = rows.filter((r) => r["Marketing Consent"] === "Ya");
+
+    const wb = XLSX.utils.book_new();
+    const meta = [
+      ["JAKARTA FILM SUMMIT 2026"],
+      ["Email & Participant List"],
+      [],
+      [
+        "Filter hari",
+        pesertaDay === "all" ? "Semua hari" : "Day " + pesertaDay,
+      ],
+      [
+        "Status",
+        { all: "Semua", in: "Sudah absen", out: "Belum absen" }[
+          pesertaStatusFilter
+        ] || "Semua",
+      ],
+      [
+        "Segment",
+        pesertaSegmentFilter === "all" ? "Semua segment" : pesertaSegmentFilter,
+      ],
+      ["Total diekspor", list.length],
+      ["Marketing consent", marketingRows.length],
+      [],
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(meta);
+    XLSX.utils.sheet_add_json(ws, rows, { origin: "A10", skipHeader: false });
+    ws["!cols"] = [
+      { wch: 6 },
+      { wch: 24 },
+      { wch: 32 },
+      { wch: 24 },
+      { wch: 22 },
+      { wch: 16 },
+      { wch: 20 },
+      { wch: 42 },
+      { wch: 34 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 18 },
+      { wch: 18 },
+    ];
+    styleEmailWorkbook(XLSX, ws, 0, 9, 9 + rows.length, 12);
+    ws["!merges"] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 12 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 12 } },
+    ];
+    XLSX.utils.book_append_sheet(wb, ws, "Semua Email");
+
+    const wsConsent = XLSX.utils.aoa_to_sheet([
+      ["JAKARTA FILM SUMMIT 2026 — MARKETING CONSENT"],
+      [
+        "Hanya peserta yang menyetujui menerima update & promosi melalui email.",
+      ],
+      [],
+    ]);
+    XLSX.utils.sheet_add_json(wsConsent, marketingRows, {
+      origin: "A4",
+      skipHeader: false,
+    });
+    wsConsent["!cols"] = ws["!cols"];
+    styleEmailWorkbook(XLSX, wsConsent, 0, 3, 3 + marketingRows.length, 12);
+    wsConsent["!merges"] = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 12 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 12 } },
+    ];
+    XLSX.utils.book_append_sheet(wb, wsConsent, "Marketing Consent");
+
+    const dayPart = pesertaDay === "all" ? "Semua-Hari" : "Day" + pesertaDay;
+    const statusPart =
+      { all: "Semua", in: "Hadir", out: "Belum-Hadir" }[pesertaStatusFilter] ||
+      "Semua";
+    const segPart =
+      pesertaSegmentFilter === "all"
+        ? "Semua-Segment"
+        : safeFileName(pesertaSegmentFilter);
+    const filename = `JFS-2026-Email-List-${dayPart}-${statusPart}-${segPart}.xlsx`;
+
+    XLSX.writeFile(wb, filename);
+  } catch (e) {
+    console.error(e);
+    alert("Gagal membuat file Excel: " + (e.message || e));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = oldLabel;
+  }
+}
+
+ensureParticipantExportButtons();
 el("exportPdfBtn").addEventListener("click", () => window.print());
+el("exportEmailBtn")?.addEventListener("click", exportEmailXlsx);
 
 function populateSegmentFilter() {
   const select = el("segmentFilter");
@@ -1005,6 +1240,12 @@ function populateSegmentFilter() {
       .map((c) => `<option value="${esc(c)}">${esc(c)}</option>`)
       .join("");
   select.value = segments.includes(current) ? current : "all";
+}
+
+function goalsForSearch(p) {
+  return (
+    Array.isArray(p.goals) ? p.goals.join(" ") : String(p.goals || "")
+  ).toLowerCase();
 }
 
 function getFilteredPeserta() {
@@ -1029,7 +1270,11 @@ function getFilteredPeserta() {
         p.email.toLowerCase().includes(q) ||
         p.id.toLowerCase().includes(q) ||
         (p.company || "").toLowerCase().includes(q) ||
-        (p.country || "").toLowerCase().includes(q),
+        (p.country || "").toLowerCase().includes(q) ||
+        goalsForSearch(p).includes(q) ||
+        String(p.access || "")
+          .toLowerCase()
+          .includes(q),
     )
     .sort((a, b) => a.fullname.localeCompare(b.fullname));
 }
@@ -1044,13 +1289,13 @@ function dayCell(p, d) {
   return `<span class="dcell out" title="Terdaftar, belum check-in">Belum</span>`;
 }
 
-const PESERTA_HEAD = `<th>No</th><th>Peserta</th><th>Telepon</th><th>Negara</th><th>Perusahaan</th><th>Jabatan</th><th>Segment</th><th class="th-day">Day 1</th><th class="th-day">Day 2</th><th class="th-day">Day 3</th><th>ID</th><th class="no-print">Aksi</th>`;
+const PESERTA_HEAD = `<th>No</th><th>Peserta</th><th>Telepon</th><th>Negara</th><th>Perusahaan</th><th>Jabatan</th><th>Segment</th><th>Tujuan Menghadiri</th><th>Kebutuhan Aksesibilitas</th><th class="th-day">Day 1</th><th class="th-day">Day 2</th><th class="th-day">Day 3</th><th>ID</th><th class="no-print">Aksi</th>`;
 
 function renderPeserta() {
   const headRow = document.querySelector("#view-peserta thead tr");
-  if (headRow && headRow.dataset.v !== "3") {
+  if (headRow && headRow.dataset.v !== "5") {
     headRow.innerHTML = PESERTA_HEAD;
-    headRow.dataset.v = "3";
+    headRow.dataset.v = "5";
   }
   populateSegmentFilter();
   const filtered = getFilteredPeserta();
@@ -1070,6 +1315,8 @@ function renderPeserta() {
       <td class="c-info" data-label="Perusahaan">${esc(p.company || "—")}</td>
       <td class="c-info" data-label="Jabatan">${esc(p.jobtitle || "—")}</td>
       <td class="c-info" data-label="Segment">${esc(segmentLabel(p) || "—")}</td>
+      <td class="c-info participant-long-text" data-label="Tujuan Menghadiri">${esc(goalsForExport(p) || "—")}</td>
+      <td class="c-info participant-long-text" data-label="Kebutuhan Aksesibilitas">${esc(p.access || "—")}</td>
       <td class="day-td" data-label="Day 1">${dayCell(p, 1)}</td>
       <td class="day-td" data-label="Day 2">${dayCell(p, 2)}</td>
       <td class="day-td" data-label="Day 3">${dayCell(p, 3)}</td>

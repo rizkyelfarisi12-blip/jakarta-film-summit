@@ -2803,6 +2803,14 @@ select#dayFilter {
   justify-content: center;
 }
 
+.participant-long-text {
+  min-width: 220px;
+  max-width: 320px;
+  white-space: normal;
+  line-height: 1.45;
+  vertical-align: top;
+}
+
 .c-act {
   white-space: nowrap;
 }
@@ -2848,5 +2856,50 @@ select#dayFilter {
 
   .head-actions .btn {
     width: 100%;
+  }
+}
+
+
+/* =========================================================
+   25. PARTICIPANT EXPORT — compatibility additions
+   Based on the latest JFS admin CSS.
+   These rules intentionally keep the existing design intact.
+   ========================================================= */
+
+/* The participant table gains two long-text columns:
+   Tujuan Menghadiri + Kebutuhan Aksesibilitas. */
+#view-peserta .participant-long-text {
+  min-width: 220px;
+  max-width: 320px;
+  white-space: normal;
+  line-height: 1.45;
+  vertical-align: top;
+}
+
+/* Keep the action column compact after the latest admin.js changes. */
+#view-peserta .c-act {
+  white-space: nowrap;
+}
+
+/* On mobile, keep the existing card layout and let long text wrap naturally. */
+@media screen and (max-width: 680px) {
+  #view-peserta .participant-long-text {
+    min-width: 0;
+    max-width: none;
+    width: auto;
+    white-space: normal;
+    line-height: 1.45;
+  }
+}
+
+/* PDF export: allow long-text columns to shrink naturally
+   inside the existing A4 landscape layout. */
+@media print {
+  #view-peserta .participant-long-text {
+    min-width: 0 !important;
+    max-width: none !important;
+    width: auto !important;
+    white-space: normal !important;
+    line-height: 1.3 !important;
   }
 }
