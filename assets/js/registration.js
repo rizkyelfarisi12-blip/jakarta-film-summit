@@ -282,7 +282,7 @@ const I18N = {
     "consent.terms.link": "Syarat & Ketentuan",
     "consent.terms.rest2": "pendaftaran.",
     "submit.note":
-      "Setelah dikirim, tim kami akan mengirimkan konfirmasi dan detail akses ke email bisnis Anda.",
+      "Setelah dikirim, akan ada QR Code yang terdownload. mohon tunjukan ke registrasi saat melakukan check-in.",
     "submit.button": "Kirim Pendaftaran",
     "submit.sending": "Mengirim…",
     "ticket.heading": "Pendaftaran diterima",
@@ -408,7 +408,7 @@ const I18N = {
     "consent.terms.link": "Terms & Conditions",
     "consent.terms.rest2": "of registration.",
     "submit.note":
-      "Once submitted, our team will send a confirmation and access details to your business email.",
+      "Once submitted, a QR code will be downloaded; please present it at the registration desk when checking in.",
     "submit.button": "Submit Registration",
     "submit.sending": "Submitting…",
     "ticket.heading": "Registration received",
