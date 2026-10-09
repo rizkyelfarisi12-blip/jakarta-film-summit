@@ -565,3 +565,753 @@ h1.headline {
     padding-right: 18px;
   }
 }
+
+/* =======================================================
+   Jakarta Film Summit — About page: hero + "Why JFS?" section
+   Dimuat SETELAH about.css. Background hero (gradient animasi,
+   watermark, sprockets) TIDAK diubah — tetap dari base.css.
+   ======================================================= */
+
+/* ---------- hero: eyebrow emas + judul + 2 paragraf ---------- */
+.hero-eyebrow {
+  margin: 0 0 14px;
+  font-size: clamp(0.78rem, 1.4vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  animation: riseIn 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s forwards;
+}
+h1.headline {
+  max-width: 20ch;
+}
+.hero p.lead + p.lead {
+  margin-top: 14px;
+}
+
+/* ---------- section 1: Why JFS? + foto industri ---------- */
+#why-jfs {
+  background: var(--paper);
+  padding: 56px 0 24px;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+}
+.why-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: clamp(24px, 3.4vw, 40px);
+}
+.why-card h2 {
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.why-card ul {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.why-card li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.why-card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+.why-card li b {
+  color: var(--ink);
+}
+
+.why-photo {
+  position: relative;
+  margin: 0;
+  min-height: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.why-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 860px) {
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .why-photo {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (max-width: 760px) {
+  #why-jfs {
+    padding: 40px 0 16px;
+  }
+}
+
+/* =======================================================
+   Jakarta Film Summit — About page: Positioning (redesain)
+   + "Who Is JFS For?" section
+   Dimuat SETELAH about.css:
+   <link rel="stylesheet" href="assets/css/about-sections.css">
+   ======================================================= */
+
+/* =======================================================
+   01 — POSITIONING
+   ======================================================= */
+#positioning {
+  padding: 72px 0 56px;
+  overflow: hidden;
+}
+
+.pos-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  margin-top: 8px;
+}
+
+.pos-title {
+  margin: 0 0 22px;
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.pos-title em {
+  display: block;
+  font-style: normal;
+  color: transparent;
+  background: var(--grad-tight);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.pos-lead {
+  max-width: 54ch;
+  margin: 0 0 14px;
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  line-height: 1.65;
+  font-weight: 600;
+  color: var(--ink);
+}
+.pos-body {
+  max-width: 54ch;
+  margin: 0 0 24px;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.pos-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.pos-tags li {
+  padding: 8px 16px;
+  border: 1.4px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--panel);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink);
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease,
+    transform 0.16s ease;
+}
+.pos-tags li:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+  transform: translateY(-2px);
+}
+
+/* ---------- visual ---------- */
+.pos-visual {
+  position: relative;
+  margin: 0;
+  padding: 0 18px 18px 0;
+}
+.pos-visual::before {
+  content: "";
+  position: absolute;
+  inset: 22px 0 0 22px;
+  border-radius: 26px;
+  background: var(--grad);
+  opacity: 0.9;
+}
+.pos-photo {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 4 / 3.4;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 30px 60px -28px rgba(30, 30, 25, 0.55);
+}
+.pos-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pos-visual:hover .pos-photo img {
+  transform: scale(1.04);
+}
+.pos-badge {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+.pos-badge strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--rust);
+}
+.pos-badge span {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.pos-badge.top {
+  top: 22px;
+  right: 0;
+}
+.pos-badge.bottom {
+  left: -14px;
+  bottom: 0;
+}
+
+/* ---------- 4 langkah ---------- */
+.pos-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 56px;
+}
+.pos-step {
+  position: relative;
+  padding: 26px 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.pos-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--grad);
+  transform: scaleX(0.28);
+  transform-origin: 0 50%;
+  transition: transform 0.35s ease;
+}
+.pos-step:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.pos-step:hover::before {
+  transform: scaleX(1);
+}
+.pos-step-num {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(191, 68, 25, 0.28);
+}
+.pos-step h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+.pos-step p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 960px) {
+  .pos-grid {
+    grid-template-columns: 1fr;
+  }
+  .pos-visual {
+    order: -1;
+    max-width: 640px;
+  }
+  .pos-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  #positioning {
+    padding: 48px 0 40px;
+  }
+  .pos-steps {
+    margin-top: 40px;
+    gap: 12px;
+  }
+  .pos-badge.bottom {
+    left: 0;
+  }
+}
+@media (max-width: 520px) {
+  .pos-steps {
+    grid-template-columns: 1fr;
+  }
+  .pos-badge {
+    padding: 9px 13px;
+  }
+  .pos-badge strong {
+    font-size: 1.1rem;
+  }
+  .pos-badge span {
+    font-size: 0.66rem;
+  }
+}
+
+/* =======================================================
+   04 — WHO IS JFS FOR?
+   ======================================================= */
+#who-for {
+  padding: 56px 0;
+  background: var(--paper);
+}
+@media (max-width: 760px) {
+  #who-for {
+    padding: 40px 0;
+  }
+}
+
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.who-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 26px 28px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.who-card::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--grad-wash);
+  pointer-events: none;
+}
+.who-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.who-icon {
+  position: relative;
+  z-index: 1;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  background: rgba(191, 68, 25, 0.1);
+  display: grid;
+  place-items: center;
+}
+.who-icon svg {
+  width: 26px;
+  height: 26px;
+}
+.who-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: 1.28rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+.who-card p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+.who-card .who-tag {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+
+/* ---------- CTA banner ---------- */
+.who-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin-top: 22px;
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px);
+  border-radius: 20px;
+  background: var(--grad);
+  background-size: 140% 140%;
+  color: var(--ink);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  box-shadow: 0 26px 50px -30px rgba(30, 30, 25, 0.6);
+}
+.who-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.35) 1.6px,
+    transparent 2px
+  );
+  background-size: 14px 6px;
+  background-position: 7px 8px;
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+.who-cta-text {
+  max-width: 52ch;
+}
+.who-cta h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.who-cta p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  font-weight: 600;
+}
+.who-cta-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 14px 28px -14px rgba(30, 30, 25, 0.7);
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+}
+.who-cta-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+@media (max-width: 900px) {
+  .who-grid {
+    grid-template-columns: 1fr;
+  }
+  .who-card {
+    padding: 26px 22px 24px;
+  }
+}
+@media (max-width: 760px) {
+  .who-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    background: linear-gradient(135deg, #c67188 0%, #e4c697 55%, #cc3315 100%);
+  }
+  .who-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pos-step,
+  .pos-step::before,
+  .pos-tags li,
+  .pos-photo img,
+  .who-card,
+  .who-cta-btn {
+    transition: none;
+  }
+}
+
+/* =======================================================
+   Jakarta Film Summit — About page: "Why Jakarta for Film?"
+   Dimuat SETELAH about.css:
+   <link rel="stylesheet" href="assets/css/about-why-jakarta.css">
+   ======================================================= */
+
+#why-jakarta {
+  padding: 56px 0;
+  background: var(--paper);
+}
+
+/* lencana nomor bulat (1 / 2 / 3) */
+.wj-num {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rust);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ---------- 1. hero gelap ---------- */
+.wj-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 52px);
+  border-radius: 18px;
+  background: var(--ink);
+  color: #f4f0e8;
+  overflow: hidden;
+  isolation: isolate;
+}
+.wj-hero::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(198, 113, 136, 0.28),
+    transparent 70%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+.wj-hero-text {
+  max-width: 62ch;
+}
+.wj-hero h2 {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #f8f7f3;
+}
+.wj-hero p {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+  line-height: 1.65;
+  color: rgba(244, 240, 232, 0.78);
+}
+
+/* ---------- 2. foto + kartu ---------- */
+.wj-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.wj-photo {
+  position: relative;
+  margin: 0;
+  min-height: 280px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--line);
+}
+.wj-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.wj-photo:hover img {
+  transform: scale(1.04);
+}
+
+.wj-card {
+  position: relative;
+  padding: clamp(24px, 3vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.wj-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.wj-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.wj-card h3 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.wj-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.wj-row .wj-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* kartu ke-3 melebar penuh */
+.wj-card.wide {
+  margin-top: 16px;
+}
+.wj-card.wide p {
+  max-width: 78ch;
+}
+
+@media (max-width: 860px) {
+  .wj-row {
+    grid-template-columns: 1fr;
+  }
+  .wj-photo {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (max-width: 760px) {
+  #why-jakarta {
+    padding: 40px 0;
+  }
+  .wj-hero {
+    padding: 24px 20px;
+    border-radius: 14px;
+  }
+  .wj-num {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+  .wj-card {
+    border-radius: 14px;
+  }
+  .wj-photo {
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wj-card,
+  .wj-photo img {
+    transition: none;
+  }
+  .wj-card:hover {
+    transform: none;
+  }
+}

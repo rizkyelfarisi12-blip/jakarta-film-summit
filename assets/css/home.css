@@ -1473,3 +1473,246 @@ h1.headline {
     aspect-ratio: 4 / 3;
   }
 }
+
+/* =======================================================
+   Jakarta Film Summit — Homepage Partnership section
+   Kartu berwarna per tier + logo di dalamnya.
+   Requires: base.css, home.css
+   ======================================================= */
+
+#partnership {
+  padding: 72px 0;
+  overflow: hidden;
+}
+
+.pship-head {
+  text-align: center;
+  margin-bottom: 42px;
+}
+.pship-head h2.block-title {
+  margin-bottom: 12px;
+}
+.pship-head h2.block-title::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin: 16px auto 0;
+  border-radius: 999px;
+  background: var(--grad);
+}
+.pship-head p.block-desc {
+  margin: 0 auto;
+  max-width: 62ch;
+}
+
+/* ---------- grid kartu: 3 di atas, 2 di bawah ---------- */
+.pship-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.pship-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 176px;
+  padding: 34px 22px 30px;
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 18px 34px -22px rgba(30, 30, 25, 0.55);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+.pship-card.is-wide {
+  grid-column: span 3;
+}
+.pship-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 26px 40px -22px rgba(30, 30, 25, 0.6);
+}
+
+/* kilau lembut di pojok kanan atas */
+.pship-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -60%;
+  right: -25%;
+  width: 90%;
+  height: 160%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.26),
+    rgba(255, 255, 255, 0) 65%
+  );
+  pointer-events: none;
+}
+
+/* lubang perforasi film di tepi atas */
+.pship-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 9px;
+  height: 6px;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.4) 1.6px,
+    transparent 2px
+  );
+  background-size: 14px 6px;
+  background-position: 7px center;
+  pointer-events: none;
+}
+
+/* label tier: garis kecil di kiri-kanan */
+.pship-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 20px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+}
+.pship-card h3::before,
+.pship-card h3::after {
+  content: "";
+  width: 22px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+/* warna kartu — dari palet situs, dengan gradasi tipis */
+.pship-card.c-ink {
+  background: linear-gradient(145deg, #34342c, var(--ink) 70%);
+}
+.pship-card.c-rust {
+  background: linear-gradient(145deg, #d4572a, var(--rust) 65%);
+}
+.pship-card.c-mauve {
+  background: linear-gradient(145deg, #d98ba0, var(--mauve) 65%);
+}
+.pship-card.c-deep {
+  background: linear-gradient(145deg, #a83d17, var(--rust-deep) 70%);
+}
+.pship-card.c-gold {
+  background: linear-gradient(145deg, #f1dcb8, var(--gold) 65%);
+  color: var(--ink);
+}
+.pship-card.c-gold::after {
+  background-image: radial-gradient(
+    circle,
+    rgba(30, 30, 25, 0.22) 1.6px,
+    transparent 2px
+  );
+}
+
+/* ---------- logo (diperkecil) ---------- */
+.pship-logos {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 10px;
+  width: 100%;
+}
+
+.pship-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 6px 14px;
+  /* background: #fff; */
+  border-radius: 10px;
+  box-shadow: 0 6px 14px -8px rgba(30, 30, 25, 0.45);
+  transition: transform 0.18s ease;
+}
+.pship-logo:hover {
+  transform: scale(1.05);
+}
+.pship-logo img {
+  display: block;
+  width: auto;
+  max-width: 90px;
+  max-height: 40px;
+  object-fit: contain;
+}
+.pship-card.is-presented .pship-logo {
+  min-height: 80px;
+  padding: 10px 20px;
+}
+.pship-card.is-presented .pship-logo img {
+  max-width: 180px;
+  max-height: 55px;
+}
+
+/* placeholder sebelum logo dipasang */
+.pship-logo .wordmark {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .pship-card,
+  .pship-card.is-wide {
+    grid-column: span 3;
+  }
+  .pship-card:last-child {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 600px) {
+  #partnership {
+    padding: 54px 0;
+  }
+  .pship-head {
+    margin-bottom: 28px;
+  }
+  .pship-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .pship-card,
+  .pship-card.is-wide,
+  .pship-card:last-child {
+    grid-column: auto;
+    min-height: 0;
+    padding: 30px 18px 24px;
+  }
+  .pship-card h3 {
+    margin-bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pship-card,
+  .pship-logo {
+    transition: none;
+  }
+  .pship-card:hover,
+  .pship-logo:hover {
+    transform: none;
+  }
+}
