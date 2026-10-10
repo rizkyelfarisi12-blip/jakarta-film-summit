@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>To Be Announced — Jakarta Film Summit 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" type="image/png" href="assets/icon/jfs.ico">
+
+  <meta name="description" content="More details for Jakarta Film Summit 2026 will be announced soon. Join us October 20–22, 2026 at Park Hyatt Jakarta.">
+  <meta name="robots" content="noindex, follow">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <style>
+/* =======================================================
+   Jakarta Film Summit — TBA page (tba.html) styles
+   Requires: base.css
+   ======================================================= */
+
+/* ---------- page gutter ---------- */
+.wrap {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* ---------- hero overrides (sama dengan about/agenda/partner) ---------- */
+.hero {
+  padding: 130px 0 84px;
+}
+.hero-watermark {
+  font-size: min(44vw, 560px);
+  bottom: -18%;
+}
+h1.headline {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  max-width: 17ch;
+}
+.hero p.lead {
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  max-width: 52ch;
+}
+
+#countdown,
+#pending {
+  background: var(--paper);
+  padding: 64px 0;
+}
+
+/* ---------- countdown ---------- */
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 760px;
+}
+.cd-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 32px 12px 24px;
+  background: var(--ink);
+  color: #f4f4f1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+/* perforasi film di atas & bawah kartu */
+.cd-cell::before,
+.cd-cell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-image: radial-gradient(circle, rgba(244, 244, 241, 0.55) 1.6px, transparent 2px);
+  background-size: 14px 6px;
+  background-position: 7px center;
+}
+.cd-cell::before {
+  top: 6px;
+}
+.cd-cell::after {
+  bottom: 6px;
+}
+.cd-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.cd-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(244, 244, 241, 0.7);
+}
+.cd-done {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--rust-deep);
+}
+
+/* ---------- TBA cards ---------- */
+.tba-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.tba-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 24px 24px;
+  background: var(--panel);
+  border: 1.5px dashed var(--line-strong);
+  border-radius: 16px;
+}
+.tba-stamp {
+  align-self: flex-start;
+  margin-bottom: 18px;
+  padding: 5px 14px;
+  border: 2px solid var(--rust);
+  border-radius: 6px;
+  color: var(--rust);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  transform: rotate(-4deg);
+}
+.tba-card h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+.tba-card p {
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.tba-card a {
+  margin-top: auto;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+.tba-card a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .tba-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  .wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .hero {
+    padding: 108px 0 68px;
+  }
+  .hero-watermark {
+    font-size: 54vw;
+    bottom: -8%;
+    right: -5%;
+  }
+  h1.headline {
+    font-size: clamp(2.25rem, 10vw, 3.2rem);
+    line-height: 1.04;
+    max-width: 13ch;
+    letter-spacing: -0.035em;
+  }
+  .hero p.lead {
+    font-size: 0.96rem;
+    max-width: 100%;
+  }
+  #countdown,
+  #pending {
+    padding: 44px 0;
+  }
+  .countdown {
+    gap: 8px;
+  }
+  .cd-cell {
+    padding: 26px 6px 20px;
+  }
+  .cd-label {
+    font-size: 0.68rem;
+  }
+}
+@media (max-width: 480px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tba-stamp {
+    transform: none;
+  }
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- <div id="navbarPlaceholder"></div> -->
+
+  <header class="hero" id="top">
+    <span class="hero-watermark" aria-hidden="true">TBA</span>
+    <div class="wrap">
+      <!-- <div class="crumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <b>Coming Soon</b>
+      </div> -->
+      <div class="hero-kicker">
+        <!-- <svg class="clap" viewBox="0 0 48 40" aria-hidden="true">
+          <rect x="2" y="14" width="44" height="24" rx="2" fill="#1E1E19" />
+          <path d="M2 14 L46 14 L42 2 L6 6 Z" fill="#F4F4F1" />
+          <path d="M6 6 L12 14 M18 5 L24 14 M30 4 L36 14 M42 2 L44 8" stroke="#1E1E19" stroke-width="2.4" />
+        </svg> -->
+        <span>Jakarta Film Summit 2026</span>
+      </div>
+      <h1 class="headline">Cooming soon</h1>
+      <!-- <p class="lead">
+        This part of the programme isn't locked yet. We'll publish it here as soon as it's confirmed.
+      </p> -->
+    </div>
+    <div class="sprockets bottom" aria-hidden="true"></div>
+  </header>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack"
+      data-words="TO BE ANNOUNCED,COMING SOON,STAY TUNED,TBA,20–22 OCTOBER 2026,PARK HYATT JAKARTA">
+    </div>
+  </div>
+
+  <section class="block band-light" id="countdown">
+    <div class="wrap">
+      <span class="eyebrow"><span class="num">01</span>Countdown</span>
+      <h2 class="block-title">Doors open on 20 October 2026</h2>
+
+      <div class="countdown reveal" id="countdown-box" role="timer" aria-live="off">
+        <div class="cd-cell"><span class="cd-num" id="cdDays">00</span><span class="cd-label">Days</span></div>
+        <div class="cd-cell"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Hours</span></div>
+        <div class="cd-cell"><span class="cd-num" id="cdMins">00</span><span class="cd-label">Minutes</span></div>
+        <div class="cd-cell"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">Seconds</span></div>
+      </div>
+      <p class="cd-done" id="cdDone" hidden>The summit is underway. See you at Park Hyatt Jakarta.</p>
+    </div>
+  </section>
+
+  <!-- <section class="block band-light" id="pending">
+    <div class="wrap">
+      <span class="eyebrow"><span class="num">02</span>What's Coming</span>
+      <h2 class="block-title">Details we're still confirming.</h2>
+      <p class="block-desc">Everything below will be updated on this site. Registered participants will also get
+        the latest information by email.</p>
+
+      <div class="tba-grid">
+
+        <article class="tba-card reveal">
+          <span class="tba-stamp">TBA</span>
+          <h3>More Speakers</h3>
+          <p>Additional keynote and panel speakers are being finalised.</p>
+        </article>
+
+        <article class="tba-card reveal d1">
+          <span class="tba-stamp">TBA</span>
+          <h3>Programme Updates</h3>
+          <p>Session times and rooms may change as the line-up is completed.</p>
+        </article>
+
+        <article class="tba-card reveal d2">
+          <span class="tba-stamp">TBA</span>
+          <h3>New Partners</h3>
+          <p>More industry partners will join the summit before opening day.</p>
+        </article>
+
+      </div>
+    </div>
+  </section> -->
+
+  <!-- <section class="final-cta">
+    <div class="sprockets top" aria-hidden="true"></div>
+    <div class="wrap">
+      <h2>Reserve your seat while we finish the programme.</h2>
+      <p>Register now and pick the days you want to attend. We'll send updates to your email.</p>
+      <a class="btn-light" href="registration.html">Register now</a>
+    </div>
+    <div class="sprockets bottom" aria-hidden="true"></div>
+  </section> -->
+
+  <!-- <div id="footerPlaceholder"></div> -->
+
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/include.js"></script>
+  <script>
+/* =======================================================
+   Jakarta Film Summit — TBA page behaviour
+   Requires: common.js
+   ======================================================= */
+
+(function () {
+  // Opening ceremony: 20 Oct 2026, 09.00 WIB (UTC+7)
+  var TARGET = new Date("2026-10-20T09:00:00+07:00").getTime();
+
+  var els = {
+    d: document.getElementById("cdDays"),
+    h: document.getElementById("cdHours"),
+    m: document.getElementById("cdMins"),
+    s: document.getElementById("cdSecs"),
+    box: document.getElementById("countdown-box"),
+    done: document.getElementById("cdDone"),
+  };
+  if (!els.d) return;
+
+  function pad(n) {
+    return String(n).padStart(2, "0");
+  }
+
+  function tick() {
+    var diff = TARGET - Date.now();
+    if (diff <= 0) {
+      els.box.hidden = true;
+      els.done.hidden = false;
+      clearInterval(timer);
+      return;
+    }
+    var s = Math.floor(diff / 1000);
+    els.d.textContent = pad(Math.floor(s / 86400));
+    els.h.textContent = pad(Math.floor((s % 86400) / 3600));
+    els.m.textContent = pad(Math.floor((s % 3600) / 60));
+    els.s.textContent = pad(s % 60);
+  }
+
+  var timer = setInterval(tick, 1000);
+  tick();
+})();
+  </script>
+</body>
+
+</html>

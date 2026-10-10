@@ -1,0 +1,429 @@
+/* =======================================================
+   Jakarta Film Summit — Experiences page (experiences.html)
+   Requires: base.css
+   ======================================================= */
+
+/* ---------- page gutter ---------- */
+.wrap {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (max-width: 760px) {
+  .wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+@media (max-width: 480px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* =======================================================
+   HERO (selaras homepage & about)
+   ======================================================= */
+.hero {
+  padding: 130px 0 84px;
+}
+.hero-watermark {
+  font-size: min(26vw, 360px);
+  bottom: -14%;
+}
+h1.headline {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  max-width: 14ch;
+}
+.hero p.lead {
+  font-size: clamp(1rem, 1.5vw, 1.18rem);
+  max-width: 56ch;
+  margin-bottom: 28px;
+}
+.hero-eyebrow {
+  margin: 0 0 14px;
+  font-size: clamp(0.9rem, 1.5vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0;
+  animation: riseIn 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s forwards;
+}
+.hero-date {
+  margin: 0 0 14px;
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  font-weight: 700;
+  color: #f8f7f3;
+  opacity: 0;
+  animation: riseIn 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s forwards;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.hero-actions .btn-primary,
+.hero-actions .btn-ghost {
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.hero-actions .btn-primary {
+  box-shadow: none;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding: 108px 0 68px;
+  }
+  .hero-watermark {
+    font-size: 36vw;
+    bottom: -6%;
+    right: -5%;
+  }
+  h1.headline {
+    font-size: clamp(2.25rem, 10vw, 3.2rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+  .hero p.lead {
+    font-size: 0.96rem;
+    line-height: 1.6;
+    max-width: 100%;
+  }
+  .hero-eyebrow {
+    font-size: 0.8rem;
+  }
+  .hero-date {
+    font-size: 0.92rem;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* =======================================================
+   SECTIONS
+   ======================================================= */
+#lounge-gala,
+#scouting-matching {
+  padding: 64px 0;
+}
+#scouting-matching {
+  padding-top: 0;
+}
+@media (max-width: 760px) {
+  #lounge-gala,
+  #scouting-matching {
+    padding: 44px 0;
+  }
+  #scouting-matching {
+    padding-top: 0;
+  }
+}
+
+/* anchor offset untuk navbar fixed (Gala Dinner dst.) */
+.exp-card,
+.exp-photo {
+  scroll-margin-top: 96px;
+}
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.exp-grid-flip {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ---------- foto ---------- */
+.exp-photo {
+  position: relative;
+  margin: 0;
+  min-height: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: var(--shadow);
+}
+.exp-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- kartu ---------- */
+.exp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 36px clamp(24px, 3.4vw, 44px);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.exp-tag {
+  display: inline-flex;
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+.exp-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  max-width: 20ch;
+}
+.exp-card p {
+  margin: 0 0 22px;
+  max-width: 52ch;
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.exp-card .btn-outline {
+  font-size: 0.8rem;
+  padding: 10px 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rust);
+  border-color: var(--rust);
+}
+.exp-card .btn-outline:hover {
+  background: var(--rust);
+  color: #fff;
+}
+
+/* kartu lebar penuh (Gala Dinner, Business Matching) */
+.exp-wide {
+  margin-bottom: 0;
+}
+.exp-wide .exp-title {
+  max-width: none;
+}
+.exp-wide p {
+  margin-bottom: 0;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 840px) {
+  .exp-grid,
+  .exp-grid-flip {
+    grid-template-columns: 1fr;
+  }
+  .exp-photo {
+    min-height: 240px;
+    aspect-ratio: 16 / 10;
+  }
+  /* foto selalu di atas kartu pada mobile */
+  #lounge-gala .exp-photo {
+    order: -1;
+  }
+  .exp-card {
+    padding: 28px 22px;
+    border-radius: 14px;
+  }
+  .exp-photo {
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow,
+  .hero-date {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+
+/* =======================================================
+   FOUR AREAS (Discover · Meet · Connect · Explore)
+   ======================================================= */
+#four-areas,
+#venue {
+  padding: 0 0 64px;
+}
+.areas-head,
+.venue-head {
+  margin-bottom: 22px;
+}
+.areas-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.areas-head p,
+.venue-head p {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 0.96rem;
+  color: var(--ink-soft);
+}
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.area-tile {
+  padding: 24px 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  border-top: 3px solid var(--rust);
+}
+.area-tile h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+.area-tile p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.areas-cta {
+  margin-top: 22px;
+}
+.areas-cta .btn-outline {
+  font-size: 0.8rem;
+  padding: 10px 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rust);
+  border-color: var(--rust);
+}
+.areas-cta .btn-outline:hover {
+  background: var(--rust);
+  color: #fff;
+}
+
+/* =======================================================
+   VENUE
+   ======================================================= */
+.venue-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.venue-name {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+.venue-info .btn-outline {
+  font-size: 0.8rem;
+  padding: 10px 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rust);
+  border-color: var(--rust);
+}
+.venue-info .btn-outline:hover {
+  background: var(--rust);
+  color: #fff;
+}
+.venue-map {
+  position: relative;
+  min-height: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.venue-map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.getting-there {
+  align-items: stretch;
+}
+.getting-title {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+.getting-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.getting-item {
+  padding: 18px;
+  background: var(--paper);
+  border-radius: 12px;
+}
+.getting-item h4 {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+.exp-card .getting-item p {
+  margin: 0;
+  font-size: 0.86rem;
+}
+.exp-card .venue-note {
+  margin: 18px 0 0;
+  padding-left: 14px;
+  border-left: 3px solid var(--gold);
+  font-size: 0.84rem;
+  font-style: italic;
+  max-width: none;
+}
+
+@media (max-width: 900px) {
+  .areas-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 840px) {
+  .venue-grid {
+    grid-template-columns: 1fr;
+  }
+  .venue-map {
+    min-height: 260px;
+    border-radius: 14px;
+  }
+  .getting-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 760px) {
+  #four-areas,
+  #venue {
+    padding-bottom: 44px;
+  }
+}
+@media (max-width: 480px) {
+  .areas-grid {
+    grid-template-columns: 1fr;
+  }
+}
