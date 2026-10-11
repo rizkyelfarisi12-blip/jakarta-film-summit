@@ -5,6 +5,7 @@
  *   POST /api/register  -> { participant } (201) or 409/423 with details
  * ============================================================ */
 const API_BASE = "api";
+let lastDays = null; // status tiap hari dari /api/status
 
 function qrImageUrl(token) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&ecc=Q&margin=0&qzone=4&data=${encodeURIComponent(token)}`;
@@ -232,6 +233,8 @@ const I18N = {
       "Fokus pada investasi dan pembiayaan: akses modal, struktur pendanaan, dan ekosistem produksi Jakarta.",
     "day3.desc":
       "Inovasi industri layar dan forum film commission global, ditutup dengan langkah berikutnya.",
+    "days.full": "Penuh",
+    "days.low": "Sisa {n}",
     "error.required":
       "Beberapa bagian wajib diisi terlebih dahulu — periksa kembali kolom yang ditandai.",
     "error.server": "Terjadi kesalahan saat mengirim pendaftaran. Coba lagi.",
@@ -356,6 +359,8 @@ const I18N = {
       "Investment and financing: access to capital, funding structures, and Jakarta's production ecosystem.",
     "day3.desc":
       "Screen-economy innovation and the global film commission forum, closing with what comes next.",
+    "days.full": "Full",
+    "days.low": "{n} left",
     "error.required":
       "Some required sections are missing — please check the highlighted fields.",
     "error.server":
@@ -499,6 +504,7 @@ function applyLanguage(lang) {
   populateCountryList();
 
   renderDaySummary();
+  applyDayAvailability();
   renderGoalsText();
   if (lastClosedData) showClosed(lastClosedData);
   if (lastTicketData)
@@ -620,15 +626,50 @@ sections.forEach(function (s) {
 // ---------- registration open/closed check ----------
 async function checkStatus() {
   try {
-    const res = await fetch(`${API_BASE}/status`);
+    const res = await fetch(`${API_BASE}/status`, { cache: "no-store" });
     if (!res.ok) throw new Error("status check failed");
     const data = await res.json();
-    if (!data.open) {
-      showClosed(data);
-    }
+    lastDays = data.days || [];
+    applyDayAvailability();
+    if (!data.open) showClosed(data);
   } catch (e) {
     console.warn("Could not reach /api/status — showing form anyway.", e);
   }
+}
+
+// Hari yang kuotanya penuh: kartu di-grayout, checkbox dinonaktifkan.
+function applyDayAvailability() {
+  if (!lastDays) return;
+  document.querySelectorAll("#dayCards .day-card").forEach(function (card) {
+    var input = card.querySelector('input[name="days"]');
+    var info = lastDays.find(function (d) {
+      return String(d.day) === input.value;
+    });
+    var full = !!(info && !info.open);
+
+    card.classList.toggle("is-full", full);
+    input.disabled = full;
+    if (full) input.checked = false;
+
+    var badge = card.querySelector(".day-badge");
+    if (!badge) {
+      badge = document.createElement("span");
+      card.appendChild(badge);
+    }
+    if (full) {
+      badge.className = "day-badge full";
+      badge.textContent = t("days.full");
+      badge.hidden = false;
+    } else if (info && info.status === "low") {
+      badge.className = "day-badge low";
+      badge.textContent = t("days.low").replace("{n}", info.remaining);
+      badge.hidden = false;
+    } else {
+      badge.hidden = true;
+    }
+  });
+  document.getElementById("daysError").classList.remove("show");
+  renderDaySummary();
 }
 
 function showClosed(data) {
@@ -734,6 +775,7 @@ form.addEventListener("submit", async function (e) {
 
   var daysPicked = collectDays();
   var daysOk = daysPicked.length > 0;
+  document.getElementById("daysError").textContent = t("days.error");
   document.getElementById("daysError").classList.toggle("show", !daysOk);
   window.__lastDays = daysPicked;
   var valid = form.checkValidity() && daysOk;
@@ -783,6 +825,19 @@ form.addEventListener("submit", async function (e) {
       showClosed(data);
       return;
     }
+    if (res.status === 422) {
+      const data = await res.json().catch(() => ({}));
+      if (data.fullDays) {
+        // kuota hari yang dipilih habis saat user mengisi form
+        await checkStatus();
+        const box = document.getElementById("daysError");
+        box.textContent = data.error;
+        box.classList.add("show");
+        box.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      throw new Error(data.error || "HTTP 422");
+    }
     if (!res.ok) {
       let errorMessage = `HTTP ${res.status}`;
 
@@ -828,6 +883,7 @@ document.getElementById("againBtn").addEventListener("click", function () {
   document.querySelector(".step-nav").style.display = "";
   window.scrollTo({ top: 0, behavior: "smooth" });
   requestProgressUpdate();
+  checkStatus();
 });
 
 // ---------- segment dropdown ("Others" reveals a text field) ----------
@@ -936,21 +992,27 @@ function formatDays(list) {
     })
     .join(" · ");
 }
+function enabledDayBoxes() {
+  return form.querySelectorAll('input[name="days"]:not(:disabled)');
+}
 function renderDaySummary() {
   var picked = collectDays();
+  var enabled = enabledDayBoxes().length;
   document.getElementById("daySummary").textContent = picked.length
     ? t("days.summary") + " " + formatDays(picked)
     : t("days.summary.none");
   document.getElementById("dayAll").textContent =
-    picked.length === 3 ? t("days.clear") : t("days.selectAll");
+    enabled > 0 && picked.length === enabled
+      ? t("days.clear")
+      : t("days.selectAll");
 }
 document.getElementById("dayCards").addEventListener("change", function () {
   document.getElementById("daysError").classList.remove("show");
   renderDaySummary();
 });
 document.getElementById("dayAll").addEventListener("click", function () {
-  var boxes = form.querySelectorAll('input[name="days"]');
-  var all = collectDays().length === boxes.length;
+  var boxes = enabledDayBoxes();
+  var all = boxes.length > 0 && collectDays().length === boxes.length;
   boxes.forEach(function (b) {
     b.checked = !all;
   });

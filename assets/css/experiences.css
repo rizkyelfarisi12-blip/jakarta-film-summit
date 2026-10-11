@@ -106,29 +106,110 @@ h1.headline {
 }
 
 /* =======================================================
+   QUICK NAV
+   ======================================================= */
+.exp-nav {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.exp-nav .wrap {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.exp-nav .wrap::-webkit-scrollbar {
+  display: none;
+}
+.exp-nav a {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease;
+}
+.exp-nav a span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--line);
+  font-size: 0.68rem;
+  font-weight: 800;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.exp-nav a:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.exp-nav a:hover span {
+  background: var(--grad-tight);
+  color: #fff;
+}
+
+/* =======================================================
    SECTIONS
    ======================================================= */
 #lounge-gala,
-#scouting-matching {
-  padding: 64px 0;
+#scouting-section,
+#matching-areas,
+#venue {
+  padding: 72px 0;
 }
-#scouting-matching {
-  padding-top: 0;
+#venue {
+  padding-bottom: 88px;
+}
+#scouting-section {
+  background: var(--panel);
+}
+#scouting-section .exp-card:not(.exp-dark) {
+  background: var(--paper);
+}
+#lounge-gala .block-desc,
+#scouting-section .block-desc {
+  margin-bottom: 34px;
+}
+#matching-areas .block-title {
+  margin-bottom: 30px;
+}
+#venue .block-desc {
+  margin-bottom: 30px;
 }
 @media (max-width: 760px) {
   #lounge-gala,
-  #scouting-matching {
-    padding: 44px 0;
+  #scouting-section,
+  #matching-areas,
+  #venue {
+    padding: 48px 0;
   }
-  #scouting-matching {
-    padding-top: 0;
+  #venue {
+    padding-bottom: 56px;
   }
 }
 
-/* anchor offset untuk navbar fixed (Gala Dinner dst.) */
+/* anchor offset untuk navbar fixed */
 .exp-card,
-.exp-photo {
-  scroll-margin-top: 96px;
+.exp-photo,
+#scouting-routes,
+section.block {
+  scroll-margin-top: 92px;
 }
 
 .exp-grid {
@@ -137,16 +218,13 @@ h1.headline {
   gap: 18px;
   margin-bottom: 18px;
 }
-.exp-grid-flip {
-  grid-template-columns: 1fr 1fr;
-}
 
 /* ---------- foto ---------- */
 .exp-photo {
   position: relative;
   margin: 0;
-  min-height: 320px;
-  border-radius: 18px;
+  min-height: 340px;
+  border-radius: 20px;
   overflow: hidden;
   background: var(--ink);
   box-shadow: var(--shadow);
@@ -157,25 +235,97 @@ h1.headline {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.exp-photo:hover img {
+  transform: scale(1.04);
+}
+.exp-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(20, 20, 18, 0.72));
+  pointer-events: none;
+}
+.exp-photo-cap {
+  position: absolute;
+  z-index: 2;
+  left: 18px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(244, 244, 241, 0.16);
+  border: 1px solid rgba(244, 244, 241, 0.35);
+  backdrop-filter: blur(6px);
+  color: #f8f7f3;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
 /* ---------- kartu ---------- */
 .exp-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 36px clamp(24px, 3.4vw, 44px);
+  padding: 38px clamp(24px, 3.4vw, 46px);
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.exp-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--grad-tight);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.exp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.exp-card:hover::before {
+  opacity: 1;
+}
+
+.exp-icon,
+.exp-wide-icon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  background: var(--grad-wash);
+  color: var(--rust);
+  flex: 0 0 auto;
+}
+.exp-icon svg,
+.exp-wide-icon svg {
+  width: 24px;
+  height: 24px;
 }
 .exp-tag {
   display: inline-flex;
-  margin-bottom: 14px;
-  font-size: 0.78rem;
+  margin-bottom: 12px;
+  font-size: 0.76rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--rust);
 }
@@ -196,7 +346,8 @@ h1.headline {
   line-height: 1.6;
   color: var(--ink-soft);
 }
-.exp-card .btn-outline {
+.exp-card .btn-outline,
+.areas-cta .btn-outline {
   font-size: 0.8rem;
   padding: 10px 20px;
   letter-spacing: 0.05em;
@@ -204,14 +355,28 @@ h1.headline {
   color: var(--rust);
   border-color: var(--rust);
 }
-.exp-card .btn-outline:hover {
+.exp-card .btn-outline:hover,
+.areas-cta .btn-outline:hover {
   background: var(--rust);
   color: #fff;
 }
 
-/* kartu lebar penuh (Gala Dinner, Business Matching) */
+/* kartu lebar penuh */
 .exp-wide {
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
   margin-bottom: 0;
+}
+.exp-wide .exp-wide-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0;
+  border-radius: 18px;
+}
+.exp-wide .exp-wide-icon svg {
+  width: 30px;
+  height: 30px;
 }
 .exp-wide .exp-title {
   max-width: none;
@@ -220,48 +385,401 @@ h1.headline {
   margin-bottom: 0;
 }
 
-/* ---------- responsive ---------- */
-@media (max-width: 840px) {
-  .exp-grid,
-  .exp-grid-flip {
-    grid-template-columns: 1fr;
-  }
-  .exp-photo {
-    min-height: 240px;
-    aspect-ratio: 16 / 10;
-  }
-  /* foto selalu di atas kartu pada mobile */
-  #lounge-gala .exp-photo {
-    order: -1;
-  }
-  .exp-card {
-    padding: 28px 22px;
-    border-radius: 14px;
-  }
-  .exp-photo {
-    border-radius: 14px;
-  }
+/* varian gelap (Gala Dinner) */
+.exp-dark {
+  background: var(--ink);
+  border-color: var(--ink);
+  background-image:
+    radial-gradient(60% 120% at 100% 0%, rgba(198, 113, 136, 0.28), transparent 70%),
+    radial-gradient(50% 100% at 0% 100%, rgba(204, 51, 21, 0.22), transparent 70%);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-eyebrow,
-  .hero-date {
-    animation: none;
-    opacity: 1;
-  }
+.exp-dark .exp-tag {
+  color: var(--gold);
 }
-
+.exp-dark .exp-title {
+  color: #f8f7f3;
+}
+.exp-dark p {
+  color: rgba(244, 240, 232, 0.78);
+}
+.exp-dark .exp-wide-icon {
+  background: rgba(244, 244, 241, 0.1);
+  color: var(--gold);
+}
 
 /* =======================================================
-   FOUR AREAS (Discover · Meet · Connect · Explore)
+   SCOUTING DAY — pill hari
    ======================================================= */
-#four-areas,
-#venue {
-  padding: 0 0 64px;
+.day-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
 }
-.areas-head,
-.venue-head {
-  margin-bottom: 22px;
+.day-pill-tag {
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: var(--grad-tight);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.day-pill-tag.soft {
+  background: rgba(191, 68, 25, 0.09);
+  color: var(--rust-deep);
+}
+
+/* =======================================================
+   ROUTES (Day 3)
+   ======================================================= */
+.routes {
+  margin-top: 34px;
+  padding: clamp(22px, 3.4vw, 40px);
+  background: var(--ink);
+  border-radius: 24px;
+  color: #f4f0e8;
+  background-image:
+    radial-gradient(55% 90% at 100% 0%, rgba(198, 113, 136, 0.22), transparent 70%),
+    radial-gradient(45% 80% at 0% 100%, rgba(204, 51, 21, 0.18), transparent 70%);
+  box-shadow: 0 30px 60px -30px rgba(30, 30, 25, 0.55);
+}
+.routes-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.routes-kicker {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.routes-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+  color: #f8f7f3;
+}
+
+/* tombol pilih route */
+.route-tabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  background: rgba(244, 244, 241, 0.08);
+  border: 1px solid rgba(244, 244, 241, 0.16);
+  border-radius: 16px;
+}
+.route-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 11px 20px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: rgba(244, 240, 232, 0.72);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+.route-tab:hover {
+  color: #fff;
+  background: rgba(244, 244, 241, 0.08);
+}
+.route-tab.active {
+  background: var(--grad-tight);
+  color: #fff;
+  box-shadow: 0 10px 22px -10px rgba(204, 51, 21, 0.7);
+}
+.route-tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+.route-tab-num {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.route-tab-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* panel */
+.route-panel {
+  display: none;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 28px;
+  align-items: stretch;
+}
+.route-panel.active {
+  display: grid;
+  animation: routeIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes routeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.route-info h4 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  color: #f8f7f3;
+}
+.route-info > p {
+  margin: 0 0 22px;
+  max-width: 46ch;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: rgba(244, 240, 232, 0.74);
+}
+
+/* daftar titik */
+.stop-list {
+  position: relative;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+}
+.stop-list::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 18px;
+  bottom: 18px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--mauve), var(--gold), var(--red));
+  opacity: 0.55;
+}
+.stop-list li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 12px 9px 0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f0e8;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+.stop-list li.is-on,
+.stop-list li:hover {
+  background: rgba(244, 244, 241, 0.07);
+  transform: translateX(4px);
+}
+.stop-num {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--gold);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--gold);
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.stop-list li.is-on .stop-num,
+.stop-list li:hover .stop-num {
+  background: var(--grad-tight);
+  border-color: transparent;
+  color: #fff;
+}
+
+.route-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1.5px solid rgba(244, 244, 241, 0.4);
+  border-radius: 999px;
+  color: #f8f7f3;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+.route-open:hover {
+  background: #f8f7f3;
+  border-color: #f8f7f3;
+  color: var(--ink);
+}
+
+/* peta rute ilustrasi */
+.route-map {
+  position: relative;
+  min-height: 380px;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(80% 80% at 30% 20%, #3a3a33 0%, #26261f 70%);
+  border: 1px solid rgba(244, 244, 241, 0.14);
+}
+.route-map svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.route-map-tag {
+  position: absolute;
+  z-index: 2;
+  left: 14px;
+  top: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(244, 244, 241, 0.12);
+  color: rgba(244, 240, 232, 0.85);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.map-grid line {
+  stroke: rgba(244, 244, 241, 0.06);
+  stroke-width: 1;
+}
+.route-base {
+  fill: none;
+  stroke: rgba(244, 244, 241, 0.16);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+.route-line {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.route-panel.active .route-line {
+  animation: drawRoute 1.6s 0.15s ease forwards;
+}
+@keyframes drawRoute {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.node-halo {
+  fill: rgba(228, 198, 151, 0.14);
+  transition: fill 0.2s ease, r 0.2s ease;
+}
+.node-dot {
+  fill: var(--rust);
+  stroke: #f8f7f3;
+  stroke-width: 2.5;
+  transition: fill 0.2s ease;
+}
+.node-num {
+  fill: #fff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  pointer-events: none;
+}
+.node-label {
+  fill: rgba(244, 240, 232, 0.9);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.map-node {
+  cursor: pointer;
+}
+.map-node.is-on .node-halo {
+  fill: rgba(228, 198, 151, 0.38);
+  r: 28;
+}
+.map-node.is-on .node-dot {
+  fill: var(--red);
+}
+
+/* ---------- CTA register ---------- */
+.route-cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 22px;
+  padding: clamp(26px, 3.4vw, 40px);
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--grad);
+  background-size: 220% 220%;
+  animation: heroGlow 5s ease-in-out infinite alternate-reverse;
+  isolation: isolate;
+}
+.route-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(30, 30, 25, 0.05), rgba(30, 30, 25, 0.38));
+}
+.route-cta h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  letter-spacing: -0.02em;
+  color: #f8f7f3;
+}
+.route-cta p {
+  margin: 0;
+  max-width: 48ch;
+  font-size: 0.96rem;
+  color: #f4f0e8;
+}
+.route-cta .btn-light {
+  flex: 0 0 auto;
+}
+
+/* =======================================================
+   FOUR AREAS
+   ======================================================= */
+.areas-head {
+  margin: 44px 0 20px;
 }
 .areas-title {
   margin: 0 0 6px;
@@ -271,8 +789,7 @@ h1.headline {
   letter-spacing: -0.02em;
   color: var(--ink);
 }
-.areas-head p,
-.venue-head p {
+.areas-head p {
   margin: 0;
   max-width: 60ch;
   font-size: 0.96rem;
@@ -284,13 +801,45 @@ h1.headline {
   gap: 14px;
 }
 .area-tile {
-  padding: 24px 22px;
+  position: relative;
+  padding: 26px 22px 24px;
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 14px;
-  border-top: 3px solid var(--rust);
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
-.area-tile h3 {
+.area-tile::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--grad-tight);
+}
+.area-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.area-num {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.area-tile h4 {
   margin: 0 0 8px;
   font-family: var(--font-display);
   font-weight: 800;
@@ -305,18 +854,6 @@ h1.headline {
 }
 .areas-cta {
   margin-top: 22px;
-}
-.areas-cta .btn-outline {
-  font-size: 0.8rem;
-  padding: 10px 20px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--rust);
-  border-color: var(--rust);
-}
-.areas-cta .btn-outline:hover {
-  background: var(--rust);
-  color: #fff;
 }
 
 /* =======================================================
@@ -335,25 +872,14 @@ h1.headline {
   font-size: 1.4rem;
   line-height: 1.2;
 }
-.venue-info .btn-outline {
-  font-size: 0.8rem;
-  padding: 10px 20px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--rust);
-  border-color: var(--rust);
-}
-.venue-info .btn-outline:hover {
-  background: var(--rust);
-  color: #fff;
-}
 .venue-map {
   position: relative;
-  min-height: 320px;
-  border-radius: 18px;
+  min-height: 330px;
+  border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--line);
   background: var(--panel);
+  box-shadow: var(--shadow);
 }
 .venue-map iframe {
   position: absolute;
@@ -399,31 +925,113 @@ h1.headline {
   max-width: none;
 }
 
-@media (max-width: 900px) {
+/* =======================================================
+   RESPONSIVE
+   ======================================================= */
+@media (max-width: 960px) {
+  .route-panel.active {
+    grid-template-columns: 1fr;
+  }
+  .route-map {
+    min-height: 320px;
+  }
   .areas-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
 @media (max-width: 840px) {
+  .exp-grid,
   .venue-grid {
     grid-template-columns: 1fr;
   }
+  .exp-photo {
+    min-height: 240px;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+  }
+  #lounge-gala .exp-photo {
+    order: -1;
+  }
+  .exp-card {
+    padding: 28px 22px;
+    border-radius: 16px;
+  }
+  .exp-wide {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .exp-wide .exp-wide-icon {
+    width: 52px;
+    height: 52px;
+  }
   .venue-map {
     min-height: 260px;
-    border-radius: 14px;
+    border-radius: 16px;
   }
   .getting-grid {
     grid-template-columns: 1fr;
   }
 }
-@media (max-width: 760px) {
-  #four-areas,
-  #venue {
-    padding-bottom: 44px;
+
+@media (max-width: 680px) {
+  .routes {
+    border-radius: 18px;
+    padding: 20px 16px 22px;
+  }
+  .routes-head {
+    align-items: stretch;
+  }
+  .route-tabs {
+    width: 100%;
+  }
+  .route-tab {
+    flex: 1;
+    padding: 10px 12px;
+  }
+  .route-tab-name {
+    font-size: 0.82rem;
+  }
+  .route-info h4 {
+    font-size: 1.25rem;
+  }
+  .stop-list li {
+    font-size: 0.92rem;
+  }
+  .route-map {
+    min-height: 260px;
+    border-radius: 14px;
+  }
+  .route-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 16px;
+  }
+  .route-cta .btn-light {
+    width: 100%;
+    justify-content: center;
   }
 }
+
 @media (max-width: 480px) {
   .areas-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-eyebrow,
+  .hero-date {
+    animation: none;
+    opacity: 1;
+  }
+  .route-panel.active,
+  .route-cta {
+    animation: none;
+  }
+  .route-line {
+    stroke-dashoffset: 0;
+    animation: none !important;
   }
 }
