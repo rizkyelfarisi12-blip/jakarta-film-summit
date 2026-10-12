@@ -1609,7 +1609,7 @@ h1.headline {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 60px;
+  min-height: 80px;
   padding: 4px 6px;
   background: none;
   box-shadow: none;
@@ -1685,5 +1685,12 @@ h1.headline {
   .pship-card:hover,
   .pship-logo:hover {
     transform: none;
+  }
+}
+
+/* Kartu terakhir (Collaborator) ditaruh di tengah pada desktop */
+@media (min-width: 901px) {
+  .pship-card:last-child {
+    grid-column: 3 / span 2;
   }
 }
