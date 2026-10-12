@@ -1688,9 +1688,13 @@ h1.headline {
   }
 }
 
-/* Kartu terakhir (Collaborator) ditaruh di tengah pada desktop */
+/* Kartu Collaborator: lebih lebar, diletakkan di tengah, logo sebaris */
 @media (min-width: 901px) {
   .pship-card:last-child {
-    grid-column: 3 / span 2;
+    grid-column: 2 / span 4;   /* kolom 2-5 = tepat di tengah */
+  }
+  .pship-card:last-child .pship-logos {
+    flex-wrap: nowrap;         /* paksa satu baris */
+    gap: 14px 44px;
   }
 }
