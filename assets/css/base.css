@@ -780,8 +780,8 @@ button {
 
   background-image: linear-gradient(
     90deg,
-    rgba(244, 244, 241, 0.9) 0,
-    rgba(244, 244, 241, 0.9) 18px,
+    rgb(195, 63, 24, 0.9) 0,
+    rgb(223, 194, 148, 0.9) 18px,
     transparent 18px,
     transparent 26px
   );
@@ -1165,17 +1165,71 @@ footer {
     gap: 30px;
   }
 }
-.foot-brand {
+/* =======================================================
+   Footer — logo mitra di SAMPING KANAN logo JFS
+   GANTIKAN blok footer-logos.css yang tadi.
+   Tempel di PALING BAWAH base.css
+   ======================================================= */
+
+footer .foot-brand {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 14px 16px;
 }
 
-.foot-brand img {
-  width: 150px;
+/* Ukuran logo JFS dikunci (sebelumnya melebar memenuhi kolom,
+   sehingga logo mitra terdorong ke baris bawah).
+   Ubah angka 240px kalau ingin lebih besar / kecil. */
+footer .foot-brand > img {
+  flex: 0 0 auto;
+  width: 240px !important;
+  max-width: 100%;
   height: auto;
-  display: block;
+}
+
+/* garis pemisah tipis antara logo JFS dan logo mitra */
+footer .foot-brand .foot-sep {
+  flex: 0 0 1px;
+  width: 1px;
+  height: 40px;
+  background: rgba(244, 240, 232, 0.28);
+}
+
+/* kotak putih supaya logo gelap tetap terbaca di footer hitam */
+footer .foot-brand .foot-partner {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  /* background: #fff; */
+  transition: transform 0.18s ease;
+}
+footer .foot-brand .foot-partner:hover {
+  transform: translateY(-2px);
+}
+footer .foot-brand .foot-partner img {
+  width: auto !important;
+  height: 100%;
+  max-width: 120px;
   object-fit: contain;
+}
+
+/* HP: logo JFS di baris sendiri, logo mitra di bawahnya */
+@media (max-width: 560px) {
+  footer .foot-brand > img {
+    width: 200px !important;
+  }
+  footer .foot-brand .foot-sep {
+    display: none;
+  }
+  footer .foot-brand .foot-partner {
+    height: 42px;
+    padding: 5px 10px;
+  }
 }
 footer p {
   font-size: 0.88rem;
