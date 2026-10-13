@@ -453,14 +453,15 @@ h1.headline {
 /* ---------- jarak antar section ---------- */
 #about,
 #schedule,
+/* #partnership, */
 #venue {
-  padding: 72px 0;
+  padding: 30px 0;
 }
 @media (max-width: 760px) {
   #about,
   #schedule,
   #venue {
-    padding: 54px 0;
+    padding: 34px 0;
   }
 }
 
@@ -1480,7 +1481,7 @@ h1.headline {
    ======================================================= */
 
 #partnership {
-  padding: 72px 0;
+  padding: 30px 0;
   overflow: hidden;
 }
 
@@ -1696,5 +1697,421 @@ h1.headline {
   .pship-card:last-child .pship-logos {
     flex-wrap: nowrap;         /* paksa satu baris */
     gap: 14px 44px;
+  }
+}
+
+/* =======================================================
+   Partnership — 2 kotak (tempel di PALING BAWAH home.css)
+   Kotak 1: Presented by + Global Industry Partner + Strategic Partners
+   Kotak 2: Powered by + Collaborators
+   Class lama .pship-card / .pship-grid / .pship-logo sudah tidak
+   dipakai dan boleh dihapus dari home.css. .pship-head tetap dipakai.
+   ======================================================= */
+
+.pbox-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.pbox {
+  position: relative;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 14px 30px -24px rgba(30, 30, 25, 0.45);
+}
+/* garis aksen gradien di tepi atas kotak */
+.pbox::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 4px;
+  background: var(--grad);
+  z-index: 1;
+}
+
+/* ---------- baris di dalam kotak ---------- */
+.pbox-row {
+  padding: 38px 32px 30px;
+}
+.pbox-row + .pbox-row {
+  border-top: 1px solid var(--line);
+}
+.pbox-row.is-tint {
+  background: var(--grad-wash);
+}
+.pbox-row.cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+.pbox-row.cols-2 .pcat {
+  padding: 38px 32px 30px;
+}
+.pbox-row.cols-2 .pcat + .pcat {
+  border-left: 1px solid var(--line);
+}
+
+/* ---------- kategori ---------- */
+.pcat h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rust-deep);
+}
+.pcat h3::before,
+.pcat h3::after {
+  content: "";
+  width: 22px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+/* ---------- logo ---------- */
+.plogos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px 40px;
+}
+.plogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  padding: 4px 6px;
+  transition: transform 0.18s ease;
+}
+.plogo:hover {
+  transform: scale(1.06);
+}
+.plogo img {
+  display: block;
+  width: auto;
+  max-width: 150px;
+  max-height: 54px;
+  object-fit: contain;
+}
+.plogos.is-large .plogo img {
+  max-width: 190px;
+  max-height: 64px;
+}
+
+/* Collaborators: 10 logo = 5 kolom x 2 baris */
+.plogos.is-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px 28px;
+  justify-items: center;
+}
+.plogos.is-grid-5 .plogo img {
+  max-width: 130px;
+  max-height: 50px;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .pbox-row {
+    padding: 32px 22px 26px;
+  }
+  .pbox-row.cols-2 .pcat {
+    padding: 32px 22px 26px;
+  }
+  .plogos.is-grid-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .pbox-row.cols-2 {
+    grid-template-columns: 1fr;
+  }
+  .pbox-row.cols-2 .pcat + .pcat {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .plogos {
+    gap: 14px 24px;
+  }
+  .plogo img {
+    max-width: 120px;
+    max-height: 44px;
+  }
+  .plogos.is-large .plogo img {
+    max-width: 150px;
+    max-height: 52px;
+  }
+}
+@media (max-width: 480px) {
+  .pbox-stack {
+    gap: 14px;
+  }
+  .pbox {
+    border-radius: 16px;
+  }
+  .plogos.is-grid-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 14px;
+  }
+  .plogos.is-grid-5 .plogo img {
+    max-width: 110px;
+    max-height: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plogo {
+    transition: none;
+  }
+  .plogo:hover {
+    transform: none;
+  }
+}
+
+/* =======================================================
+   About + Schedule (digabung) — tempel di PALING BAWAH home.css
+   Memakai ulang .day-grid / .day-card dari home.css.
+   ======================================================= */
+
+#about {
+  padding: 56px 0 48px;
+}
+@media (max-width: 760px) {
+  #about {
+    padding: 40px 0 36px;
+  }
+}
+
+/* anchor tak terlihat untuk tombol "Explore Programme" (#schedule) */
+#about #schedule.ab-anchor {
+  height: 0;
+  padding: 0;
+  margin: 0;
+  scroll-margin-top: 80px;
+}
+
+/* ---------- pengantar ---------- */
+.ab-top {
+  margin-bottom: 44px;
+}
+.ab-intro {
+  max-width: 1000px;
+}
+.ab-title {
+  margin: 0 0 20px;
+  font-size: clamp(2.2rem, 4.6vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.ab-title em {
+  display: block;
+  font-style: normal;
+  color: transparent;
+  background: var(--grad-tight);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.ab-lead {
+  max-width: 100%;
+  margin: 0 0 14px;
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  line-height: 1.65;
+  font-weight: 600;
+  color: var(--ink);
+}
+.ab-body {
+  max-width: 100%;
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.ab-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.ab-tags li {
+  padding: 8px 16px;
+  border: 1.4px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--panel);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink);
+  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease,
+    transform 0.16s ease;
+}
+.ab-tags li:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+  transform: translateY(-2px);
+}
+
+/* ---------- 4 langkah ---------- */
+.ab-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 64px;
+}
+.ab-step {
+  position: relative;
+  padding: 24px 22px 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.ab-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--grad);
+  transform: scaleX(0.28);
+  transform-origin: 0 50%;
+  transition: transform 0.35s ease;
+}
+.ab-step:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+  border-color: transparent;
+}
+.ab-step:hover::before {
+  transform: scaleX(1);
+}
+.ab-step-num {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+  color: rgba(191, 68, 25, 0.28);
+}
+.ab-step h3 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.ab-step p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- judul bagian jadwal ---------- */
+.ab-days-head {
+  max-width: 62ch;
+  margin-bottom: 28px;
+}
+.ab-days-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.ab-days-desc {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- CTA gabungan ---------- */
+.ab-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 28px;
+  padding: 28px 32px;
+  background: rgba(191, 68, 25, 0.06);
+  border: 1px solid rgba(191, 68, 25, 0.18);
+  border-radius: 18px;
+}
+.ab-cta-text {
+  min-width: 220px;
+}
+.ab-cta-text h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+.ab-cta-text p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.ab-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .ab-top {
+    margin-bottom: 34px;
+  }
+  .ab-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 52px;
+  }
+}
+@media (max-width: 760px) {
+  .ab-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 22px;
+  }
+  .ab-cta-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .ab-cta-actions .btn-primary,
+  .ab-cta-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 520px) {
+  .ab-steps {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-step,
+  .ab-step::before,
+  .ab-tags li {
+    transition: none;
   }
 }
