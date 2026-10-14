@@ -180,17 +180,27 @@
               <h4>Culture & Community</h4>
               <p>A route covering Jakarta's cultural landmarks, historic areas, waterfront environments, and community
                 spaces.</p>
+              <p class="route-hint">Klik lokasi untuk melihat fotonya.</p>
 
               <ol class="stop-list">
-                <li data-short="Bendera Pusaka" data-q="Taman Bendera Pusaka"><span class="stop-num">01</span>Taman
-                  Bendera Pusaka</li>
-                <li data-short="Banteng" data-q="Lapangan Banteng"><span class="stop-num">02</span>Lapangan Banteng
+                <li data-short="Bendera Pusaka" data-q="Taman Bendera Pusaka"
+                  data-img="assets/gallery/lokasi/tbp.jpg" data-desc=""><span
+                    class="stop-num">01</span>Taman Bendera Pusaka</li>
+                <li data-short="Banteng" data-q="Lapangan Banteng"
+                  data-img="assets/gallery/lokasi/banteng.jpg" data-desc=""><span class="stop-num">02</span>Lapangan
+                  Banteng
                 </li>
-                <li data-short="Istiqlal" data-q="Masjid Istiqlal"><span class="stop-num">03</span>Istiqlal Mosque
+                <li data-short="Istiqlal" data-q="Masjid Istiqlal"
+                  data-img="assets/gallery/lokasi/istiqlal.jpg" data-desc=""><span class="stop-num">03</span>Istiqlal
+                  Mosque
                   & Jakarta Cathedral</li>
-                <li data-short="Kota Tua" data-q="Kota Tua Jakarta"><span class="stop-num">04</span>Kota Tua</li>
-                <li data-short="Muara Angke" data-q="Muara Angke"><span class="stop-num">05</span>Muara Angke</li>
-                <li data-short="Ancol" data-q="Taman Impian Jaya Ancol"><span class="stop-num">06</span>Ancol</li>
+                <li data-short="Kota Tua" data-q="Kota Tua Jakarta"
+                  data-img="assets/gallery/lokasi/kota-tua.webp" data-desc=""><span class="stop-num">04</span>Kota Tua</li>
+                <li data-short="Muara Angke" data-q="Muara Angke"
+                  data-img="assets/gallery/lokasi/muara-angke.webp" data-desc=""><span class="stop-num">05</span>Muara Angke
+                </li>
+                <li data-short="Ancol" data-q="Taman Impian Jaya Ancol"
+                  data-img="assets/gallery/lokasi/ancol.png" data-desc=""><span class="stop-num">06</span>Ancol</li>
               </ol>
 
               <a class="route-open" href="#" target="_blank" rel="noopener">Open route in Google Maps <span
@@ -208,16 +218,22 @@
               <h4>Urban & Creative</h4>
               <p>A route focused on Jakarta's contemporary architecture, commercial districts, creative spaces, and
                 urban environments.</p>
+              <p class="route-hint">Klik lokasi untuk melihat fotonya.</p>
 
               <ol class="stop-list">
-                <li data-short="JIS" data-q="Jakarta International Stadium"><span class="stop-num">01</span>Jakarta
+                <li data-short="JIS" data-q="Jakarta International Stadium"
+                  data-img="assets/locations/jis.jpg" data-desc=""><span class="stop-num">01</span>Jakarta
                   International Stadium</li>
-                <li data-short="Pasar Rumput" data-q="Pasar Rumput Jakarta"><span class="stop-num">02</span>Pasar
+                <li data-short="Pasar Rumput" data-q="Pasar Rumput Jakarta"
+                  data-img="assets/locations/pasar-rumput.jpg" data-desc=""><span class="stop-num">02</span>Pasar
                   Rumput</li>
-                <li data-short="Jaksinema" data-q="Jaksinema Jakarta"><span class="stop-num">03</span>Jaksinema</li>
-                <li data-short="SCBD" data-q="SCBD Sudirman Jakarta"><span class="stop-num">04</span>SCBD &
+                <li data-short="Jaksinema" data-q="Jaksinema Jakarta"
+                  data-img="assets/locations/jaksinema.jpg" data-desc=""><span class="stop-num">03</span>Jaksinema</li>
+                <li data-short="SCBD" data-q="SCBD Sudirman Jakarta"
+                  data-img="assets/locations/scbd-sudirman.jpg" data-desc=""><span class="stop-num">04</span>SCBD &
                   Sudirman</li>
-                <li data-short="Blok M" data-q="Blok M Jakarta"><span class="stop-num">05</span>Blok M</li>
+                <li data-short="Blok M" data-q="Blok M Jakarta"
+                  data-img="assets/locations/blok-m.jpg" data-desc=""><span class="stop-num">05</span>Blok M</li>
               </ol>
 
               <a class="route-open" href="#" target="_blank" rel="noopener">Open route in Google Maps <span
@@ -352,7 +368,7 @@
                     <rect x="3" y="5" width="18" height="16" rx="2.4" />
                     <path d="M3 10h18M8 3v4M16 3v4" />
                   </svg></span>
-                <span><b>20&ndash;22 October 2026</b><small>Three-day programme</small></span>
+                <span><b>20 - 22 October 2026</b><small>Three-day programme</small></span>
               </li>
               <li>
                 <span class="vf-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -431,6 +447,30 @@
     </div>
     <div class="sprockets bottom" aria-hidden="true"></div>
   </section>
+
+  <!-- ============ POPUP FOTO LOKASI (rute Day 3) ============ -->
+  <div class="stop-modal" id="stopModal" aria-hidden="true">
+    <div class="stop-modal-backdrop" data-close-stop></div>
+    <article class="stop-dialog" role="dialog" aria-modal="true" aria-labelledby="stopModalName">
+      <button class="stop-close" type="button" data-close-stop aria-label="Tutup">×</button>
+      <div class="stop-photo" id="stopModalPhotoWrap">
+        <img id="stopModalPhoto" src="" alt="">
+        <span class="stop-photo-empty">Foto segera hadir</span>
+      </div>
+      <div class="stop-body">
+        <span class="stop-count" id="stopModalCount"></span>
+        <h3 id="stopModalName"></h3>
+        <p id="stopModalDesc"></p>
+        <div class="stop-actions">
+          <a class="stop-maps" id="stopModalMaps" href="#" target="_blank" rel="noopener">Lihat di Google Maps &rarr;</a>
+          <div class="stop-nav">
+            <button type="button" id="stopPrev" aria-label="Lokasi sebelumnya">&lsaquo;</button>
+            <button type="button" id="stopNext" aria-label="Lokasi berikutnya">&rsaquo;</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
 
   <div id="footerPlaceholder"></div>
 

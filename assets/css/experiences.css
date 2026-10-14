@@ -171,7 +171,7 @@ h1.headline {
 #scouting-section,
 #matching-areas,
 #venue {
-  padding: 72px 0;
+  padding: 40px 0;
 }
 #venue {
   padding-bottom: 88px;
@@ -1646,4 +1646,154 @@ section.block {
   .hero-eyebrow {
     letter-spacing: 0.1em;
   }
+}
+
+/* =======================================================
+   TAMBAHAN — ROUTE STOPS: klik + popup foto
+   Tempel di PALING BAWAH assets/css/experiences.css
+   (jangan menggantikan isi file lama)
+   ======================================================= */
+.stop-list li { cursor: pointer; transition: color 0.15s ease; }
+.stop-list li:hover,
+.stop-list li.is-on { color: var(--gold); }
+.stop-list li:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 8px; }
+
+.route-hint {
+  margin: -4px 0 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(244, 240, 232, 0.55);
+}
+
+.map-node { cursor: pointer; }
+.map-node:focus-visible { outline: none; }
+.map-node:focus-visible .node-halo { stroke: var(--gold); stroke-width: 2; }
+
+body.stop-modal-open { overflow: hidden; }
+
+.stop-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.stop-modal.open { display: flex; }
+.stop-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 8, 0.75);
+  backdrop-filter: blur(5px);
+}
+.stop-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+  background: #1e1e19;
+  color: #f4f0e8;
+  border: 1px solid rgba(228, 198, 151, 0.28);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.stop-photo {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #2c2a24, #3a2a24);
+  overflow: hidden;
+}
+.stop-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.stop-photo-empty {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(244, 240, 232, 0.5);
+}
+.stop-photo.is-empty img { display: none; }
+.stop-photo.is-empty .stop-photo-empty { display: flex; }
+
+.stop-body { padding: 22px 26px 24px; }
+.stop-count {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.stop-body h3 {
+  margin: 6px 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.stop-body p {
+  margin: 0 0 16px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(244, 240, 232, 0.75);
+}
+.stop-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.stop-maps {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-decoration: none;
+}
+.stop-maps:hover { text-decoration: underline; }
+.stop-nav { display: flex; gap: 8px; }
+.stop-nav button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(244, 240, 232, 0.3);
+  border-radius: 50%;
+  background: transparent;
+  color: #f4f0e8;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.stop-nav button:hover { background: var(--rust); border-color: var(--rust); }
+
+.stop-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(10, 10, 8, 0.6);
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.stop-close:hover { background: var(--rust); }
+
+@media (max-width: 680px) {
+  .stop-modal { padding: 12px; }
+  .stop-body { padding: 18px 18px 20px; }
 }

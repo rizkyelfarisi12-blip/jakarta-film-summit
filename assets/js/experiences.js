@@ -4,6 +4,7 @@
    - Route switcher (Route 01 / Route 02)
    - Illustrative route map (SVG) built from each stop list
    - "Open route in Google Maps" link built from stop names
+   - Popup foto lokasi (klik daftar lokasi atau titik di peta)
    ======================================================= */
 (function () {
   "use strict";
@@ -50,13 +51,92 @@
     return d;
   }
 
+  /* ---------- popup foto lokasi ---------- */
+  var stop = { items: null, i: 0, trigger: null };
+
+  function stopName(li) {
+    var num = li.querySelector(".stop-num");
+    return li.textContent.replace(num ? num.textContent : "", "").trim();
+  }
+
+  function openStop(items, i, trigger) {
+    var modal = document.getElementById("stopModal");
+    if (!modal) return;
+    stop.items = items;
+    stop.i = (i + items.length) % items.length;
+    if (trigger) stop.trigger = trigger;
+
+    var li = items[stop.i];
+    var name = stopName(li);
+    var wrap = document.getElementById("stopModalPhotoWrap");
+    var img = document.getElementById("stopModalPhoto");
+
+    wrap.classList.remove("is-empty");
+    img.onerror = function () {
+      img.onerror = null;
+      wrap.classList.add("is-empty");
+    };
+    if (li.dataset.img) {
+      img.src = li.dataset.img;
+      img.alt = name;
+    } else {
+      img.removeAttribute("src");
+      wrap.classList.add("is-empty");
+    }
+
+    document.getElementById("stopModalCount").textContent =
+      "Lokasi " + String(stop.i + 1).padStart(2, "0") + " / " + String(items.length).padStart(2, "0");
+    document.getElementById("stopModalName").textContent = name;
+    var desc = document.getElementById("stopModalDesc");
+    desc.textContent = li.dataset.desc || "";
+    desc.hidden = !li.dataset.desc;
+    document.getElementById("stopModalMaps").href =
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent((li.dataset.q || name) + ", Jakarta");
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("stop-modal-open");
+    modal.querySelector(".stop-close").focus();
+  }
+
+  function closeStop() {
+    var modal = document.getElementById("stopModal");
+    if (!modal || !modal.classList.contains("open")) return;
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("stop-modal-open");
+    if (stop.trigger && stop.trigger.focus) stop.trigger.focus();
+  }
+
+  function initStopModal() {
+    var modal = document.getElementById("stopModal");
+    if (!modal) return;
+    Array.prototype.forEach.call(modal.querySelectorAll("[data-close-stop]"), function (b) {
+      b.addEventListener("click", closeStop);
+    });
+    document.getElementById("stopPrev").addEventListener("click", function () {
+      openStop(stop.items, stop.i - 1);
+    });
+    document.getElementById("stopNext").addEventListener("click", function () {
+      openStop(stop.items, stop.i + 1);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (!modal.classList.contains("open")) return;
+      if (e.key === "Escape") closeStop();
+      if (e.key === "ArrowLeft") openStop(stop.items, stop.i - 1);
+      if (e.key === "ArrowRight") openStop(stop.items, stop.i + 1);
+    });
+  }
+
+  /* ---------- peta rute ---------- */
   function buildMap(panel) {
     var map = panel.querySelector(".route-map");
     var items = panel.querySelectorAll(".stop-list li");
     if (!map || !items.length) return;
 
     var pts = points(items.length, parseFloat(map.dataset.phase) || 0);
-    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-hidden": "true" });
+    var svg = el("svg", { viewBox: "0 0 " + W + " " + H, role: "group", "aria-label": "Peta ilustrasi rute" });
 
     // pola grid ala peta
     var grid = el("g", { class: "map-grid" });
@@ -95,6 +175,26 @@
       items[i].addEventListener("mouseleave", function () { g.classList.remove("is-on"); });
       g.addEventListener("mouseenter", function () { items[i].classList.add("is-on"); });
       g.addEventListener("mouseleave", function () { items[i].classList.remove("is-on"); });
+
+      // klik -> popup foto
+      items[i].setAttribute("role", "button");
+      items[i].setAttribute("tabindex", "0");
+      items[i].addEventListener("click", function () { openStop(items, i, items[i]); });
+      items[i].addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openStop(items, i, items[i]);
+        }
+      });
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button");
+      g.addEventListener("click", function () { openStop(items, i, g); });
+      g.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openStop(items, i, g);
+        }
+      });
     });
 
     map.appendChild(svg);
@@ -114,6 +214,7 @@
     var panels = Array.prototype.slice.call(document.querySelectorAll(".route-panel"));
     if (!tabs.length) return;
 
+    initStopModal();
     panels.forEach(buildMap);
 
     function select(id, focus) {

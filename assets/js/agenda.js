@@ -169,9 +169,16 @@
   }
 
   function sessionHtml(s) {
-    if (s.kind === "break") {
-      return `<div class="break-row">${esc(s.time || "")} &nbsp;·&nbsp; ${esc(s.title || "Break")}</div>`;
-    }
+  const isTransition =
+    s.kind === "break" || String(s.type || "").trim().toLowerCase() === "transition";
+
+  if (isTransition) {
+    return `
+      <div class="break-row">
+        <span class="break-time">${esc(s.time || "")}</span>
+        <span class="break-title">${esc(s.title || "Break")}</span>
+      </div>`;
+  }
 
     const speakers = (s.speakers || []).map(byId).filter(Boolean);
 
