@@ -718,41 +718,81 @@ button.cta:disabled {
   margin: 0 auto;
 }
 
-/* ---------- footer ---------- */
+/* ---------- FOOTER ---------- */
 footer {
   background: var(--ink);
   color: rgba(244, 240, 232, 0.7);
 }
+
 .foot-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr;
   gap: 40px;
   padding: 56px 0 40px;
 }
-@media (max-width: 700px) {
-  .foot-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-}
-.foot-brand {
+
+/* Logo footer */
+footer .foot-brand {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-.foot-brand img {
-  width: 150px;
-  height: auto;
+/* Logo utama JFS */
+footer .foot-brand > img {
   display: block;
+  flex: 0 1 auto;
+  width: auto !important;
+  height: 48px !important;
+  max-width: 260px;
   object-fit: contain;
 }
+
+/* Garis pemisah */
+footer .foot-brand .foot-sep {
+  flex: 0 0 1px;
+  width: 1px;
+  height: 40px;
+  background: rgba(244, 240, 232, 0.28);
+}
+
+/* Logo mitra */
+footer .foot-brand .foot-partner {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  transition: transform 0.18s ease;
+}
+
+footer .foot-brand .foot-partner img {
+  display: block;
+  width: auto !important;
+  height: 48px !important;
+  max-width: 110px;
+  object-fit: contain;
+}
+
+footer .foot-brand .foot-partner:hover {
+  transform: translateY(-2px);
+}
+
+/* Deskripsi */
 footer p {
   font-size: 0.88rem;
   max-width: 36ch;
   line-height: 1.6;
   margin: 0;
 }
+
+/* Judul kolom */
 footer h5 {
   color: #f4f0e8;
   font-size: 0.82rem;
@@ -760,19 +800,25 @@ footer h5 {
   letter-spacing: 0.05em;
   margin: 0 0 16px;
 }
+
+/* Navigasi dan kontak */
 footer .flinks {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 footer .flinks a {
   color: rgba(244, 240, 232, 0.7);
   text-decoration: none;
   font-size: 0.9rem;
 }
+
 footer .flinks a:hover {
   color: #f4f0e8;
 }
+
+/* Copyright */
 .foot-bottom {
   border-top: 1px solid rgba(244, 240, 232, 0.12);
   padding: 22px 0 40px;
@@ -781,6 +827,60 @@ footer .flinks a:hover {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: space-between;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .foot-grid {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 32px;
+  }
+}
+
+/* HP */
+@media (max-width: 700px) {
+  .foot-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px 0 30px;
+  }
+
+  footer .foot-brand {
+    gap: 12px;
+  }
+
+  footer .foot-brand > img {
+    height: 42px !important;
+    max-width: 200px;
+  }
+
+  footer .foot-brand .foot-sep {
+    height: 32px;
+  }
+
+  footer .foot-brand .foot-partner {
+    height: 42px;
+  }
+
+  footer .foot-brand .foot-partner img {
+    height: 42px !important;
+    max-width: 100px;
+  }
+
+  .foot-bottom {
+    padding-bottom: 28px;
+  }
+}
+
+/* HP kecil: logo boleh turun baris jika ruang sempit */
+@media (max-width: 380px) {
+  footer .foot-brand {
+    gap: 12px;
+  }
+
+  footer .foot-brand .foot-sep {
+    display: none;
+  }
 }
 
 /* ---------- mobile ---------- */

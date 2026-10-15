@@ -3,25 +3,18 @@
    Requires: base.css
    ======================================================= */
 
-/* ---------- hero overrides ---------- */
 /* =======================================================
    HERO
    ======================================================= */
 
 .hero {
   position: relative;
-
   min-height: 92vh;
-
   display: flex;
   align-items: center;
-
   padding: 110px 0;
-
   color: #f4f0e8;
-
   overflow: hidden;
-
   background:
     linear-gradient(
       90deg,
@@ -30,15 +23,12 @@
       rgba(20, 20, 18, 0.38) 68%,
       rgba(20, 20, 18, 0.55) 100%
     ),
-    url("../gallery/hero_bg.jpeg") center center / cover no-repeat;
+    url("../gallery/hero-bg.png") center center / cover no-repeat;
 }
 .hero > .wrap {
   position: relative;
-
   z-index: 2;
-
   width: 100%;
-
   transform: translateX(25px);
 }
 .hero-watermark {
@@ -63,12 +53,9 @@ h1.headline {
 @media (max-width: 760px) {
   .hero {
     min-height: 88vh;
-
     padding: 100px 0 70px;
-
     background-position: 62% center;
   }
-
   .hero > .wrap {
     transform: none;
   }
@@ -558,24 +545,17 @@ h1.headline {
 }
 .map-card {
   width: 100%;
-
   min-height: 360px;
-
   overflow: hidden;
-
   border-radius: 12px;
-
   position: relative;
 }
 
 .map-card iframe {
   display: block;
-
   width: 100%;
   height: 100%;
-
   min-height: 360px;
-
   border: 0;
 }
 
@@ -583,7 +563,6 @@ h1.headline {
   .map-card {
     min-height: 300px;
   }
-
   .map-card iframe {
     min-height: 300px;
   }
@@ -705,7 +684,6 @@ h1.headline {
   /* =========================================
      GLOBAL MOBILE GUTTER
   ========================================= */
-
   .wrap {
     width: 100%;
     max-width: 100%;
@@ -713,473 +691,320 @@ h1.headline {
     padding-right: 18px;
     box-sizing: border-box;
   }
-
   /* =========================================
      HERO
   ========================================= */
-
   .hero {
     min-height: auto;
-
     padding: 104px 0 64px;
-
     background-position: 62% center;
   }
-
   .hero > .wrap {
     transform: none;
   }
-
   .hero-watermark {
     font-size: 48vw;
     right: -8%;
     bottom: -4%;
   }
-
   h1.headline {
     font-size: clamp(2.35rem, 10.5vw, 3.35rem);
     line-height: 1.02;
     letter-spacing: -0.035em;
     max-width: 11ch;
-
     margin-bottom: 18px;
   }
-
   .hero p.lead {
     font-size: 0.94rem;
     line-height: 1.6;
-
     max-width: 100%;
-
     margin-bottom: 24px;
   }
-
   /* =========================================
      HERO META
   ========================================= */
-
   .hero-meta {
     display: flex;
-
     flex-wrap: nowrap;
-
     gap: 8px;
-
     margin-bottom: 26px;
-
     overflow-x: auto;
-
     padding: 2px 2px 6px;
-
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
-
   .hero-meta::-webkit-scrollbar {
     display: none;
   }
-
   .meta-badge {
     flex: 0 0 auto;
-
     font-size: 0.74rem;
-
     padding: 8px 12px;
-
     gap: 6px;
-
     white-space: nowrap;
-
     backdrop-filter: none;
   }
-
   .meta-badge img {
     width: 15px;
     height: 15px;
   }
-
   /* =========================================
      HERO BUTTONS
   ========================================= */
-
   .hero-actions {
     flex-direction: column;
-
     gap: 10px;
-
     margin-bottom: 34px;
   }
-
   .hero-actions .btn-primary,
   .hero-actions .btn-outline,
   .hero-actions a {
     width: 100%;
-
     justify-content: center;
-
     box-sizing: border-box;
   }
-
   .scroll-cue {
     font-size: 0.72rem;
   }
-
   /* =========================================
      STATS
   ========================================= */
-
   .stats {
     padding: 42px 0;
   }
-
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-
     gap: 26px 12px;
   }
-
   .stat-num {
     font-size: clamp(2rem, 9vw, 2.65rem);
-
     margin-bottom: 6px;
   }
-
   .stat-label {
     font-size: 0.68rem;
-
     line-height: 1.35;
-
     letter-spacing: 0.025em;
   }
-
   /* =========================================
      REGISTRATION
   ========================================= */
-
   .reg-grid {
     grid-template-columns: 1fr;
-
     gap: 24px;
   }
-
   .benefit-grid {
     grid-template-columns: 1fr;
-
     gap: 12px;
-
     margin-top: 26px;
   }
-
   .benefit {
     padding: 18px;
-
     border-radius: 13px;
   }
-
   .benefit .icon {
     width: 40px;
     height: 40px;
-
     margin-bottom: 12px;
   }
-
   .benefit .icon svg {
     width: 20px;
     height: 20px;
   }
-
   .benefit h4 {
     font-size: 0.95rem;
   }
-
   .benefit p {
     font-size: 0.82rem;
-
     line-height: 1.5;
   }
-
   /* =========================================
      TICKET CTA
   ========================================= */
-
   .ticket-cta {
     padding: 24px 20px;
-
     border-radius: 15px;
   }
-
   .ticket-cta .status {
     font-size: 0.68rem;
-
     padding: 6px 11px;
-
     margin-bottom: 13px;
   }
-
   .ticket-cta h3 {
     font-size: 1.2rem;
-
     line-height: 1.3;
   }
-
   .ticket-cta p {
     font-size: 0.84rem;
-
     line-height: 1.55;
-
     margin-bottom: 20px;
   }
-
   .ticket-cta .btn-primary {
     width: 100%;
   }
-
   .ticket-cta .fine {
     font-size: 0.68rem;
-
     line-height: 1.45;
   }
-
   /* =========================================
      SCHEDULE TABS
   ========================================= */
-
   .day-tabs {
     flex-wrap: nowrap;
-
     overflow-x: auto;
-
     gap: 8px;
-
     margin-bottom: 28px;
-
     padding: 2px 2px 7px;
-
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
-
   .day-tabs::-webkit-scrollbar {
     display: none;
   }
-
   .day-tab {
     flex: 0 0 auto;
-
     padding: 9px 15px;
-
     font-size: 0.78rem;
-
     white-space: nowrap;
   }
-
   /* =========================================
      TIMELINE
   ========================================= */
-
   .timeline {
     padding-left: 30px;
   }
-
   .timeline::before {
     left: 7px;
-
     top: 5px;
     bottom: 5px;
-
     width: 2px;
   }
-
   .t-item {
     grid-template-columns: 1fr;
-
     gap: 5px;
-
     padding-bottom: 25px;
   }
-
   .t-item::before {
     left: -30px;
-
     top: 1px;
-
     width: 18px;
     height: 18px;
-
     box-shadow: 0 0 0 4px var(--paper);
   }
-
   .t-time {
     font-size: 15px;
-
     padding-top: 0;
   }
-
   .t-title {
     font-size: 0.94rem;
-
     line-height: 1.35;
-
     margin-bottom: 3px;
   }
-
   .t-tag {
     font-size: 0.76rem;
-
     line-height: 1.45;
   }
-
   /* =========================================
      VENUE / TICKET
   ========================================= */
-
   .ticket-card {
     grid-template-columns: 1fr;
-
     border-radius: 15px;
   }
-
   .ticket-left {
     padding: 26px 20px;
   }
-
   .venue-name {
     font-size: 1.25rem;
-
     line-height: 1.25;
   }
-
   .venue-addr {
     font-size: 0.84rem;
-
     line-height: 1.5;
-
     margin-bottom: 20px;
   }
-
   .venue-facts {
     gap: 11px;
-
     margin-bottom: 22px;
   }
-
   .venue-fact {
     font-size: 0.8rem;
-
     gap: 9px;
-
     line-height: 1.45;
   }
-
   .venue-fact svg {
     width: 18px;
     height: 18px;
   }
-
   /* -----------------------------------------
      MOBILE TICKET DIVIDER
   ----------------------------------------- */
-
   .ticket-divider {
     border-left: none;
-
     border-top: 2px dashed var(--line-strong);
   }
-
   .ticket-divider::before {
     top: -11px;
-
     left: -11px;
   }
-
   .ticket-divider::after {
     top: -11px;
-
     bottom: auto;
-
     left: auto;
     right: -11px;
   }
-
   /* -----------------------------------------
      MAP
   ----------------------------------------- */
-
   .map-side {
     padding: 16px;
   }
-
   .map-card {
     min-height: 230px;
-
     border-radius: 10px;
   }
-
   .map-card iframe {
     min-height: 230px;
   }
-
   /* =========================================
      FILM / UPDATES
   ========================================= */
-
   .film-rail {
     gap: 12px;
-
     padding: 4px 2px 18px;
-
     margin-right: -18px;
-
     padding-right: 18px;
   }
-
   .film-frame {
     width: calc(100vw - 68px);
-
     max-width: 290px;
-
     border-radius: 12px;
   }
-
   .frame-perf {
     height: 11px;
-
     background-size: 15px 11px;
-
     background-position: 7px center;
   }
-
   .film-frame .fbody {
     padding: 19px;
   }
-
   .update-date {
     font-size: 0.7rem;
   }
-
   .film-frame h4 {
     font-size: 0.96rem;
-
     line-height: 1.35;
-
     margin: 7px 0 7px;
   }
-
   .film-frame p {
     font-size: 0.8rem;
-
     line-height: 1.5;
-
     margin-bottom: 12px;
   }
-
   .film-frame a {
     font-size: 0.78rem;
   }
-
   .swipe-hint {
     font-size: 0.72rem;
-
     margin-top: 2px;
   }
 }
@@ -1193,111 +1018,83 @@ h1.headline {
     padding-left: 16px;
     padding-right: 16px;
   }
-
   /* -----------------------------------------
      HERO
   ----------------------------------------- */
-
   .hero {
     padding-top: 96px;
     padding-bottom: 54px;
   }
-
   h1.headline {
     font-size: 2.25rem;
-
     max-width: 10.5ch;
   }
-
   .hero p.lead {
     font-size: 0.88rem;
   }
-
   .hero-actions {
     gap: 9px;
   }
-
   /* -----------------------------------------
      STATS
   ----------------------------------------- */
-
   .stats {
     padding: 36px 0;
   }
-
   .stats-grid {
     gap: 22px 8px;
   }
-
   .stat-num {
     font-size: 1.95rem;
   }
-
   .stat-label {
     font-size: 0.6rem;
   }
-
   /* -----------------------------------------
      BENEFIT
   ----------------------------------------- */
-
   .benefit {
     padding: 17px;
   }
-
   /* -----------------------------------------
      TICKET CTA
   ----------------------------------------- */
-
   .ticket-cta {
     padding: 22px 18px;
   }
-
   /* -----------------------------------------
      TIMELINE
   ----------------------------------------- */
-
   .timeline {
     padding-left: 27px;
   }
-
   .t-item::before {
     left: -27px;
-
     width: 17px;
     height: 17px;
   }
-
   /* -----------------------------------------
      VENUE
   ----------------------------------------- */
-
   .ticket-left {
     padding: 23px 18px;
   }
-
   .map-side {
     padding: 12px;
   }
-
   .map-card,
   .map-card iframe {
     min-height: 210px;
   }
-
   /* -----------------------------------------
      FILM RAIL
   ----------------------------------------- */
-
   .film-rail {
     margin-right: -16px;
-
     padding-right: 16px;
   }
-
   .film-frame {
     width: calc(100vw - 54px);
-
     max-width: 275px;
   }
 }
@@ -1343,7 +1140,6 @@ h1.headline {
     padding: 22px 20px;
   }
 }
-
 
 /* =========================================
    ABOUT — COMPACT STATS & PHOTO
@@ -1392,7 +1188,6 @@ h1.headline {
   aspect-ratio: 1.2 / 1;
   margin: 0;
   overflow: hidden;
-
   /* Frame berwarna */
   padding: 5px;
   border: 1px solid #c65a37;
@@ -1403,7 +1198,6 @@ h1.headline {
     #c94b25 25%,
     #8f321c 70%
   );
-
   /* Drop shadow foto */
   box-shadow:
     0 24px 45px rgba(30, 30, 25, 0.24),
@@ -1417,10 +1211,8 @@ h1.headline {
   height: 100%;
   object-fit: cover;
   object-position: center;
-
   border-radius: 23px;
   border: 1px solid rgba(255, 255, 255, 0.65);
-
   transform: scale(1.015);
   transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -1436,12 +1228,10 @@ h1.headline {
     width: 92%;
     justify-self: center;
   }
-
   #about .about-photo {
     width: calc(100% - 20px);
     aspect-ratio: 16 / 10;
   }
-
   #about .about-strip {
     height: 115%;
     right: -20px;
@@ -1452,23 +1242,18 @@ h1.headline {
   #about .about-stats {
     gap: 10px;
   }
-
   #about .about-stat {
     padding: 18px 13px 16px;
   }
-
   #about .about-stat .stat-num {
     font-size: 1.65rem;
   }
-
   #about .about-stat .stat-label {
     font-size: 0.68rem;
   }
-
   #about .about-visual {
     width: 100%;
   }
-
   #about .about-photo {
     width: calc(100% - 14px);
     aspect-ratio: 4 / 3;
@@ -1739,10 +1524,10 @@ h1.headline {
   padding: 38px 32px 30px;
 }
 .pbox-row + .pbox-row {
-  border-top: 1px solid var(--line);
+  /* border-top: 1px solid var(--line); */
 }
 .pbox-row.is-tint {
-  background: var(--grad-wash);
+  /* background: var(--grad-wash); */
 }
 .pbox-row.cols-2 {
   display: grid;
@@ -1754,7 +1539,7 @@ h1.headline {
   padding: 38px 32px 30px;
 }
 .pbox-row.cols-2 .pcat + .pcat {
-  border-left: 1px solid var(--line);
+  /* border-left: 1px solid var(--line); */
 }
 
 /* ---------- kategori ---------- */
@@ -1979,7 +1764,7 @@ h1.headline {
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
-.ab-step::before {
+/* .ab-step::before {
   content: "";
   position: absolute;
   left: 0;
@@ -1990,7 +1775,7 @@ h1.headline {
   transform: scaleX(0.28);
   transform-origin: 0 50%;
   transition: transform 0.35s ease;
-}
+} */
 .ab-step:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow);
@@ -2113,5 +1898,912 @@ h1.headline {
   .ab-step::before,
   .ab-tags li {
     transition: none;
+  }
+}
+
+/* =====================================================
+   JFS ABOUT — EDITORIAL SHOWCASE LAYOUT
+   Tempel di PALING BAWAH assets/css/home.css
+   ===================================================== */
+
+#about .ab-showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+  margin-bottom: 34px;
+}
+
+/* ---------- Kiri: pengantar ---------- */
+
+#about .ab-intro {
+  min-width: 0;
+  max-width: none;
+}
+
+#about .ab-intro > .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  margin-bottom: 14px;
+  /* border: 1px solid rgba(191, 68, 25, 0.18);
+  border-radius: 999px;
+  background: rgba(191, 68, 25, 0.07); */
+  color: var(--rust);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#about .ab-title {
+  margin: 0 0 16px;
+  font-size: clamp(2.25rem, 4.1vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+#about .ab-title em {
+  margin-top: 2px;
+  font-size: 0.92em;
+  line-height: 1.06;
+}
+
+#about .ab-copy {
+  padding-left: 14px;
+  border-left: 2px solid rgba(191, 68, 25, 0.2);
+}
+
+#about .ab-lead {
+  margin: 0 0 8px;
+  font-size: clamp(0.94rem, 1.15vw, 1.06rem);
+  line-height: 1.65;
+  font-weight: 600;
+}
+
+#about .ab-body {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+/* Highlight tags */
+
+#about .ab-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 16px;
+  margin-top: 17px;
+}
+
+#about .ab-highlights span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.65rem;
+  line-height: 1.5;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+#about .ab-highlights i {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+
+#about .ab-highlights span:nth-child(2) i {
+  background: #d99b3b;
+}
+
+#about .ab-highlights span:nth-child(3) i {
+  background: #92364d;
+}
+
+/* ---------- Kanan: panel gelap ---------- */
+
+#about .ab-feature {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  overflow: hidden;
+  padding: 22px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 17px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(191, 68, 25, 0.24),
+      transparent 42%
+    ),
+    linear-gradient(135deg, #211b18 0%, #1e1715 100%);
+  box-shadow: 0 16px 32px -22px rgba(30, 30, 25, 0.65);
+}
+
+#about .ab-feature-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+#about .ab-feature-brand {
+  color: var(--gold);
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+#about .ab-feature-edition {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f4f0e8;
+  font-size: 0.61rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+#about .ab-feature-content {
+  padding: 16px 0 17px;
+}
+
+#about .ab-feature-kicker {
+  display: block;
+  margin-bottom: 7px;
+  color: #d2a08b;
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#about .ab-feature-content h3 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1rem, 1.55vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+}
+
+#about .ab-feature-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+#about .ab-feature-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: 12px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+#about .ab-feature-stat strong {
+  color: #f07850;
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+#about .ab-feature-stat:nth-child(2) strong {
+  color: #e4b76e;
+}
+
+#about .ab-feature-stat span {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.65rem;
+  line-height: 1.5;
+}
+
+/* ---------- Heading empat pilar ---------- */
+
+#about .ab-pillars-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 15px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(143, 49, 16, 0.1);
+}
+
+#about .ab-section-kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--rust);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+#about .ab-pillars-head h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+#about .ab-pillars-head > p {
+  max-width: 390px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+/* ---------- Empat kartu warna ---------- */
+
+#about .ab-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 42px;
+}
+
+#about .ab-step {
+  --step-text: #fff;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 205px;
+  padding: 15px;
+  overflow: hidden;
+  color: var(--step-text);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  background: linear-gradient(140deg, #cc3315, #bf4419 55%, #8f3110);
+  box-shadow: 0 5px 10px -7px rgba(30, 30, 25, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#about .ab-step:nth-child(2) {
+  background: linear-gradient(140deg, #c67188, #a64f69 58%, #77364d);
+}
+
+#about .ab-step:nth-child(3) {
+  --step-text: #241d17;
+  border-color: rgba(143, 49, 16, 0.1);
+  background: linear-gradient(140deg, #f0d9b3, #e4c697 58%, #c78c34);
+}
+
+#about .ab-step:nth-child(4) {
+  background: linear-gradient(140deg, #493027, #34231e 58%, #1e1715);
+}
+
+/* Ornamen lingkaran */
+
+#about .ab-step::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 105px;
+  height: 105px;
+  top: -35px;
+  right: -34px;
+  border: 8px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.035);
+  pointer-events: none;
+}
+
+#about .ab-step:nth-child(even)::after {
+  top: auto;
+  right: -34px;
+  bottom: -55px;
+}
+
+#about .ab-step:nth-child(3)::after {
+  border-color: rgba(90, 51, 17, 0.09);
+  box-shadow: 0 0 0 8px rgba(90, 51, 17, 0.035);
+}
+
+#about .ab-step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 24px -15px rgba(30, 30, 25, 0.6);
+}
+
+/* Label dan ikon */
+
+#about .ab-step-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 17px;
+}
+
+#about .ab-step-category {
+  display: inline-flex;
+  align-items: center;
+  max-width: calc(100% - 38px);
+  padding: 4px 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(30, 20, 17, 0.19);
+  color: inherit;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+#about .ab-step:nth-child(3) .ab-step-category {
+  background: rgba(80, 50, 20, 0.12);
+}
+
+#about .ab-step-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 29px;
+  width: 29px;
+  height: 29px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.13);
+  font-size: 1rem;
+}
+
+#about .ab-step:nth-child(3) .ab-step-icon {
+  border-color: rgba(80, 50, 20, 0.12);
+  background: rgba(80, 50, 20, 0.1);
+}
+
+/* Nomor, judul, dan deskripsi */
+
+#about .ab-step .ab-step-num {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+#about .ab-step:nth-child(3) .ab-step-num {
+  color: rgba(36, 29, 23, 0.92);
+}
+
+#about .ab-step h3 {
+  margin: 3px 0 6px;
+  color: inherit;
+  font-size: clamp(0.9rem, 1.2vw, 1.02rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+#about .ab-step p {
+  margin: 0;
+  color: inherit;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  opacity: 0.9;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  #about .ab-showcase {
+    grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr);
+    gap: 24px;
+  }
+  #about .ab-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  #about .ab-step {
+    min-height: 190px;
+    padding: 18px;
+  }
+  #about .ab-step h3 {
+    font-size: 1rem;
+  }
+  #about .ab-step p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 650px) {
+  #about .ab-showcase {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-bottom: 32px;
+  }
+  #about .ab-title {
+    font-size: clamp(2.2rem, 9vw, 3rem);
+  }
+  #about .ab-feature {
+    padding: 19px;
+  }
+  #about .ab-feature-content h3 {
+    font-size: 1.15rem;
+  }
+  #about .ab-pillars-head {
+    display: block;
+  }
+  #about .ab-pillars-head > p {
+    margin-top: 9px;
+  }
+  #about .ab-steps {
+    gap: 11px;
+    margin-bottom: 32px;
+  }
+  #about .ab-step {
+    min-height: 195px;
+    padding: 15px;
+  }
+  #about .ab-step-top {
+    margin-bottom: 15px;
+  }
+  #about .ab-step p {
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 390px) {
+  #about .ab-steps {
+    grid-template-columns: 1fr;
+  }
+  #about .ab-step {
+    min-height: 165px;
+    padding: 19px;
+  }
+  #about .ab-step-top {
+    margin-bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #about .ab-step {
+    transition: none;
+  }
+  #about .ab-step:hover {
+    transform: none;
+  }
+}
+
+/* =====================================================
+   SUMMIT SCHEDULE OVERVIEW
+   ===================================================== */
+
+.schedule-overview {
+  margin-top: 48px;
+  color: var(--ink);
+}
+
+.schedule-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 13px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(143, 49, 16, 0.1);
+}
+
+.schedule-kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--rust);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.schedule-heading h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+
+.schedule-heading p {
+  margin: 5px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.schedule-location {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  border: 1px solid rgba(143, 49, 16, 0.12);
+  border-radius: 8px;
+  background: #fffdfb;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.schedule-location i,
+.schedule-cta-label i {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.schedule-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #eee5dc;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 25px -22px rgba(40, 28, 20, 0.35);
+}
+
+.schedule-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  margin-bottom: 15px;
+}
+
+.schedule-day {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.schedule-day h3 {
+  margin: 0;
+  color: var(--rust);
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.day-two .schedule-day h3 {
+  color: #d89532;
+}
+
+.day-three .schedule-day h3 {
+  color: #96364d;
+}
+
+.schedule-day > span {
+  padding: 4px 7px;
+  border-radius: 4px;
+  background: #f5f0eb;
+  color: var(--ink);
+  font-size: 0.57rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.schedule-tag {
+  max-width: 62%;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(191, 68, 25, 0.08);
+  color: var(--rust);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.day-two .schedule-tag {
+  background: rgba(228, 198, 151, 0.28);
+  color: #85531c;
+}
+
+.day-three .schedule-tag {
+  background: rgba(198, 113, 136, 0.12);
+  color: #96364d;
+}
+
+.schedule-session {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0e8e1;
+}
+
+.schedule-session h4 {
+  margin: 0 0 5px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.schedule-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-size: 0.62rem;
+  line-height: 1.45;
+}
+
+.schedule-meta span:last-child {
+  color: var(--rust);
+  text-align: right;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  margin: 9px 0 0;
+  list-style: none;
+}
+
+.schedule-list li {
+  position: relative;
+  padding: 6px 8px 6px 18px;
+  border: 1px solid #f1e9e2;
+  border-radius: 10px;
+  background: #fcfaf8;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.schedule-list li::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+
+.day-two .schedule-list li::before {
+  background: #d89532;
+}
+
+.day-three .schedule-list li::before {
+  background: #96364d;
+}
+
+.schedule-list-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.schedule-list-feature strong {
+  font-size: 0.67rem;
+}
+
+.schedule-list-feature span {
+  color: var(--ink-soft);
+  font-size: 0.61rem;
+  line-height: 1.55;
+}
+
+/* CTA banner */
+
+.schedule-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 26px;
+  padding: 23px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  color: #fff;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(191, 68, 25, 0.2),
+      transparent 42%
+    ),
+    linear-gradient(110deg, #251c18, #1e1715);
+  box-shadow: 0 12px 26px -22px rgba(30, 20, 15, 0.7);
+}
+
+.schedule-cta-copy {
+  min-width: 0;
+}
+
+.schedule-cta-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 9px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f0c08d;
+  font-size: 0.57rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.schedule-cta h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.25rem, 2.3vw, 1.7rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+}
+
+.schedule-cta p {
+  margin: 7px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.schedule-cta-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 9px;
+}
+
+.schedule-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.schedule-btn:hover {
+  transform: translateY(-2px);
+}
+
+.schedule-btn-primary {
+  background: var(--rust);
+  color: #fff;
+}
+
+.schedule-btn-primary:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.schedule-btn-secondary {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.schedule-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .schedule-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .schedule-card.day-three {
+    grid-column: 1 / -1;
+  }
+  .schedule-cta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .schedule-overview {
+    margin-top: 34px;
+  }
+  .schedule-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+  .schedule-card.day-three {
+    grid-column: auto;
+  }
+  .schedule-card {
+    padding: 15px;
+  }
+  .schedule-cta {
+    padding: 20px;
+    gap: 18px;
+  }
+  .schedule-cta-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .schedule-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .schedule-btn {
+    transition: none;
+  }
+  .schedule-btn:hover {
+    transform: none;
+  }
+}
+
+
+/* FIX: Matikan gerakan background hero */
+header.hero {
+  animation: none !important;
+  transition: none !important;
+  background-position: 50% 50% !important;
+  background-attachment: scroll !important;
+}
+
+/* Pastikan tidak ada animasi pada pseudo-element hero */
+header.hero::before,
+header.hero::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Tampilan HP */
+@media (max-width: 760px) {
+  header.hero {
+    background-position: 62% 50% !important;
+    animation: none !important;
+    transition: none !important;
   }
 }
