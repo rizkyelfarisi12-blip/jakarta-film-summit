@@ -120,7 +120,14 @@
     );
   }
 
+    // Banner kolaborasi statis (di agenda.html) hanya tampil di hari yang cocok
+  function updateCollab() {
+    const el = $("#dayCollab");
+    if (el) el.hidden = el.dataset.day !== state.currentDay;
+  }
+
   function renderDay() {
+    updateCollab();   
     const day = state.agenda?.days?.find((x) => x.id === state.currentDay);
     const box = $("#agendaPanels");
 
@@ -169,16 +176,19 @@
   }
 
   function sessionHtml(s) {
-  const isTransition =
-    s.kind === "break" || String(s.type || "").trim().toLowerCase() === "transition";
+    const isTransition =
+      s.kind === "break" ||
+      String(s.type || "")
+        .trim()
+        .toLowerCase() === "transition";
 
-  if (isTransition) {
-    return `
+    if (isTransition) {
+      return `
       <div class="break-row">
         <span class="break-time">${esc(s.time || "")}</span>
         <span class="break-title">${esc(s.title || "Break")}</span>
       </div>`;
-  }
+    }
 
     const speakers = (s.speakers || []).map(byId).filter(Boolean);
 

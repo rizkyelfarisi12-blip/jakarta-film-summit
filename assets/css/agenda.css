@@ -983,3 +983,62 @@ h1.headline {
     font-size: 0.72rem;
   }
 }
+
+/* =======================================================
+   DAY COLLAB BANNER (logo kolaborasi di atas agenda hari tertentu)
+   ======================================================= */
+.day-collab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: 26px;
+  padding: 16px 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--rust);
+  border-radius: 14px;
+}
+.day-collab[hidden] {
+  display: none;
+}
+.day-collab-logos {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.day-collab-logos img {
+  display: block;
+  width: auto;
+  height: 40px;
+  max-width: 150px;
+  object-fit: contain;
+}
+.day-collab-x {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+.day-collab-text {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rust-deep);
+}
+
+@media (max-width: 680px) {
+  .day-collab {
+    padding: 14px 16px;
+  }
+  .day-collab-logos img {
+    height: 32px;
+    max-width: 110px;
+  }
+  .day-collab-text {
+    font-size: 0.7rem;
+  }
+}
