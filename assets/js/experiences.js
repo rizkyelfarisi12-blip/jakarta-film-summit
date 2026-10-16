@@ -199,14 +199,25 @@
 
     map.appendChild(svg);
 
-    // tautan Google Maps (rute berurutan antar titik)
+    // Tautan Google Maps: hanya tujuan fisik utama
     var link = panel.querySelector(".route-open");
+
     if (link) {
-      var parts = Array.prototype.map.call(items, function (li) {
-        return encodeURIComponent((li.dataset.q || li.textContent) + ", Jakarta");
+      var routeStops = Array.prototype.filter.call(items, function (li) {
+        return li.dataset.routeStop === "true";
       });
-      link.href = "https://www.google.com/maps/dir/" + parts.join("/");
+
+      var parts = routeStops.map(function (li) {
+        return encodeURIComponent(
+          (li.dataset.q || li.textContent).trim()
+        );
+      });
+
+      if (parts.length >= 2) {
+        link.href = "https://www.google.com/maps/dir/" + parts.join("/");
+      }
     }
+
   }
 
   function initRoutes() {

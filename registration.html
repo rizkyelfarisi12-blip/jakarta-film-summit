@@ -9,13 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="icon" type="image/x-icon" href="assets/icon/jfs.ico">
 
-  <meta name="description" content="Register to attend Jakarta Film Summit 2026, taking place October 20–22, 2026 in Jakarta, Indonesia.">
-  <meta name="keywords" content="Jakarta Film Summit registration, Jakarta Film Summit 2026 registration, register film conference Jakarta, Indonesia film event">
+  <meta name="description"
+    content="Register to attend Jakarta Film Summit 2026, taking place October 20–22, 2026 in Jakarta, Indonesia.">
+  <meta name="keywords"
+    content="Jakarta Film Summit registration, Jakarta Film Summit 2026 registration, register film conference Jakarta, Indonesia film event">
   <meta name="robots" content="index, follow">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Register | Jakarta Film Summit 2026">
-  <meta property="og:description" content="Register for Jakarta Film Summit 2026, bringing together the people shaping Indonesia's screen economy.">
+  <meta property="og:description"
+    content="Register for Jakarta Film Summit 2026, bringing together the people shaping Indonesia's screen economy.">
   <meta property="og:url" content="https://jakartafilmsummit.com/registration.html">
   <meta property="og:image" content="https://jakartafilmsummit.com/assets/image/og-image.jpg">
   <meta property="og:site_name" content="Jakarta Film Summit 2026">
@@ -39,7 +42,7 @@
   </div>
 
   <header class="hero">
-    <div class="sprockets top" aria-hidden="true"></div>
+    <!-- <div class="sprockets top" aria-hidden="true"></div> -->
 
     <div class="wrap">
       <!-- <div class="hero-kicker">
@@ -59,7 +62,7 @@
       <p class="sub" data-i18n="hero.sub">Empat bagian singkat &middot; sekitar 3 menit untuk diselesaikan</p>
     </div>
 
-    <div class="sprockets bottom" aria-hidden="true"></div>
+    <!-- <div class="sprockets bottom" aria-hidden="true"></div> -->
   </header>
 
   <nav class="step-nav" id="stepNav">
@@ -188,6 +191,7 @@
               </div>
 
               <div class="day-cards" id="dayCards">
+
                 <label class="day-card">
                   <input type="checkbox" name="days" value="1">
                   <span class="day-check" aria-hidden="true"></span>
@@ -203,10 +207,16 @@
                     <li><b>16.00</b><span>AFAN (ASIAN Film Alliance Network)</span></li>
                   </ul>
                 </label>
+
                 <label class="day-card">
                   <input type="checkbox" name="days" value="2">
                   <span class="day-check" aria-hidden="true"></span>
-                  <span class="day-num"><span data-i18n="days.day">Hari</span> 2</span>
+                  <span class="day-top">
+                    <span class="day-num"><span data-i18n="days.day">Hari</span> 2</span>
+                    <span class="day-collab">
+                      <img src="assets/gallery/jef-logo-background-removed.png" alt="In Collaboration with Jakarta Economic Forum 2026">
+                    </span>
+                  </span>
                   <span class="day-date">21 Oct 2026</span>
                   <h3>Investment & Financing</h3>
                   <p data-i18n="day2.desc"></p>
@@ -219,17 +229,31 @@
                     <li><b>16.35</b><span>Closing Ceremony</span></li>
                   </ul>
                 </label>
-                <label class="day-card">
-                  <input type="checkbox" name="days" value="3">
-                  <span class="day-check" aria-hidden="true"></span>
+
+                <div class="day-card day-card--external" id="day3Card">
                   <span class="day-num"><span data-i18n="days.day">Hari</span> 3</span>
                   <span class="day-date">22 Oct 2026</span>
                   <h3>Jakarta Strolling Tour</h3>
                   <p data-i18n="day3.desc"></p>
-                  <ul>
-                    <li style="margin-bottom: 50%;"><b>08.30</b><span>Jakarta Strolling Tour</span></li>
-                  </ul>
-                </label>
+
+                  <div class="day-groups">
+                    <div class="day-group">
+                      <b>Group A</b>
+                      <span data-i18n="day3.groupA"></span>
+                      <a class="day-cta" id="day3LinkA" href="#" target="_blank" rel="noopener noreferrer"
+                        data-i18n="day3.ctaA">Daftar Group A →</a>
+                    </div>
+                    <div class="day-group">
+                      <b>Group B</b>
+                      <span data-i18n="day3.groupB"></span>
+                      <a class="day-cta" id="day3LinkB" href="#" target="_blank" rel="noopener noreferrer"
+                        data-i18n="day3.ctaB">Daftar Group B →</a>
+                    </div>
+                  </div>
+
+                  <small class="day-note" data-i18n="day3.note"></small>
+                </div>
+
               </div>
 
               <div class="day-bar">
@@ -375,7 +399,8 @@
               </div>
 
               <div class="submit-row">
-                <p data-i18n="submit.note">Setelah dikirim, akan ada QR Code yang terdownload. mohon tunjukan ke registrasi saat melakukan check-in</p>
+                <p data-i18n="submit.note">Setelah dikirim, akan ada QR Code yang terdownload. mohon tunjukan ke
+                  registrasi saat melakukan check-in</p>
                 <button type="submit" class="cta" id="submitBtn" data-i18n="submit.button">Kirim Pendaftaran</button>
               </div>
 

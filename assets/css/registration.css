@@ -131,25 +131,76 @@ a {
   transition: width 0.15s linear;
 }
 
-/* ---------- hero ---------- */
+/* ---------- hero with background image ---------- */
+
 .hero {
   position: relative;
-  padding: 88px 0 76px;
-  background: var(--grad);
+  padding: 100px 0 84px;
+
+  background-color: #1e1e19;
+  background-image: url("../gallery/monas-hero.jpg");
+  background-size: cover;
+  background-position: center 45%;
+  background-repeat: no-repeat;
+
   overflow: hidden;
   isolation: isolate;
 }
+
+/* Dark overlay for readable text */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
+
   background: linear-gradient(
-    180deg,
-    rgba(30, 30, 25, 0.12),
-    rgba(30, 30, 25, 0.55) 92%
+    90deg,
+    rgba(20, 20, 17, 0.82) 0%,
+    rgba(20, 20, 17, 0.60) 55%,
+    rgba(20, 20, 17, 0.35) 100%
   );
+
   z-index: 0;
 }
+
+/* Keep hero text above the overlay */
+.hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tablet */
+@media (min-width: 681px) and (max-width: 1024px) {
+  .hero {
+    padding: 88px 0 72px;
+    background-position: center center;
+  }
+
+  .hero::before {
+    background: linear-gradient(
+      90deg,
+      rgba(20, 20, 17, 0.78),
+      rgba(20, 20, 17, 0.48)
+    );
+  }
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+  .hero {
+    padding: 76px 0 56px;
+    background-position: 60% center;
+  }
+
+  .hero::before {
+    background: linear-gradient(
+      180deg,
+      rgba(20, 20, 17, 0.68),
+      rgba(20, 20, 17, 0.78)
+    );
+  }
+}
+
 .sprockets {
   position: absolute;
   left: 0;
@@ -1739,6 +1790,36 @@ label.day-card.is-full:hover {
   letter-spacing: -0.02em;
   color: var(--ink);
 }
+/* Baris atas card: "Day N" + logo kolaborasi */
+.day-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 40px; /* sisakan ruang untuk lingkaran centang di kanan atas */
+}
+
+/* Logo JEF berwarna putih, jadi diberi latar gelap agar terbaca */
+.day-collab {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 4px 10px;
+  border-radius: 10px;
+  /* background: var(--ink); */
+}
+.day-collab img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+@media (max-width: 680px) {
+  .day-top { gap: 10px; }
+  .day-collab { height: 38px; padding: 3px 8px; }
+  .day-collab img { max-width: 100px; }
+}
 .day-date {
   margin-top: 6px;
   font-size: 0.82rem;
@@ -2059,4 +2140,219 @@ body.modal-open {
   .terms-actions .cta {
     width: 100%;
   }
+}
+
+/* Card Day 3: bukan <label>, jadi samakan style dasarnya */
+div.day-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 22px 20px 20px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.day-groups {
+  width: 100%;
+  margin: auto 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.day-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+.day-group b {
+  font-size: 0.86rem;
+  color: var(--rust-deep);
+}
+
+/* Day 3 — Premium registration buttons */
+.day-cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 58px;
+  padding: 17px 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #bf4419 0%,
+    #a83716 55%,
+    #8f3110 100%
+  );
+
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+
+  box-shadow:
+    0 6px 16px rgba(143, 49, 16, 0.20),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+  overflow: hidden;
+}
+
+/* Panah di ujung tombol */
+.day-cta::after {
+  content: "↗";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 18px;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+/* Efek saat kursor diarahkan ke tombol */
+.day-cta:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(
+    135deg,
+    #d45425 0%,
+    #bf4419 55%,
+    #9d3511 100%
+  );
+
+  box-shadow:
+    0 12px 24px rgba(143, 49, 16, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.day-cta:hover::after {
+  transform: translate(2px, -2px);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.day-cta:active {
+  transform: translateY(-1px);
+}
+
+.day-cta:focus-visible {
+  outline: 3px solid #e4c697;
+  outline-offset: 4px;
+}
+
+/* Penyesuaian layar HP */
+@media (max-width: 680px) {
+  .day-cta {
+    min-height: 54px;
+    padding: 15px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+
+  .day-cta::after {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-cta,
+  .day-cta::after {
+    transition: none;
+  }
+}
+
+
+/* Fix layout Day 3 on tablet */
+@media (min-width: 681px) and (max-width: 1024px) {
+  .day-groups {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .day-group {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+  }
+
+  .day-cta {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    gap: 10px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .day-cta::after {
+    flex-shrink: 0;
+  }
+
+  .day-note {
+    overflow-wrap: anywhere;
+  }
+}
+
+
+.day-note {
+  margin-top: 10px;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.day-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+.day-group b { font-size: 0.86rem; color: var(--rust-deep); }
+
+/* tombol di dalam group: dorong ke bawah agar sejajar */
+.day-group .day-cta {
+  margin-top: auto;
+  padding: 11px 12px;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 680px) {
+  .day-groups { grid-template-columns: 1fr; }
 }

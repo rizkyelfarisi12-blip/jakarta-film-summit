@@ -120,14 +120,14 @@
     );
   }
 
-    // Banner kolaborasi statis (di agenda.html) hanya tampil di hari yang cocok
-  function updateCollab() {
-    const el = $("#dayCollab");
-    if (el) el.hidden = el.dataset.day !== state.currentDay;
+    // Tema warna per hari (Day 2 = biru #1431A6, lihat agenda.css)
+  function applyTheme() {
+    const box = $("#agendaPanels");
+    if (box) box.classList.toggle("theme-day-2", state.currentDay === "day-2");
   }
 
   function renderDay() {
-    updateCollab();   
+    applyTheme();
     const day = state.agenda?.days?.find((x) => x.id === state.currentDay);
     const box = $("#agendaPanels");
 

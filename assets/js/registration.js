@@ -11,6 +11,9 @@ function qrImageUrl(token) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&ecc=Q&margin=0&qzone=4&data=${encodeURIComponent(token)}`;
 }
 
+const DAY3_FORM_URL_A = "https://forms.gle/yjH9Fdt9ujPuVUy58";
+const DAY3_FORM_URL_B = "https://forms.gle/vqYVeQ6CiHzgQM1P7";
+
 // =================================================================
 // i18n — [id, en] country pairs + full text dictionary
 // =================================================================
@@ -333,6 +336,13 @@ const I18N = {
       "Pendaftaran dapat ditutup jika kuota penuh atau batas waktu berakhir. Panitia berhak menyesuaikan program, pembicara, dan jadwal bila diperlukan.",
     "terms.close": "Tutup",
     "footer.text": "Jakarta Film Summit · Formulir Pendaftaran",
+    
+"day3.groupA": "Informasi kegiatan Group A.",
+"day3.groupB": "Informasi kegiatan Group B.",
+"day3.ctaA": "Daftar Group A →",
+"day3.ctaB": "Daftar Group B →",
+"day3.note": "Pendaftaran Day 3 dilakukan melalui Form terpisah.",
+
   },
   en: {
     "meta.title": "Jakarta Film Summit — Registration Form",
@@ -461,6 +471,13 @@ const I18N = {
       "Registration may close when quota is full or the deadline passes. The organizers may adjust the programme, speakers, and schedule when necessary.",
     "terms.close": "Close",
     "footer.text": "Jakarta Film Summit · Registration Form",
+    
+"day3.groupA": "Group A activity details.",
+"day3.groupB": "Group B activity details.",
+"day3.ctaA": "Register for Group A →",
+"day3.ctaB": "Register for Group B →",
+"day3.note": "Day 3 registration is handled through separate Forms.",
+
   },
 };
 
@@ -642,6 +659,7 @@ function applyDayAvailability() {
   if (!lastDays) return;
   document.querySelectorAll("#dayCards .day-card").forEach(function (card) {
     var input = card.querySelector('input[name="days"]');
+    if (!input) return; 
     var info = lastDays.find(function (d) {
       return String(d.day) === input.value;
     });
@@ -1023,4 +1041,6 @@ form.addEventListener("reset", function () {
   setTimeout(renderDaySummary, 0);
 });
 renderDaySummary();
+document.getElementById("day3LinkA").href = DAY3_FORM_URL_A;
+document.getElementById("day3LinkB").href = DAY3_FORM_URL_B;
 checkStatus();
