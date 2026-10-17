@@ -239,7 +239,7 @@
         </div>
         <div class="speaker-info">
           <h3 class="speaker-name">${esc(s.name)}</h3>
-          <p class="speaker-role">${esc(s.position)}${s.institution ? " · " + esc(s.institution) : ""}</p>
+          <p class="speaker-role"><span class="speaker-position" title="${esc(s.position)}">${esc(s.position || " ")}</span>${s.institution ? `<span class="speaker-institution" title="${esc(s.institution)}">${esc(s.institution)}</span>` : ""}</p>
           <span class="speaker-tag">Lihat profil</span>
         </div>
       </button>`,

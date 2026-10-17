@@ -1160,3 +1160,89 @@ h1.headline {
     max-width: 76px;
   }
 }
+
+/* =======================================================
+   SPEAKER CARD — tinggi seragam, teks maks. 2 baris
+   ======================================================= */
+.speaker-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;   /* hilangkan pemusatan vertikal bawaan <button> */
+  width: 100%;
+  height: 100%;
+  font: inherit;
+}
+
+.speaker-photo {
+  flex: 0 0 auto;                /* foto tidak ikut melar / menyusut */
+  width: 100%;
+}
+
+.speaker-info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Nama: maks. 2 baris */
+.speaker-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Jabatan · institusi: maks. 2 baris, tinggi tetap 2 baris */
+.speaker-role {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(2 * 1.45em);  /* sesuai line-height .speaker-role */
+}
+
+/* "Lihat profil" selalu menempel di bagian bawah card */
+.speaker-tag {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* =======================================================
+   SPEAKER CARD — jabatan dan institusi masing-masing 1 baris
+   Maksimal 2 baris total; teks panjang dipotong dengan ellipsis.
+   Tidak mengubah data/API/backend.
+   ======================================================= */
+
+.speaker-card .speaker-role {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  min-height: calc(2 * 1.45em);
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+.speaker-card .speaker-role > span {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.speaker-card .speaker-position,
+.speaker-card .speaker-institution {
+  max-width: 100%;
+}
+
+@media (max-width: 680px) {
+  .speaker-card .speaker-role {
+    min-height: calc(2 * 1.45em);
+  }
+}

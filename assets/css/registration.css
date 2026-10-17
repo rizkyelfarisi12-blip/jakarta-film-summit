@@ -2356,3 +2356,646 @@ div.day-card {
 @media (max-width: 680px) {
   .day-groups { grid-template-columns: 1fr; }
 }
+
+
+  /* ===== Day 3: Group A/B cards ===== */
+  #day3Card {
+    min-width: 0;
+  }
+
+  #day3Card .day-groups {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin: 18px 0 14px;
+  }
+
+  #day3Card .day-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper);
+  }
+
+  #day3Card .day-group-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px 10px;
+  }
+
+  #day3Card .day-group-head > b {
+    color: var(--rust-deep);
+    font-size: 1rem;
+  }
+
+  #day3Card .day-group-name {
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  #day3Card .day-group-desc {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  #day3Card .day-info,
+  #day3Card .day-group .day-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease,
+      transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  #day3Card .day-info {
+    border: 1.5px solid var(--rust);
+    background: transparent;
+    color: var(--rust-deep);
+  }
+
+  #day3Card .day-info::before {
+    content: "i";
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 19px;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--rust);
+    color: white;
+    font-size: 0.75rem;
+    font-style: italic;
+    font-weight: 800;
+  }
+
+  #day3Card .day-info:hover {
+    background: rgba(191, 68, 25, 0.08);
+  }
+
+  #day3Card .day-group .day-cta {
+    margin-top: 0;
+    border: 0;
+    background: var(--grad-tight);
+    color: #fff;
+    box-shadow: 0 8px 20px -12px rgba(143, 49, 16, 0.75);
+    white-space: normal;
+  }
+
+  #day3Card .day-group .day-cta::after {
+    content: "→";
+    flex: 0 0 auto;
+    font-size: 1.05rem;
+    transition: transform 0.18s ease;
+  }
+
+  #day3Card .day-group .day-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px -12px rgba(143, 49, 16, 0.8);
+  }
+
+  #day3Card .day-group .day-cta:hover::after {
+    transform: translateX(3px);
+  }
+
+  #day3Card .day-info:focus-visible,
+  #day3Card .day-group .day-cta:focus-visible,
+  .route-modal a:focus-visible,
+  .route-modal button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* ===== Route modal ===== */
+  body.modal-open {
+    overflow: hidden;
+  }
+
+  .route-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .route-modal.open {
+    display: flex;
+  }
+
+  .route-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 8, 0.72);
+    backdrop-filter: blur(4px);
+  }
+
+  .route-dialog {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(580px, 100%);
+    max-height: min(760px, 92dvh);
+    overflow: hidden;
+    border-radius: 18px;
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+    animation: routeModalIn 0.2s ease-out;
+  }
+
+  @keyframes routeModalIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .route-x {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 50%;
+    background: rgba(10,10,8,0.25);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .route-x:hover {
+    background: var(--rust);
+  }
+
+  .route-head {
+    padding: 26px 64px 22px 26px;
+    background: var(--grad-tight);
+    color: #fff;
+  }
+
+  .route-kicker {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .route-head h2 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 4vw, 1.7rem);
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .route-head p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .route-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 22px 26px 12px;
+  }
+
+  .route-body h3 {
+    margin: 0 0 14px;
+    color: var(--ink-soft);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .route-stops {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .route-stops::before {
+    position: absolute;
+    top: 17px;
+    bottom: 17px;
+    left: 16px;
+    width: 2px;
+    background: var(--line);
+    content: "";
+  }
+
+  .route-stops li {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 7px 0;
+    font-size: 0.91rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .route-num {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--rust);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--rust-deep);
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+
+  .route-stop-text {
+    padding-top: 6px;
+  }
+
+  .route-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 26px 20px;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+  }
+
+  .route-more {
+    color: var(--rust);
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .route-more:hover {
+    text-decoration: underline;
+  }
+
+  .route-register {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: var(--grad-tight);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 8px 20px -12px rgba(143, 49, 16, 0.75);
+  }
+
+  .route-register::after {
+    content: "→";
+  }
+
+  .route-register:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    .route-modal {
+      padding: 8px;
+    }
+
+    .route-dialog {
+      max-height: 94dvh;
+      border-radius: 15px;
+    }
+
+    .route-head {
+      padding: 22px 56px 18px 20px;
+    }
+
+    .route-body {
+      padding: 18px 20px 10px;
+    }
+
+    .route-foot {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      padding: 14px 20px 18px;
+    }
+
+    .route-more {
+      text-align: center;
+    }
+
+    .route-register {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .route-dialog {
+      animation: none;
+    }
+
+    #day3Card .day-info,
+    #day3Card .day-group .day-cta,
+    #day3Card .day-group .day-cta::after {
+      transition: none;
+    }
+  }
+
+  
+/* ==========================================
+   COMPACT FIX — CARD HARI 3 REGISTRATION
+   Tempel paling bawah setelah CSS sebelumnya
+   ========================================== */
+
+/* Ringkas jarak konten di card Hari 3 */
+#day3Card {
+  min-width: 0;
+}
+
+#day3Card > h3 {
+  margin-bottom: 8px;
+}
+
+#day3Card > p {
+  margin-bottom: 12px;
+  line-height: 1.45;
+}
+
+/* Grup A dan B lebih padat */
+#day3Card .day-groups {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 9px;
+  margin: 12px 0;
+}
+
+#day3Card .day-group {
+  gap: 7px;
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+
+/* Nama grup lebih ringkas */
+#day3Card .day-group-head {
+  gap: 4px 8px;
+}
+
+#day3Card .day-group-head > b {
+  font-size: 0.91rem;
+}
+
+#day3Card .day-group-name {
+  font-size: 0.81rem;
+  line-height: 1.3;
+}
+
+/* Deskripsi dipadatkan */
+#day3Card .day-group-desc {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* Tombol informasi dan daftar lebih pendek */
+#day3Card .day-info,
+#day3Card .day-group .day-cta {
+  min-height: 38px;
+  padding: 8px 12px;
+  gap: 7px;
+  font-size: 0.79rem;
+}
+
+/* Ikon informasi lebih kecil */
+#day3Card .day-info::before {
+  flex-basis: 17px;
+  width: 17px;
+  height: 17px;
+  font-size: 0.68rem;
+}
+
+/* Panah tombol daftar tidak terlalu dominan */
+#day3Card .day-group .day-cta::after {
+  font-size: 0.9rem;
+}
+
+/* Catatan bawah card lebih rapat */
+#day3Card .day-note {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+/* Tablet dan layar sempit */
+@media (max-width: 900px) {
+  #day3Card .day-group {
+    padding: 12px;
+  }
+}
+
+/* Ponsel */
+@media (max-width: 600px) {
+  #day3Card .day-groups {
+    gap: 10px;
+  }
+
+  #day3Card .day-group {
+    padding: 13px;
+  }
+
+  #day3Card .day-info,
+  #day3Card .day-group .day-cta {
+    min-height: 42px;
+    font-size: 0.83rem;
+  }
+}
+
+/* ===== Compact Day 3 route links ===== */
+#day3Card .day-groups--compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0 12px;
+  border-top: 1px solid var(--line);
+}
+
+#day3Card .day-route-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--rust-deep);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.18s ease, padding 0.18s ease;
+}
+
+#day3Card .day-route-link:hover {
+  padding-right: 6px;
+  padding-left: 6px;
+  color: var(--rust);
+}
+
+#day3Card .day-route-arrow {
+  flex: 0 0 auto;
+  font-size: 1rem;
+  transition: transform 0.18s ease;
+}
+
+#day3Card .day-route-link:hover .day-route-arrow {
+  transform: translate(2px, -2px);
+}
+
+#day3Card .day-route-link:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #day3Card .day-route-link,
+  #day3Card .day-route-arrow {
+    transition: none;
+  }
+}
+
+/* ===== Day 3: Compact route + registration buttons ===== */
+#day3Card .day-groups--compact {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 14px 0 12px;
+}
+
+#day3Card .day-route-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+#day3Card .day-route-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--rust-deep);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+#day3Card .day-route-link:hover {
+  color: var(--rust);
+}
+
+#day3Card .day-route-link:focus-visible,
+#day3Card .day-register-compact:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+#day3Card .day-route-arrow {
+  flex: 0 0 auto;
+  font-size: 1rem;
+}
+
+#day3Card .day-register-compact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--grad-tight);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 6px 16px -10px rgba(143, 49, 16, 0.75);
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+#day3Card .day-register-compact:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+#day3Card .day-register-compact span {
+  font-size: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #day3Card .day-register-compact {
+    transition: none;
+  }
+}

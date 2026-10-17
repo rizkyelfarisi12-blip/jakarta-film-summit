@@ -196,7 +196,10 @@ h1.headline {
   border-radius: 12px;
   color: var(--ink);
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 .about-stat::before,
 .about-stat::after {
@@ -1192,12 +1195,7 @@ h1.headline {
   padding: 5px;
   border: 1px solid #c65a37;
   border-radius: 29px;
-  background: linear-gradient(
-    135deg,
-    #e7b49b 0%,
-    #c94b25 25%,
-    #8f321c 70%
-  );
+  background: linear-gradient(135deg, #e7b49b 0%, #c94b25 25%, #8f321c 70%);
   /* Drop shadow foto */
   box-shadow:
     0 24px 45px rgba(30, 30, 25, 0.24),
@@ -1477,10 +1475,10 @@ h1.headline {
 /* Kartu Collaborator: lebih lebar, diletakkan di tengah, logo sebaris */
 @media (min-width: 901px) {
   .pship-card:last-child {
-    grid-column: 2 / span 4;   /* kolom 2-5 = tepat di tengah */
+    grid-column: 2 / span 4; /* kolom 2-5 = tepat di tengah */
   }
   .pship-card:last-child .pship-logos {
-    flex-wrap: nowrap;         /* paksa satu baris */
+    flex-wrap: nowrap; /* paksa satu baris */
     gap: 14px 44px;
   }
 }
@@ -1738,7 +1736,10 @@ h1.headline {
   font-size: 0.84rem;
   font-weight: 700;
   color: var(--ink);
-  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease,
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease,
     transform 0.16s ease;
 }
 .ab-tags li:hover {
@@ -1762,7 +1763,10 @@ h1.headline {
   border-radius: 16px;
   background: var(--panel);
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 /* .ab-step::before {
   content: "";
@@ -2176,7 +2180,9 @@ h1.headline {
   border-radius: 14px;
   background: linear-gradient(140deg, #cc3315, #bf4419 55%, #8f3110);
   box-shadow: 0 5px 10px -7px rgba(30, 30, 25, 0.45);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 #about .ab-step:nth-child(2) {
@@ -2497,7 +2503,7 @@ h1.headline {
 }
 
 .day-two .schedule-day h3 {
-  color: #1431A6;
+  color: #1431a6;
 }
 
 .day-three .schedule-day h3 {
@@ -2598,7 +2604,7 @@ h1.headline {
 }
 
 .day-two .schedule-list li::before {
-  background: #1431A6;
+  background: #1431a6;
 }
 
 .day-three .schedule-list li::before {
@@ -2634,11 +2640,7 @@ h1.headline {
   border-radius: 14px;
   color: #fff;
   background:
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(191, 68, 25, 0.2),
-      transparent 42%
-    ),
+    radial-gradient(circle at 100% 0%, rgba(191, 68, 25, 0.2), transparent 42%),
     linear-gradient(110deg, #251c18, #1e1715);
   box-shadow: 0 12px 26px -22px rgba(30, 20, 15, 0.7);
 }
@@ -2699,7 +2701,9 @@ h1.headline {
   font-weight: 800;
   text-decoration: none;
   white-space: nowrap;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .schedule-btn:hover {
@@ -2783,7 +2787,6 @@ h1.headline {
   }
 }
 
-
 /* FIX: Matikan gerakan background hero */
 header.hero {
   animation: none !important;
@@ -2807,7 +2810,6 @@ header.hero::after {
     transition: none !important;
   }
 }
-
 
 /* Kolaborasi JFS x Bank Indonesia — Day 2 */
 .day-two-collab {
@@ -2925,7 +2927,7 @@ header.hero::after {
 }
 
 .day-two-collaboration .collaboration-label {
-  color: #1431A6;
+  color: #1431a6;
   font-size: 0.62rem;
   font-weight: 700;
   line-height: 1.35;
@@ -2968,7 +2970,7 @@ header.hero::after {
 }
 
 .day-two-collaboration .collaboration-label {
-  color: #1431A6;
+  color: #1431a6;
   font-size: 0.82rem;
   font-weight: 800;
   line-height: 1.3;
@@ -2987,7 +2989,6 @@ header.hero::after {
   }
 }
 
-
 /* PNG icon — Four Pillars */
 
 .ab-step .ab-step-icon {
@@ -3001,8 +3002,6 @@ header.hero::after {
   background: rgba(255, 255, 255, 0.14);
 }
 
-
-
 .ab-step .ab-step-icon img {
   display: block;
   width: 24px;
@@ -3010,8 +3009,389 @@ header.hero::after {
   object-fit: contain;
 }
 
-
 /* Ikon pada kartu gold */
 .ab-step:nth-child(3) .ab-step-icon {
   background: rgba(80, 50, 20, 0.1);
+}
+
+/* =======================================================
+   HOMEPAGE — DAY 3 ROUTE LINKS + ROUTE DETAIL MODAL
+   ======================================================= */
+.home-day3-desc {
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.home-route-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 8px;
+}
+.home-route-item {
+  min-width: 0;
+}
+.home-route-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-height: 54px;
+  padding: 13px 15px;
+  border: 1px solid rgba(191, 68, 25, 0.22);
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(191, 68, 25, 0.075),
+    rgba(228, 198, 151, 0.12)
+  );
+  color: var(--rust-deep);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 750;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(30, 30, 25, 0.035);
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.home-route-info > span:first-child::before {
+  content: "i";
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: var(--rust);
+  color: #fff;
+  font-family: Georgia, serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  font-weight: 800;
+  vertical-align: -1px;
+}
+.home-route-info > span:last-child {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(191, 68, 25, 0.11);
+  color: var(--rust);
+  font-size: 1.05rem;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+.home-route-info:hover {
+  transform: translateY(-1px);
+  border-color: rgba(191, 68, 25, 0.55);
+  background: rgba(191, 68, 25, 0.1);
+  box-shadow: 0 8px 18px rgba(30, 30, 25, 0.07);
+}
+.home-route-info:hover > span:last-child {
+  transform: translate(2px, -2px);
+  background: var(--rust);
+  color: #fff;
+}
+.home-route-info:focus-visible,
+.home-route-more:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.home-route-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.home-route-modal.open {
+  display: flex;
+}
+.home-route-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 8, 0.74);
+  backdrop-filter: blur(5px);
+}
+.home-route-dialog {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(580px, 100%);
+  max-height: min(760px, 92vh);
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+}
+.home-route-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(10, 10, 8, 0.25);
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.home-route-close:hover {
+  background: var(--rust);
+  border-color: var(--rust);
+}
+.home-route-head {
+  padding: 26px 64px 20px 26px;
+  background: var(--grad-tight);
+  color: #fff;
+}
+.home-route-kicker {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+.home-route-head h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 4vw, 1.65rem);
+  line-height: 1.2;
+}
+.home-route-head p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.home-route-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 26px 12px;
+}
+.home-route-body h3 {
+  margin: 0 0 12px;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.home-route-stops {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-route-stops::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: var(--line);
+}
+.home-route-stops li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 7px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.home-route-num {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--rust);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--rust-deep);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+.home-route-stop-text {
+  padding-top: 6px;
+}
+.home-route-foot {
+  display: flex;
+  justify-content: flex-start;
+  padding: 15px 26px 20px;
+  border-top: 1px solid var(--line);
+}
+.home-route-more {
+  color: var(--rust);
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.home-route-more:hover {
+  text-decoration: underline;
+}
+body.home-route-modal-open {
+  overflow: hidden;
+}
+@media (max-width: 680px) {
+  .home-route-modal {
+    padding: 10px;
+  }
+  .home-route-head {
+    padding: 23px 54px 17px 20px;
+  }
+  .home-route-body {
+    padding: 17px 20px 10px;
+  }
+  .home-route-foot {
+    padding: 14px 20px 18px;
+  }
+  .home-route-info {
+    min-height: 52px;
+    font-size: 0.84rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-route-info,
+  .home-route-info > span:last-child {
+    transition: none;
+  }
+}
+
+/* =======================================================
+   Partnership — penyesuaian kotak
+   ======================================================= */
+
+.pbox .pcat h3 {
+  margin-bottom: 16px;
+}
+
+/* ---------- Baris 1: Presented by | Strategic Partners ---------- */
+.pbox-row.cols-2.is-spaced {
+  padding: 0;
+}
+.pbox-row.cols-2.is-spaced .pcat {
+  padding: 26px 24px 22px;
+}
+
+.plogos.is-oneline {
+  flex-wrap: nowrap;
+  gap: 12px 26px;
+}
+.plogos.is-oneline .plogo {
+  flex: 0 1 auto;
+  min-width: 0;
+  min-height: 52px;
+}
+.plogos.is-oneline .plogo img {
+  max-width: 125px;
+  max-height: 50px;
+}
+
+/* ---------- Baris 2: Global Industry Partner + Powered by ---------- */
+
+.pbox-row.is-stack .pcat {
+  padding: 22px 24px 18px;
+}
+
+.plogos.is-xl .plogo {
+  min-height: 56px;
+}
+.plogos.is-xl .plogo img {
+  max-width: 160px;
+  max-height: 56px;
+}
+
+/* ---------- Kotak 2: 4 logo, 4 kolom agar tepat di tengah ---------- */
+.plogos.is-grid-5 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .pbox-row.cols-2.is-spaced .pcat {
+    padding: 22px 16px 18px;
+  }
+  .plogos.is-oneline {
+    gap: 10px 14px;
+  }
+  .plogos.is-oneline .plogo img {
+    max-width: 90px;
+    max-height: 40px;
+  }
+  .plogos.is-grid-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .plogos.is-oneline {
+    flex-wrap: wrap;
+    gap: 12px 22px;
+  }
+  .plogos.is-oneline .plogo img {
+    max-width: 110px;
+    max-height: 42px;
+  }
+  .plogos.is-xl .plogo img {
+    max-width: 130px;
+    max-height: 48px;
+  }
+}
+
+/* Jarak antarbagian setelah garis dihapus */
+.pbox-row.is-stack .pcat + .pcat {
+  padding-top: 8px;
+}
+
+/* Collaborators: otomatis rapi berapa pun jumlah logonya */
+.plogos.is-grid-5 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px 28px;
+}
+.plogos.is-grid-5 .plogo {
+  flex: 0 0 calc(25% - 21px);   /* 4 logo per baris di desktop */
+  max-width: 220px;
+}
+.plogos.is-grid-5 .plogo img {
+  max-width: 130px;
+  max-height: 50px;
+}
+
+@media (max-width: 900px) {
+  .plogos.is-grid-5 .plogo {
+    flex: 0 0 calc(33.333% - 19px);   /* 3 per baris di tablet */
+  }
+}
+@media (max-width: 480px) {
+  .plogos.is-grid-5 .plogo {
+    flex: 0 0 calc(50% - 14px);       /* 2 per baris di HP */
+  }
 }

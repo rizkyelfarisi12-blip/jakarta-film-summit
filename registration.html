@@ -236,20 +236,51 @@
                   <h3>Jakarta Strolling Tour</h3>
                   <p data-i18n="day3.desc"></p>
 
-                  <div class="day-groups">
-                    <div class="day-group">
-                      <b>Group A</b>
-                      <span data-i18n="day3.groupA"></span>
-                      <a class="day-cta" id="day3LinkA" href="#" target="_blank" rel="noopener noreferrer"
-                        data-i18n="day3.ctaA">Daftar Group A →</a>
-                    </div>
-                    <div class="day-group">
-                      <b>Group B</b>
-                      <span data-i18n="day3.groupB"></span>
-                      <a class="day-cta" id="day3LinkB" href="#" target="_blank" rel="noopener noreferrer"
-                        data-i18n="day3.ctaB">Daftar Group B →</a>
-                    </div>
-                  </div>
+
+<div class="day-groups day-groups--compact">
+
+  <div class="day-route-item">
+    <button
+      type="button"
+      class="day-route-link"
+      data-route-open="A"
+      aria-haspopup="dialog">
+      <span>Group A: Lihat rute dan detail</span>
+      <span class="day-route-arrow" aria-hidden="true">↗</span>
+    </button>
+
+    <a
+      class="day-register-compact"
+      id="day3LinkA"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer">
+      Daftar Group A <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <div class="day-route-item">
+    <button
+      type="button"
+      class="day-route-link"
+      data-route-open="B"
+      aria-haspopup="dialog">
+      <span>Group B: Lihat rute dan detail</span>
+      <span class="day-route-arrow" aria-hidden="true">↗</span>
+    </button>
+
+    <a
+      class="day-register-compact"
+      id="day3LinkB"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer">
+      Daftar Group B <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+</div>
+
 
                   <small class="day-note" data-i18n="day3.note"></small>
                 </div>
@@ -480,6 +511,293 @@
   <div id="footerPlaceholder"></div>
 
   <script src="assets/js/registration.js"></script>
+
+  
+<script>
+(function () {
+  "use strict";
+
+  const COMMON_END = [
+    ["Perjalanan menuju Halte Bundaran HI", "Travel to Bundaran HI bus stop"],
+    ["Foto bersama di sky deck Halte Bundaran HI", "Group photo at the Bundaran HI sky deck"],
+    ["Perjalanan menuju FX Sudirman menggunakan MRT Jakarta", "Travel to FX Sudirman by MRT Jakarta"]
+  ];
+
+  const ROUTES = {
+    A: {
+      hash: "route-1",
+      name: "Heritage & Waterfront",
+      desc: {
+        id: "Menjelajahi landmark bersejarah, kawasan pesisir, dan ruang publik Jakarta melalui perspektif produksi film.",
+        en: "Explore Jakarta's historic landmarks, waterfront districts and public spaces through a production lens."
+      },
+      stops: [
+        ["Perjalanan menuju Lapangan Banteng", "Travel to Lapangan Banteng"],
+        ["Tour Lapangan Banteng – Istiqlal – Cathedral", "Tour of Lapangan Banteng – Istiqlal – Cathedral"],
+        ["Perjalanan menuju Muara Angke", "Travel to Muara Angke"],
+        ["Tour Pelabuhan Muara Angke", "Muara Angke port tour"],
+        ["Perjalanan menuju area Kota Tua", "Travel to the Kota Tua area"],
+        ["Tour kawasan Kota Tua", "Kota Tua district tour"]
+      ].concat(COMMON_END)
+    },
+
+    B: {
+      hash: "route-2",
+      name: "Urban & Creative",
+      desc: {
+        id: "Mengenal ruang kota, fasilitas olahraga, kawasan bersejarah, dan titik kreatif Jakarta dari perspektif produksi.",
+        en: "Discover Jakarta's urban spaces, sports facilities, heritage districts and creative hubs from a production perspective."
+      },
+      stops: [
+        ["Perjalanan menuju Pasar Rumput & Jaksinema", "Travel to Pasar Rumput & Jaksinema"],
+        ["Tour Pasar Rumput & Jaksinema", "Pasar Rumput & Jaksinema tour"],
+        ["Perjalanan menuju Velodrome", "Travel to the Velodrome"],
+        ["Tour Velodrome", "Velodrome tour"],
+        ["Perjalanan menuju Kota Tua", "Travel to Kota Tua"],
+        ["Tour kawasan Kota Tua", "Kota Tua district tour"]
+      ].concat(COMMON_END)
+    }
+  };
+
+  const LABELS = {
+    id: {
+      info: "Lihat rute & detail",
+      register: "Daftar Group ",
+      kicker: "Hari 3 · 22 Okt 2026 · Mulai 08.30 dari Park Hyatt Jakarta",
+      stops: "Tahapan perjalanan",
+      more: "Lihat peta & foto lokasi",
+      close: "Tutup"
+    },
+    en: {
+      info: "View route & details",
+      register: "Register Group ",
+      kicker: "Day 3 · 22 Oct 2026 · Starts 08.30 from Park Hyatt Jakarta",
+      stops: "Route stops",
+      more: "See map & location photos",
+      close: "Close"
+    }
+  };
+
+  let currentRoute = null;
+  let lastTrigger = null;
+  let modal = null;
+
+  function currentLanguage() {
+    if (typeof currentLang !== "undefined") {
+      return currentLang === "en" ? "en" : "id";
+    }
+
+    try {
+      return localStorage.getItem("jfs_lang") === "en" ? "en" : "id";
+    } catch (_) {
+      return "id";
+    }
+  }
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function buildModal() {
+    modal = document.createElement("div");
+    modal.className = "route-modal";
+    modal.id = "routeModal";
+    modal.setAttribute("aria-hidden", "true");
+
+    modal.innerHTML = `
+      <div class="route-backdrop" data-close-route></div>
+
+      <div
+        class="route-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="routeModalTitle"
+        aria-describedby="routeModalDesc">
+
+        <button
+          type="button"
+          class="route-x"
+          data-close-route
+          aria-label="Tutup">×</button>
+
+        <div class="route-head">
+          <span class="route-kicker" id="routeKicker"></span>
+          <h2 id="routeModalTitle"></h2>
+          <p id="routeModalDesc"></p>
+        </div>
+
+        <div class="route-body">
+          <h3 id="routeStopsTitle"></h3>
+          <ol class="route-stops" id="routeStops"></ol>
+        </div>
+
+        <div class="route-foot">
+          <a class="route-more" id="routeMore" href="experiences.html"></a>
+          <a class="route-register" id="routeRegister" href="#"></a>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+  }
+
+  function renderCard() {
+    const lang = currentLanguage();
+    const labels = LABELS[lang];
+
+    Object.keys(ROUTES).forEach(function (key) {
+      const group = document.querySelector(
+        '.day-group[data-route="' + key + '"]'
+      );
+
+      if (!group) return;
+
+      const name = group.querySelector(".day-group-name");
+      const desc = group.querySelector(".day-group-desc");
+      const info = group.querySelector(".day-info");
+      const register = $("day3Link" + key);
+
+      if (name) name.textContent = ROUTES[key].name;
+      if (desc) {
+        desc.textContent = key === "A"
+          ? (lang === "id"
+              ? "Landmark bersejarah, pesisir, dan ruang publik Jakarta."
+              : "Historic landmarks, waterfront and Jakarta's public spaces.")
+          : (lang === "id"
+              ? "Ruang kota, olahraga, kawasan bersejarah, dan titik kreatif."
+              : "Urban spaces, sports venues, heritage and creative spots.");
+      }
+
+      if (info) info.textContent = labels.info;
+      if (register) {
+        register.textContent = labels.register + key;
+      }
+    });
+  }
+
+  function renderModal() {
+    if (!currentRoute || !modal) return;
+
+    const lang = currentLanguage();
+    const labels = LABELS[lang];
+    const route = ROUTES[currentRoute];
+
+    $("routeKicker").textContent = labels.kicker;
+    $("routeModalTitle").textContent =
+      "Group " + currentRoute + " · " + route.name;
+    $("routeModalDesc").textContent = route.desc[lang];
+    $("routeStopsTitle").textContent = labels.stops;
+
+    const list = $("routeStops");
+    list.replaceChildren();
+
+    route.stops.forEach(function (stop, index) {
+      const li = document.createElement("li");
+
+      const number = document.createElement("span");
+      number.className = "route-num";
+      number.textContent = String(index + 1).padStart(2, "0");
+
+      const text = document.createElement("span");
+      text.className = "route-stop-text";
+      text.textContent = stop[lang === "en" ? 1 : 0];
+
+      li.append(number, text);
+      list.appendChild(li);
+    });
+
+    const more = $("routeMore");
+    more.textContent = labels.more + " →";
+    more.href = "experiences.html#" + route.hash;
+
+    const register = $("routeRegister");
+    const originalLink = $("day3Link" + currentRoute);
+
+    register.textContent = labels.register + currentRoute;
+    register.href = originalLink && originalLink.href
+      ? originalLink.href
+      : "#";
+
+    modal.querySelector(".route-x").setAttribute(
+      "aria-label",
+      labels.close
+    );
+  }
+
+  function openRoute(key, trigger) {
+    if (!ROUTES[key] || !modal) return;
+
+    currentRoute = key;
+    lastTrigger = trigger || null;
+
+    renderModal();
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+
+    modal.querySelector(".route-body").scrollTop = 0;
+    modal.querySelector(".route-x").focus();
+  }
+
+  function closeRoute() {
+    if (!modal || !modal.classList.contains("open")) return;
+
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+
+    currentRoute = null;
+
+    if (lastTrigger && typeof lastTrigger.focus === "function") {
+      lastTrigger.focus();
+    }
+  }
+
+  function init() {
+    if (!$("day3Card")) return;
+
+    buildModal();
+    renderCard();
+
+    document.addEventListener("click", function (event) {
+      const openButton = event.target.closest("[data-route-open]");
+
+      if (openButton) {
+        event.preventDefault();
+        openRoute(openButton.dataset.routeOpen, openButton);
+        return;
+      }
+
+      if (event.target.closest("[data-close-route]")) {
+        closeRoute();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeRoute();
+      }
+    });
+
+    document.querySelectorAll(".lang-btn").forEach(function (button) {
+      button.addEventListener("click", function () {
+        window.setTimeout(function () {
+          renderCard();
+          renderModal();
+        }, 0);
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
   <script src="assets/js/include.js"></script>
 </body>
 
