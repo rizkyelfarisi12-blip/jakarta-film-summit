@@ -1580,9 +1580,9 @@ h1.headline {
   padding: 4px 6px;
   transition: transform 0.18s ease;
 }
-.plogo:hover {
+/* .plogo:hover {
   transform: scale(1.06);
-}
+} */
 .plogo img {
   display: block;
   width: auto;
@@ -3393,5 +3393,24 @@ body.home-route-modal-open {
 @media (max-width: 480px) {
   .plogos.is-grid-5 .plogo {
     flex: 0 0 calc(50% - 14px);       /* 2 per baris di HP */
+  }
+}
+
+/* Media Partners — baris kedua di kotak Collaborators */
+.pbox-row.is-media {
+  padding-top: 0;
+}
+.pbox-row.is-media .pcat {
+  padding-top: 70px;
+  /* border-top: 1px solid var(--line); */
+}
+.pbox-row.is-media .plogos.is-grid-5 .plogo img {
+  max-width: 120px;
+  max-height: 46px;
+}
+
+@media (max-width: 700px) {
+  .pbox-row.is-media .pcat {
+    padding-top: 18px;
   }
 }

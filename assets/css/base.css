@@ -1404,3 +1404,57 @@ footer .flinks a:hover {
   }
 }
 
+/* ---------- Hospitality Guide CTA ---------- */
+.guide-cta {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-top: 28px;
+  padding: 26px 30px;
+  background: rgba(191, 68, 25, 0.06);
+  border: 1px solid rgba(191, 68, 25, 0.18);
+  border-radius: 18px;
+}
+.guide-cta-icon {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: rgba(191, 68, 25, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.guide-cta-icon svg { width: 24px; height: 24px; }
+.guide-cta-text { flex: 1 1 auto; min-width: 200px; }
+.guide-cta-text h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.guide-cta-text p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+.guide-cta .btn-primary { flex: 0 0 auto; }
+
+@media (max-width: 760px) {
+  .guide-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 22px;
+  }
+  .guide-cta .btn-primary { width: 100%; justify-content: center; }
+}
+
+.guide-section {
+  padding: 40px 0 0;
+}
+.guide-cta {
+  max-width: 1160px;   /* sama dengan .wrap */
+  margin: 0 auto;
+}
+.guide-cta .btn-primary {
+  padding: 13px 26px;
+  font-size: 0.92rem;
+}

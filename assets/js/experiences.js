@@ -3,11 +3,11 @@
    Requires: common.js
    - Route switcher (Rute A / Rute B)
    - Illustrative route map (SVG) built from each stop list
-   - "Buka rute di Google Maps": rute lengkap (titik awal + semua
-     lokasi berurutan seperti di peta ilustrasi)
-   - Popup foto lokasi (klik daftar lokasi atau titik di peta)
-     Foto dicari otomatis: file Wikimedia Commons -> thumbnail
-     Wikipedia -> foto lama (data-img) -> placeholder
+   - "Buka rute di Google Maps": titik awal + semua lokasi berurutan
+   - Popup foto lokasi:
+       1) foto internal  -> assets/gallery/lokasi/<nama>.(jpg|jpeg|png|webp)
+       2) backup         -> link lama di data-img (experiences.html)
+       3) placeholder    -> "Foto segera hadir"
    ======================================================= */
 (function () {
   "use strict";
@@ -16,114 +16,42 @@
   var W = 520;
   var H = 400;
 
-  /* =====================================================
-     DATA RUTE
-     Urutan array = urutan <li> di experiences.html (01 … 09).
+  /* Folder foto internal + ekstensi yang dicoba berurutan */
+  var LOCAL_DIR = "assets/gallery/lokasi/";
+  var LOCAL_EXTS = ["jpg", "jpeg", "png", "webp"];
 
-     maps  : nama tempat untuk Google Maps (boleh lebih dari satu,
-             dipakai berurutan). Kosongkan [] jika langkah itu
-             hanya "tour" di tempat yang sama dengan langkah sebelumnya.
-     files : nama file di Wikimedia Commons (foto pasti ada)
-     wiki  : artikel Wikipedia "bahasa:Judul_Artikel" — foto utama
-             artikel dipakai sebagai gambar
-     ===================================================== */
   var START_POINT = "Park Hyatt Jakarta"; // titik awal semua rute
 
+  /* =====================================================
+     DATA RUTE (urutan array = urutan <li> 01 … 09)
+
+     photo : nama file foto internal TANPA ekstensi
+     maps  : nama tempat untuk Google Maps ([] jika langkah
+             itu hanya "tour" di tempat yang sama)
+     ===================================================== */
   var STOPS = {
     "route-1": [
-      { // 01 Perjalanan menuju Lapangan Banteng
-        maps: ["Lapangan Banteng, Jakarta"],
-        files: ["Tugu Lapangan Banteng.jpg"],
-        wiki: ["en:Lapangan_Banteng", "id:Lapangan_Banteng"]
-      },
-      { // 02 Tour Lapangan Banteng – Istiqlal – Cathedral
-        maps: ["Masjid Istiqlal, Jakarta", "Gereja Katedral Jakarta"],
-        files: ["Istiqlal Mosque.jpg"],
-        wiki: ["en:Istiqlal_Mosque,_Jakarta", "en:Jakarta_Cathedral"]
-      },
-      { // 03 Perjalanan menuju Muara Angke
-        maps: ["Pelabuhan Muara Angke, Jakarta"],
-        files: [],
-        wiki: ["en:Muara_Angke", "id:Muara_Angke"]
-      },
-      { // 04 Tour Pelabuhan Muara Angke
-        maps: [],
-        files: [],
-        wiki: ["en:Muara_Angke", "id:Muara_Angke"]
-      },
-      { // 05 Perjalanan menuju area Kota Tua
-        maps: ["Museum Fatahillah, Kota Tua, Jakarta"],
-        files: ["Stadhuis Batavia, Jakarta.jpg"],
-        wiki: ["en:Jakarta_Old_Town", "en:Fatahillah_Square", "en:Jakarta_History_Museum"]
-      },
-      { // 06 Tour kawasan Kota Tua
-        maps: [],
-        files: ["Stadhuis Batavia, Jakarta.jpg"],
-        wiki: ["en:Jakarta_Old_Town", "en:Fatahillah_Square", "en:Jakarta_History_Museum"]
-      },
-      { // 07 Perjalanan menuju Halte Bundaran HI
-        maps: ["Halte Bundaran HI, Jakarta"],
-        files: [],
-        wiki: ["id:Halte_Transjakarta_Bundaran_HI", "en:Selamat_Datang_Monument", "id:Bundaran_Hotel_Indonesia"]
-      },
-      { // 08 Foto bersama di sky deck Halte Bundaran HI
-        maps: [],
-        files: [],
-        wiki: ["id:Halte_Transjakarta_Bundaran_HI", "en:Selamat_Datang_Monument", "id:Bundaran_Hotel_Indonesia"]
-      },
-      { // 09 Perjalanan menuju FX Sudirman (MRT)
-        maps: ["FX Sudirman, Jakarta"],
-        files: ["FX Sudirman.jpg"],
-        wiki: ["en:FX_Sudirman", "id:FX_Sudirman"]
-      }
+      { photo: "lapangan-banteng", maps: ["Lapangan Banteng, Jakarta"] },                                   // 01
+      { photo: "istiqlal-katedral", maps: ["Masjid Istiqlal, Jakarta", "Gereja Katedral Jakarta"] },        // 02
+      { photo: "menuju-muara-angke",       maps: ["Pelabuhan Muara Angke, Jakarta"] },                             // 03
+      { photo: "muara-angke",       maps: [] },                                                             // 04
+      { photo: "menuju-kota-tua",          maps: ["Museum Fatahillah, Kota Tua, Jakarta"] },                        // 05
+      { photo: "kota-tua",          maps: [] },                                                             // 06
+      { photo: "menuju-bundaran-hi",       maps: ["Halte Bundaran HI, Jakarta"] },                                  // 07
+      { photo: "bundaran-hi",       maps: [] },                                                             // 08
+      { photo: "fx-sudirman",       maps: ["FX Sudirman, Jakarta"] }                                         // 09
     ],
 
     "route-2": [
-      { // 01 Perjalanan menuju Pasar Rumput & Jaksinema
-        maps: ["Pasar Rumput, Jakarta"],
-        files: [],
-        wiki: ["id:Jaksinema", "id:Pasar_Rumput", "en:Pasar_Rumput"]
-      },
-      { // 02 Tour Pasar Rumput & Jaksinema
-        maps: [],
-        files: [],
-        wiki: ["id:Jaksinema", "id:Pasar_Rumput", "en:Pasar_Rumput"]
-      },
-      { // 03 Perjalanan menuju Velodrome
-        maps: ["Jakarta International Velodrome, Rawamangun, Jakarta"],
-        files: [],
-        wiki: ["en:Jakarta_International_Velodrome", "id:Jakarta_International_Velodrome"]
-      },
-      { // 04 Tour Velodrome
-        maps: [],
-        files: [],
-        wiki: ["en:Jakarta_International_Velodrome", "id:Jakarta_International_Velodrome"]
-      },
-      { // 05 Perjalanan menuju Kota Tua
-        maps: ["Museum Fatahillah, Kota Tua, Jakarta"],
-        files: ["Stadhuis Batavia, Jakarta.jpg"],
-        wiki: ["en:Jakarta_Old_Town", "en:Fatahillah_Square", "en:Jakarta_History_Museum"]
-      },
-      { // 06 Tour kawasan Kota Tua
-        maps: [],
-        files: ["Stadhuis Batavia, Jakarta.jpg"],
-        wiki: ["en:Jakarta_Old_Town", "en:Fatahillah_Square", "en:Jakarta_History_Museum"]
-      },
-      { // 07 Perjalanan menuju Halte Bundaran HI
-        maps: ["Halte Bundaran HI, Jakarta"],
-        files: [],
-        wiki: ["id:Halte_Transjakarta_Bundaran_HI", "en:Selamat_Datang_Monument", "id:Bundaran_Hotel_Indonesia"]
-      },
-      { // 08 Foto bersama di sky deck Halte Bundaran HI
-        maps: [],
-        files: [],
-        wiki: ["id:Halte_Transjakarta_Bundaran_HI", "en:Selamat_Datang_Monument", "id:Bundaran_Hotel_Indonesia"]
-      },
-      { // 09 Perjalanan menuju FX Sudirman (MRT)
-        maps: ["FX Sudirman, Jakarta"],
-        files: ["FX Sudirman.jpg"],
-        wiki: ["en:FX_Sudirman", "id:FX_Sudirman"]
-      }
+      { photo: "menuju-pasar-rumput-jaksinema", maps: ["Pasar Rumput, Jakarta"] },                                  // 01
+      { photo: "pasar-rumput-jaksinema", maps: [] },                                                         // 02
+      { photo: "menuju-velodrome",              maps: ["Jakarta International Velodrome, Rawamangun, Jakarta"] },   // 03
+      { photo: "velodrome",              maps: [] },                                                         // 04
+      { photo: "menuju-kota-tua",               maps: ["Museum Fatahillah, Kota Tua, Jakarta"] },                   // 05
+      { photo: "kota-tua",               maps: [] },                                                         // 06
+      { photo: "menuju-bundaran-hi",            maps: ["Halte Bundaran HI, Jakarta"] },                             // 07
+      { photo: "bundaran-hi",            maps: [] },                                                         // 08
+      { photo: "fx-sudirman",            maps: ["FX Sudirman, Jakarta"] }                                    // 09
     ]
   };
 
@@ -166,49 +94,8 @@
   }
 
   /* =====================================================
-     FOTO LOKASI — pencari gambar otomatis
+     FOTO LOKASI
      ===================================================== */
-  var wikiCache = {}; // "en:Judul" -> Promise<[{url}]>
-
-  function fileUrls(files) {
-    return (files || []).map(function (f) {
-      return {
-        url: "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(f) + "?width=1200",
-        from: "wiki"
-      };
-    });
-  }
-
-  // Ambil foto utama artikel Wikipedia lewat REST API (mendukung CORS)
-  function wikiOne(spec) {
-    if (wikiCache[spec]) return wikiCache[spec];
-    var i = spec.indexOf(":");
-    var lang = spec.slice(0, i);
-    var title = spec.slice(i + 1);
-    var api = "https://" + lang + ".wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(title);
-    wikiCache[spec] = fetch(api)
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        var out = [];
-        if (j && j.thumbnail && j.thumbnail.source) {
-          // minta ukuran lebih besar dari thumbnail bawaan (320px)
-          out.push({ url: j.thumbnail.source.replace(/\/\d+px-/, "/1200px-"), from: "wiki" });
-          out.push({ url: j.thumbnail.source, from: "wiki" });
-        }
-        if (j && j.originalimage && j.originalimage.source) {
-          out.push({ url: j.originalimage.source, from: "wiki" });
-        }
-        return out;
-      })
-      .catch(function () { return []; });
-    return wikiCache[spec];
-  }
-
-  function wikiUrls(specs) {
-    return Promise.all((specs || []).map(wikiOne)).then(function (lists) {
-      return [].concat.apply([], lists);
-    });
-  }
 
   // Coba url satu per satu, kembalikan yang pertama berhasil dimuat
   function firstLoadable(list) {
@@ -226,6 +113,20 @@
     });
   }
 
+  // Daftar kandidat foto: internal dulu, lalu link lama sebagai backup
+  function photoCandidates(cfg, li) {
+    var list = [];
+    if (cfg && cfg.photo) {
+      LOCAL_EXTS.forEach(function (ext) {
+        list.push({ url: LOCAL_DIR + encodeURIComponent(cfg.photo) + "." + ext, from: "local" });
+      });
+    }
+    if (li.dataset.img) {
+      list.push({ url: li.dataset.img, from: "backup" });
+    }
+    return list;
+  }
+
   /* ---------- popup foto lokasi ---------- */
   var stop = { items: null, cfgs: null, i: 0, trigger: null, token: 0 };
 
@@ -239,37 +140,23 @@
     var img = document.getElementById("stopModalPhoto");
     var desc = document.getElementById("stopModalDesc");
 
-    var stages = [
-      function () { return Promise.resolve(fileUrls(cfg && cfg.files)); },
-      function () { return wikiUrls(cfg && cfg.wiki); },
-      function () {
-        return Promise.resolve(li.dataset.img ? [{ url: li.dataset.img, from: "orig" }] : []);
-      }
-    ];
-
-    (function run(s) {
+    firstLoadable(photoCandidates(cfg, li)).then(function (hit) {
       if (token !== stop.token) return;
-      if (s >= stages.length) {
+
+      if (!hit) {
         wrap.classList.add("is-empty");
         return;
       }
-      stages[s]()
-        .then(firstLoadable)
-        .then(function (hit) {
-          if (token !== stop.token) return;
-          if (!hit) return run(s + 1);
-          img.referrerPolicy = "no-referrer";
-          img.src = hit.url;
-          img.alt = name;
-          wrap.classList.remove("is-empty");
-          if (hit.from === "wiki") {
-            desc.textContent = "Foto: Wikimedia Commons / Wikipedia (lisensi terbuka — cantumkan atribusi sesuai halaman file).";
-          } else {
-            desc.textContent = li.dataset.desc || "";
-          }
-          desc.hidden = !desc.textContent;
-        });
-    })(0);
+
+      img.referrerPolicy = "no-referrer";
+      img.src = hit.url;
+      img.alt = name;
+      wrap.classList.remove("is-empty");
+
+      // foto internal: tanpa keterangan sumber; backup: pakai data-desc
+      desc.textContent = hit.from === "backup" ? (li.dataset.desc || "") : "";
+      desc.hidden = !desc.textContent;
+    });
   }
 
   function openStop(items, i, trigger, cfgs) {
@@ -400,7 +287,7 @@
         x: pt.x,
         y: above ? pt.y - 30 : pt.y + 38,
         class: "node-label",
-        "text-anchor": "middle",
+        "text-anchor": "middle"
       });
       label.textContent = items[i].dataset.short || "";
       g.appendChild(label);
